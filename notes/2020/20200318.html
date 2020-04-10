@@ -1,39 +1,108 @@
 <!DOCTYPE html>
-<html lang="en_us">
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
 <head>
-        <meta charset="utf-8" />
-        <title>安裝 Miniconda 以及 Pytorch</title>
-        <link rel="stylesheet" href="../../theme/css/main.css" />
+        <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="/Users/minglunwu/Documents/MingLunWu.github.io/output/theme/css/base.css">
+    <link rel="stylesheet" href="/Users/minglunwu/Documents/MingLunWu.github.io/output/theme/css/vendor.css">
+    <link rel="stylesheet" href="/Users/minglunwu/Documents/MingLunWu.github.io/output/theme/css/main.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="/Users/minglunwu/Documents/MingLunWu.github.io/output/theme/js/modernizr.js"></script>
+    <script src="/Users/minglunwu/Documents/MingLunWu.github.io/output/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="/Users/minglunwu/Documents/MingLunWu.github.io/output/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/Users/minglunwu/Documents/MingLunWu.github.io/output/theme/favicon.ico" type="image/x-icon">
+
+    <title>安裝 Miniconda 以及 Pytorch</title>
 </head>
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="../../">MingLun's Blog</a></h1>
-                <nav><ul>
-                    <li><a href="../../category/deep-learning.html">Deep Learning</a></li>
-                    <li class="active"><a href="../../category/system-related.html">System Related</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
-<section id="content" class="body">
-  <article>
-    <header>
-      <h1 class="entry-title">
-        <a href="../../notes/2020/20200318.html" rel="bookmark"
-           title="Permalink to 安裝 Miniconda 以及 Pytorch">安裝 Miniconda 以及 Pytorch</a></h1>
-    </header>
+<body id="top">
+            <!-- header
+    ================================================== -->
+    <header class="s-header">
 
-    <div class="entry-content">
-<footer class="post-info">
-        <abbr class="published" title="2020-03-18T23:25:18+08:00">
-                Published: 三 18 3月 2020
-        </abbr>
+        <div class="header-logo">
+            <a class="site-logo" href="index.html"><img src="/Users/minglunwu/Documents/MingLunWu.github.io/output/theme/images/logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="../../author/minglun-allen-wu.html">MingLun Allen Wu</a>
-        </address>
-<p>In <a href="../../category/system-related.html">System Related</a>.</p>
-<p>tags: <a href="../../tag/pytorch.html">Pytorch</a> <a href="../../tag/conda.html">conda</a> </p>
-</footer><!-- /.post-info -->      <h1>前言</h1>
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a class="smoothscroll"  href="index.html#home" title="home">Home</a></li>
+                <li><a class="smoothscroll"  href="index.html#about" title="about">About</a></li>
+                <li><a class="smoothscroll"  href="index.html#blog" title="blog">Blogs</a></li>
+                <li><a class="smoothscroll"  href="index.html#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1502951682449-e5b93545d46e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1566&q=80)">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                    <a href="#0">Pytorch</a>
+                                    <a href="#0">conda</a>
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                安裝 Miniconda 以及 Pytorch
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">18 3月 2020</li>
+                            <li class="author">
+                                By
+                                <span>MingLun Allen Wu</span>
+                            </li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    <p>
+                    <img src="https://images.unsplash.com/photo-1502951682449-e5b93545d46e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1566&q=80" 
+                         srcset="images/wheel-2000.jpg 2000w, 
+                            images/wheel-1000.jpg 1000w, 
+                            images/wheel-500.jpg 500w" 
+                         sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+                    </p>
+    
+                    <h1>前言</h1>
 <p>因為工作需要在GPU Server上安裝Pytorch，從頭紀錄需要的指令:
 <!--more--></p>
 <h2>確認OS</h2>
@@ -60,37 +129,42 @@
 <li>在Server端透過<code>wget</code>指令下載連結檔案。</li>
 <li>bash 執行下載好的檔案。</li>
 </ol>
-    </div><!-- /.entry-content -->
-
-  </article>
-</section>
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
-
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
-
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
-
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                             <a href="#0">Pytorch</a>
+                             <a href="#0">conda</a>
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+                            <div class="blog-content__prev">
+                                <a href="#0" rel="prev">
+                                    <span>Previous Post</span>
+                                    Tips on Minimalist Design 
+                                </a>
+                            </div>
+                            <div class="blog-content__next">
+                                <a href="#0" rel="next">
+                                    <span>Next Post</span>
+                                    Less Is More 
+                                </a>
+                            </div>
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="blog.html" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
 </body>
-</html>
