@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en_us">
+<head>
+        <meta charset="utf-8" />
+        <title>MingLun's Blog - conda</title>
+        <link rel="stylesheet" href="../theme/css/main.css" />
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="../">MingLun's Blog</a></h1>
+                <nav><ul>
+                    <li><a href="../category/deep-learning.html">Deep Learning</a></li>
+                    <li><a href="../category/system-related.html">System Related</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="../notes/2020/20200318.html">安裝 Miniconda 以及 Pytorch</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2020-03-18T23:25:18+08:00">
+                Published: 三 18 3月 2020
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="../author/minglun-allen-wu.html">MingLun Allen Wu</a>
+        </address>
+<p>In <a href="../category/system-related.html">System Related</a>.</p>
+<p>tags: <a href="../tag/pytorch.html">Pytorch</a> <a href="../tag/conda.html">conda</a> </p>
+</footer><!-- /.post-info --><h1>前言</h1>
+<p>因為工作需要在GPU Server上安裝Pytorch，從頭紀錄需要的指令:
+<!--more--></p>
+<h2>確認OS</h2>
+<div class="highlight"><pre><span></span>cat /etc/os-release
+</pre></div>
+
+
+<p>會將當前機器的OS資訊顯示出來。</p>
+<h2>確認位元組</h2>
+<div class="highlight"><pre><span></span>uname -a
+</pre></div>
+
+
+<p>如果顯示 x86_64 代表是 64位元組，若為i386相關則為32位元組。</p>
+<h2>Check CUDA</h2>
+<div class="highlight"><pre><span></span>nvcc --version
+</pre></div>
+
+
+<h2>安裝Miniconda</h2>
+<p><code>Miniconda</code>與 <code>Anaconda</code>皆為 <code>Conda</code> 體系，<code>Anaconda</code>除了包含<code>Conda</code>, <code>Python</code>外，還有許多額外的Package, 而 <code>Miniconda</code>則是只有<code>Conda</code>以及<code>Python</code>而已。</p>
+<ol>
+<li>至<a href="https://docs.conda.io/en/latest/miniconda.html#linux-installers">Anaconda官網</a>取得對應的安裝檔<strong>連結</strong>。</li>
+<li>在Server端透過<code>wget</code>指令下載連結檔案。</li>
+<li>bash 執行下載好的檔案。</li>
+</ol>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>links</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
