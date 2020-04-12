@@ -113,13 +113,17 @@
 
 <hr>
 <h1>二、基本概念</h1>
-<p><code>Pytorch Lightning</code>將深度學習的程式碼分成三種類型:
-1. <strong>Research Code</strong>:整個應用的核心架構，可能會根據任務的內容進行調整、或是在開發過程中加入自己的想法。通常可能會包含幾個核心元件:
-    + 模型架構定義
-    + Train/Val/Test資料切分
-    + Optimizer定義
-    + Train/Val/Test Step Computation.</p>
+<p><code>Pytorch Lightning</code>將深度學習的程式碼分成三種類型:</p>
 <ol>
+<li>
+<p><strong>Research Code</strong>:整個應用的核心架構，可能會根據任務的內容進行調整、或是在開發過程中加入自己的想法。通常可能會包含幾個核心元件:</p>
+<ul>
+<li>模型架構定義</li>
+<li>Train/Val/Test資料切分</li>
+<li>Optimizer定義</li>
+<li>Train/Val/Test Step Computation.</li>
+</ul>
+</li>
 <li>
 <p><strong>Engineer Code</strong>: EarlyStopping, 將資料送入GPU等常見且固定的程式碼。這部分的程式碼可以透過<code>Trainer</code> Class來減少Self-Repeat.</p>
 </li>
