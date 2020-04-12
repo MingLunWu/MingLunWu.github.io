@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+        <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="https://minglunwu.github.io/theme/css/base.css">
+    <link rel="stylesheet" href="https://minglunwu.github.io/theme/css/vendor.css">
+    <link rel="stylesheet" href="https://minglunwu.github.io/theme/css/main.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="https://minglunwu.github.io/theme/js/modernizr.js"></script>
+    <script src="https://minglunwu.github.io/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="https://minglunwu.github.io/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://minglunwu.github.io/theme/favicon.ico" type="image/x-icon">
+
+    <title>Pytorch Lightning</title>
+</head>
+
+<body id="top">
+            <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+        <div class="header-logo">
+            <a class="site-logo" href="index.html"><img src="https://minglunwu.github.io/theme/images/Logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
+
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a href="https://minglunwu.github.io/#home" title="home">Home</a></li>
+                <li><a href="https://minglunwu.github.io/#about" title="about">About</a></li>
+                <li><a href="https://minglunwu.github.io/#blog" title="blog">Blogs</a></li>
+                <li><a href="https://minglunwu.github.io/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1500674425229-f692875b0ab7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80)">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                    <a href="#0">Pytorch</a>
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                Pytorch Lightning
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">2020- 4-12 (日)</li>
+                            <li class="author">
+                                By
+                                <span>MingLun Allen Wu</span>
+                            </li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    <p>
+    
+                    <h1>前言</h1>
+<p>在了解Pytorch的基本使用後，透過<code>Pytorch Lightning</code>框架能夠讓我們更有效率的進行開發。如果對於Pytorch的基本使用還不熟悉的讀者，可以先看看我先前寫的小文章: </p>
+<p><a href="https://minglunwu.github.io/notes/2020/20200324.html">從零開始 - Pytorch入門懶人包</a></p>
+<hr>
+<p>透過Pytorch撰寫Deep Learning相關程式碼時，程式碼大致可分成兩種類型:
+1. <strong>依照專案有所不同</strong>: 這類程式碼會根據開發的需求而改變，例如「資料的前處理」、「模型的架構」。
+2. <strong>跨專案重複使用</strong>: 這類程式碼在每一個應用中都會存在，且相似性非常高，例如「將資料送入DataLoader」、「計算Loss」、「透過Optimizer更新模型的weight」。</p>
+<p><code>Pytorch Lightning</code>希望替使用者簡化的就是「<strong>跨專案重複使用</strong>」這部分的程式碼，讓使用者能省下精力及時間去處理更為重要的核心模型部分。 </p>
+<p>可以將其視為是一種「樣式指南」(類似Python的PEP8)，透過一定規則將程式碼封裝起來(Train, 計算Loss, Optimizer, 更新參數)，接著就可以透過特別的 <code>Trainer</code> Class來進行操作。</p>
+<hr>
+<h1>一、安裝</h1>
+<p>透過pip即可進行安裝:</p>
+<div class="highlight"><pre><span></span>pip install pytorch-lightning<span class="o">==</span><span class="m">0</span>.7.1
+</pre></div>
+
+
+<hr>
+<h1>二、基本概念</h1>
+<p><code>Pytorch Lightning</code>將深度學習的程式碼分成三種類型:
+1. <strong>Research Code</strong>:整個應用的核心架構，可能會根據任務的內容進行調整、或是在開發過程中加入自己的想法。通常可能會包含幾個核心元件:
+    + 模型架構定義
+    + Train/Val/Test資料切分
+    + Optimizer定義
+    + Train/Val/Test Step Computation.</p>
+<ol>
+<li>
+<p><strong>Engineer Code</strong>: EarlyStopping, 將資料送入GPU等常見且固定的程式碼。這部分的程式碼可以透過<code>Trainer</code> Class來減少Self-Repeat.</p>
+</li>
+<li>
+<p><strong>Non-Essential Code</strong>: 檢查梯度、視覺化等輔助性質的功能。</p>
+</li>
+</ol>
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                             <a href="#0">Pytorch</a>
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+
+
+
+
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="blog.html" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
+            <!-- footer
+    ================================================== -->
+    <footer>
+        <div class="row">
+            <div class="col-full">
+
+                <div class="footer-logo">
+                    <a class="footer-site-logo" href="#0"><img src="https://minglunwu.github.io/theme/images/Logo.png" alt="Homepage"></a>
+                </div>
+                <ul class="footer-social">
+                    <li>
+                        <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                    </li>
+                    <li>
+                        <a href="https://medium.com/@allen6997535" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/allen-ming-lun-wu-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/whoisfater0724/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                    </li>
+                </ul>
+                    
+            </div>
+        </div>
+
+        <div class="row footer-bottom">
+
+            <div class="col-twelve">
+                <div class="copyright">
+                    <span>© Copyright Hola 2017</span> 
+                    <span>Design by <a href="https://www.styleshout.com/">styleshout</a></span>	
+                </div>
+
+                <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- end footer-bottom -->
+
+    </footer> <!-- end footer -->
+    <!-- Java Script
+        ================================================== -->
+        <script src="https://minglunwu.github.io/theme/js/jquery-3.2.1.min.js"></script>
+        <script src="https://minglunwu.github.io/theme/js/plugins.js"></script>
+        <script src="https://minglunwu.github.io/theme/js/main.js"></script>
+
+</body>
