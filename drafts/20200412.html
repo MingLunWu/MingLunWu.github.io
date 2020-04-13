@@ -149,9 +149,13 @@
 </pre></div>
 
 
-<p>在繼承 <code>pl.LightingModule</code>後，有幾項重要的Method必須被Override，未來 <code>Pytorch Lightning</code>才能自動地進行訓練，以下將方法及目的條列出來:
-1. prepare_data():
-    負責資料的載入(包含Training Set, Evaluation Set, Test)都撰寫在方法中。 自動訓練時會先自動執行此Method以獲取資料。</p>
+<p>在繼承 <code>pl.LightingModule</code>後，有幾項重要的Method必須被Override，未來 <code>Pytorch Lightning</code>才能自動地進行訓練，以下將方法及目的條列出來:</p>
+<ol>
+<li>
+<p>prepare_data():</p>
+<p>負責資料的載入(包含Training Set, Evaluation Set, Test)都撰寫在方法中。 自動訓練時會先自動執行此Method以獲取資料。</p>
+</li>
+</ol>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
