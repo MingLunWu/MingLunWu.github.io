@@ -103,7 +103,8 @@
 1. <strong>依照專案有所不同</strong>: 這類程式碼會根據開發的需求而改變，例如「資料的前處理」、「模型的架構」。
 2. <strong>跨專案重複使用</strong>: 這類程式碼在每一個應用中都會存在，且相似性非常高，例如「將資料送入DataLoader」、「計算Loss」、「透過Optimizer更新模型的weight」。</p>
 <p><code>Pytorch Lightning</code>希望替使用者簡化的就是「<strong>跨專案重複使用</strong>」這部分的程式碼，讓使用者能省下精力及時間去處理更為重要的核心模型部分。 </p>
-<p>可以將其視為是一種「樣式指南」(類似Python的PEP8)，透過一定規則將程式碼封裝起來(Train, 計算Loss, Optimizer, 更新參數)，接著就可以透過特別的 <code>Trainer</code> Class來進行操作。</p>
+<p>可以將其視為是一種「樣式指南」(類似Python的PEP8)，透過一定規則將程式碼封裝起來(Train, 計算Loss, Optimizer, 更新參數)。</p>
+<p>接著就可以透過特別的 <code>Trainer</code> Class來進行操作，不再需要花費時間撰寫 Evaluation的Loss、或是在每一個Epoch結束時顯示Loss、固定幾個Step要顯示當前訓練狀態。 <strong>只要你先按照Pytorch Lightning的格式封裝程式碼，在訓練時的瑣碎細節它會幫你處理好。</strong></p>
 <hr>
 <h1>一、安裝</h1>
 <p>透過pip即可進行安裝:</p>
@@ -115,23 +116,42 @@
 <h1>二、基本概念</h1>
 <p><code>Pytorch Lightning</code>將深度學習的程式碼分成三種類型:</p>
 <ol>
-<li><strong>Research Code</strong>:<br>
-    整個應用的核心架構，可能會根據任務的內容進行調整、或是在開發過程中加入自己的想法。通常可能會包含幾個核心元件:</li>
+<li>
+<p><strong>Research Code</strong>:
+    整個應用的核心架構，可能會根據任務的內容進行調整、或是在開發過程中加入自己的想法。通常可能會包含幾個核心元件:</p>
+<ul>
 <li>模型架構定義</li>
 <li>Train/Val/Test資料切分</li>
 <li>Optimizer定義</li>
-<li>
-<p>Train/Val/Test Step Computation.<br></p>
+<li>Train/Val/Test Step Computation.</li>
+</ul>
 </li>
 <li>
-<p><strong>Engineer Code</strong>:<br>
-    EarlyStopping, 將資料送入GPU等常見且固定的程式碼。這部分的程式碼可以透過<code>Trainer</code> Class來減少Self-Repeat.</p>
+<p><strong>Engineer Code</strong>:
+    「EarlyStopping」, 「將資料送入GPU」等常見且不同專案使用方式都類似的程式碼。這部分的程式碼是 <code>Pytorch Lightning</code>最希望能簡化的。</p>
 </li>
 <li>
-<p><strong>Non-Essential Code</strong>:<br>
-    檢查梯度、視覺化等輔助性質的功能。</p>
+<p><strong>Non-Essential Code</strong>:
+    檢查梯度、視覺化等偏向輔助性質的功能。</p>
 </li>
 </ol>
+<p>接下來我們分別針對三種類型的程式碼來介紹 <code>Pytorch Lightning</code>是如何實踐的。</p>
+<hr>
+<h1>三、 Research Code</h1>
+<p>針對模型開發中最為重要的就是 Research Code了，在 <code>Pytorch Lightning</code>中透過 <code>pl.LightningModule</code>模組來實現，這個模組繼承了<code>torch.nn.Module</code>的功能，所以使用上其實是相當類似的。</p>
+<p>實作時只需要定義一個Class，並且繼承pl.LightningModule即可。</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytorch_lightning</span> <span class="k">as</span> <span class="nn">pl</span>
+
+<span class="k">class</span> <span class="nc">YourOwnNet</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">somemethod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+
+
+<p>在繼承 <code>pl.LightingModule</code>後，有幾項重要的Method必須被Override，未來 <code>Pytorch Lightning</code>才能自動地進行訓練，以下將方法及目的條列出來:
+1. prepare_data():
+    負責資料的載入(包含Training Set, Evaluation Set, Test)都撰寫在方法中。 自動訓練時會先自動執行此Method以獲取資料。</p>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
