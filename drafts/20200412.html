@@ -152,7 +152,16 @@
 <ol>
 <li>
 <p>prepare_data():</p>
-<p>負責資料的載入(包含Training Set, Evaluation Set, Test)都撰寫在方法中。 自動訓練時會先自動執行此Method以獲取資料。</p>
+<p>負責資料的載入(包含Training Set, Evaluation Set, Test)都撰寫在方法中。 自動訓練時會優先執行此Method以獲取資料。</p>
+</li>
+<li>
+<p>configure_optimizer(self):</p>
+<p><strong>回傳特定的優化器</strong>，如果對於優化的參數有任何設定，也是在這個地方調整。</p>
+</li>
+<li>
+<p>train_dataloader(self) / val_dataloader(self) / test_dataloader(self):</p>
+<p>這三個方法定義了training/ validation/ test時的DataLoader。
+<strong>回傳<code>Pytorch</code>的 <code>DataLoader</code> Object</strong>，其中會使用到的資料可以透過 <code>prepare_data()</code>先行取得。</p>
 </li>
 </ol>
     
