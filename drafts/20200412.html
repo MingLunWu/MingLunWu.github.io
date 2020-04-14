@@ -200,7 +200,15 @@
 <p><strong>training_step/val_step/test_step(self, batch, batch_idx)</strong>:</p>
 <ul>
 <li>
-<p>分別定義了traing/ validation/ test時的每一個Step所要進行的任務，其中較特別的是參數<code>batch</code>, <code>batch_idx</code>，這是會自動從<code>train/val/test_dataloader()</code>中的<code>DataLoader</code>取出一個batch。具體使用方式如下:</p>
+<p>分別定義了traing/ validation/ test時的每一個Step所要進行的任務，其中較特別的是參數<code>batch</code>, <code>batch_idx</code>，這是會自動從<code>train/val/test_dataloader()</code>中的<code>DataLoader</code>取出一個batch。具體使用方式請見下方範例。</p>
+</li>
+<li>
+<p>此類型方法的回傳值有一定的格式，需要回傳一個Python的Dictionary，其中包含:</p>
+<ul>
+<li>loss: 當前Step計算出來的Training Loss. 用於接下來的Backward Propagation及參數調校。</li>
+<li>logs: 包含當前訓練的狀況，在訓練時會自動回傳成進度條。 如下圖所示:
+<img alt="" src="{{STATIC_FOLDER}}/images/20200324.png"></li>
+</ul>
 <p>```python
     def training_step(self, batch, batch_idx):
         x, y = batch  # 這裡的batch會對應到 self.train_dataloader()所回傳的DataLoader Object，對其取用一個batch.</p>
