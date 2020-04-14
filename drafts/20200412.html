@@ -183,6 +183,8 @@
 </li>
 <li>
 <p>特別注意在建立instance時，直接將參數傳入instance等同於呼叫forward function。來個具體例子。</p>
+</li>
+</ul>
 <p>```python
 model = TestModel()
 x = torch.Tensor([1, 2, 3])
@@ -190,8 +192,6 @@ output1 = model(x)
 output2 = model.forward(x)</p>
 <p>output1 == output2  # 實際上這兩個是相同的.
 ```</p>
-</li>
-</ul>
 </li>
 <li>
 <p><strong>training_step/val_step/test_step(self, batch, batch_idx)</strong>:</p>
@@ -206,6 +206,8 @@ output2 = model.forward(x)</p>
 <li>logs: 包含當前訓練的狀況，在訓練時會自動回傳成進度條。 如下圖所示:
 <img alt="" src="https://minglunwu.github.io/theme/images/20200414.png"></li>
 </ul>
+</li>
+</ul>
 <p>```python
 def training_step(self, batch, batch_idx):
     x, y = batch  # 這裡的batch會對應到 self.train_dataloader()所回傳的DataLoader Object，對其取用一個batch.</p>
@@ -214,8 +216,6 @@ def training_step(self, batch, batch_idx):
 
 
 <p>```</p>
-</li>
-</ul>
 </li>
 </ol>
     
