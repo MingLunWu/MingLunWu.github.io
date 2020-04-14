@@ -151,17 +151,59 @@
 <p>在繼承 <code>pl.LightingModule</code>後，有幾項重要的Method必須被Override，未來 <code>Pytorch Lightning</code>才能自動地進行訓練，以下將方法及目的條列出來:</p>
 <ol>
 <li>
-<p>prepare_data():</p>
+<p><strong>prepare_data()</strong>:</p>
 <p>負責資料的載入(包含Training Set, Evaluation Set, Test)都撰寫在方法中。 自動訓練時會優先執行此Method以獲取資料。</p>
 </li>
 <li>
-<p>configure_optimizer(self):</p>
-<p><strong>回傳特定的優化器</strong>，如果對於優化的參數有任何設定，也是在這個地方調整。</p>
+<p><strong>configure_optimizer(self)</strong>:</p>
+<ul>
+<li><strong>回傳特定的優化器</strong> (torch.nn.optimizer)</li>
+<li>如果對於優化的參數有任何設定(例如只想對特定參數進行調整)，也是在這個地方調整。</li>
+</ul>
 </li>
 <li>
-<p>train_dataloader(self) / val_dataloader(self) / test_dataloader(self):</p>
-<p>這三個方法定義了training/ validation/ test時的DataLoader。
-<strong>回傳<code>Pytorch</code>的 <code>DataLoader</code> Object</strong>，其中會使用到的資料可以透過 <code>prepare_data()</code>先行取得。</p>
+<p><strong>train_dataloader(self)</strong> / <strong>val_dataloader(self)</strong> / <strong>test_dataloader(self)</strong>:</p>
+<ul>
+<li><strong>回傳<code>Pytorch</code>的 <code>DataLoader</code> Object</strong>，</li>
+<li>這三個方法定義了training/ validation/ test時使用的DataLoader。其中會使用到的資料可以透過 <code>prepare_data()</code>先行取得。</li>
+</ul>
+</li>
+<li>
+<p><strong>forward(self, args)</strong>:</p>
+<ul>
+<li>
+<p>定義當前這個模型forward propagation時所要進行的動作。 </p>
+</li>
+<li>
+<p>特別注意在建立instance時，直接將參數傳入instance等同於呼叫forward function。來個具體例子。</p>
+<p>```python
+    model = TestModel()
+    x = torch.Tensor([1, 2, 3])
+    output1 = model(x)
+    output2 = model.forward(x)</p>
+<div class="highlight"><pre><span></span><span class="err">output1 == output2  # 實際上這兩個是相同的.</span>
+</pre></div>
+
+
+<p>```</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>training_step/val_step/test_step(self, batch, batch_idx)</strong>:</p>
+<ul>
+<li>
+<p>分別定義了traing/ validation/ test時的每一個Step所要進行的任務，其中較特別的是參數<code>batch</code>, <code>batch_idx</code>，這是會自動從<code>train/val/test_dataloader()</code>中的<code>DataLoader</code>取出一個batch。具體使用方式如下:</p>
+<p>```python
+    def training_step(self, batch, batch_idx):
+        x, y = batch  # 這裡的batch會對應到 self.train_dataloader()所回傳的DataLoader Object，對其取用一個batch.</p>
+<div class="highlight"><pre><span></span><span class="err">    output = self.forward(x) # 將Input進行 forward propagation.</span>
+</pre></div>
+
+
+<p>```</p>
+</li>
+</ul>
 </li>
 </ol>
     

@@ -159,16 +159,24 @@
 </ul>
 <hr>
 <h1>建立一個Network</h1>
-<p>通常透過Pytorch 建立一個Network時，我們習慣透過定義<strong>Python的Class</strong> 來建構我們的Network. 這一個Python Class必須具備下列特性:
-1. 必須繼承 <code>torch.nn.Module</code>，這樣才能使用Pytorch內建的各種function，並且與其他Pytorch元件進行互動。
-2. 繼承 <code>torch.nn.Module</code>後，會需要Override一些特定的Method: 
-    + <strong>__init__()</strong>: 定義在Initial此Class(Network)時需要初始化的元件。基本上在Network中需要使用到的Layer、Hyperparameter都需要在這邊先行定義。
-    + <strong>forward()</strong>: 
-        - 透過Override forward這個Method來定義此Network的Forward Propagation方式。 </p>
-<div class="highlight"><pre><span></span><span class="err">    - 值得注意的是`forward()` 在Override以後，往後透過可以直接透過call model來進行forward(). (請看下方範例)</span>
+<p>通常透過Pytorch 建立一個Network時，我們習慣透過定義<strong>Python的Class</strong> 來建構我們的Network. 這一個Python Class必須具備下列特性:</p>
+<ol>
+<li>必須繼承 <code>torch.nn.Module</code>，這樣才能使用Pytorch內建的各種function，並且與其他Pytorch元件進行互動。</li>
+<li>
+<p>繼承 <code>torch.nn.Module</code>後，會需要Override一些特定的Method: </p>
+<ul>
+<li><strong>__init__()</strong>: </li>
+</ul>
+<p>定義在Initial此Class(Network)時需要初始化的元件。基本上在Network中需要使用到的Layer、Hyperparameter都需要在這邊先行定義。
++ <strong>forward()</strong>: </p>
+<div class="highlight"><pre><span></span><span class="o">-</span> <span class="err">透過</span><span class="n">Override</span> <span class="n">forward這個Method來定義此Network的Forward</span> <span class="n">Propagation方式</span><span class="err">。</span>
+
+<span class="o">-</span> <span class="err">值得注意的是</span><span class="o">`</span><span class="k">forward</span><span class="p">()</span><span class="o">`</span> <span class="err">在</span><span class="n">Override以後</span><span class="err">，往後透過可以直接透過</span><span class="k">call</span> <span class="n">model來進行forward</span><span class="p">().</span> <span class="p">(</span><span class="err">請看下方範例</span><span class="p">)</span>
 </pre></div>
 
 
+</li>
+</ol>
 <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyOwnNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">my_own_net</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span> <span class="c1">#初始化 nn.Module class</span>
@@ -197,10 +205,13 @@
 1. Dataset
 2. DataLoader</p>
 <h2>Dataset</h2>
-<p>實作時，與上節建立Network相同，需要先定義一個Python Class來繼承 <code>torch.utils.data.Dataset</code>，並且要Override以下Methods:
-+ <strong>__init__(self)</strong>: 初始化instance時需要進行的動作，通常會在這個地方載入資料集、或是進行前處理。
-+ <strong>_getitem(self, index)__</strong>: 定義使用idx去query元素時要進行的動作。 (通常直接回傳第index筆資料)
-+ <strong>_len(self)__</strong>: 定義使用len()去取得instance元素數量時要進行的動作。 （通常直接回傳資料筆數)</p>
+<p>實作時，與上節建立Network相同，需要先定義一個Python Class來繼承 <code>torch.utils.data.Dataset</code>，並且要Override以下Methods:</p>
+<div class="highlight"><pre><span></span><span class="err">+ **\__init__(self)**: 初始化instance時需要進行的動作，通常會在這個地方載入資料集、或是進行前處理。</span>
+<span class="err">+ **\_getitem(self, index)__**: 定義使用idx去query元素時要進行的動作。 (通常直接回傳第index筆資料)</span>
+<span class="err">+ **\_len(self)__**: 定義使用len()去取得instance元素數量時要進行的動作。 （通常直接回傳資料筆數)</span>
+</pre></div>
+
+
 <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">OwnDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">OwnDataset</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -323,7 +334,8 @@ tensorboard --logdir<span class="o">=</span><span class="s2">&quot;./logs&quot;<
 </pre></div>
 
 
-<p><img alt="" src="https://pytorch.org/docs/stable/_images/hier_tags.png"> <a href="https://pytorch.org/docs/stable/tensorboard.html">圖片來源</a></p>
+<p><img alt="" src="https://pytorch.org/docs/stable/_images/hier_tags.png"> </p>
+<p><a href="https://pytorch.org/docs/stable/tensorboard.html">圖片來源</a></p>
 <h2>Remote Server</h2>
 <p>另外在進行機器學習時，常常會需要使用到遠端主機的GPU，紀錄一下如何在Localhost查看遠端機器的訓練狀態。 首先還是一樣要在訓練過程中透過<code>SummaryWriter</code>將log寫入。</p>
 <p>接著透過 SSH連線將本地端的一個Port 與 遠端機器的特定Port綁定在一起，首先在本地端執行:</p>
