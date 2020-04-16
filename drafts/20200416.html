@@ -86,7 +86,7 @@
                             </a>
                         </h1>
                         <ul class="page-header__meta">
-                            <li class="date">2020- 4-12 (日)</li>
+                            <li class="date">2020- 4-16 (四)</li>
                             <li class="author">
                                 By
                                 <span>MingLun Allen Wu</span>
@@ -101,10 +101,23 @@
             <div class="row blog-content">
                 <div class="col-full blog-content__main">
                     
-                    <h1>前言</h1>
-<p>在了解Pytorch的基本使用後，透過<code>Pytorch Lightning</code>框架能夠讓我們更有效率的進行開發。如果對於Pytorch的基本使用還不熟悉的讀者，可以先看看我先前寫的小文章: </p>
-<p><a href="https://minglunwu.github.io/notes/2020/20200324.html">從零開始 - Pytorch入門懶人包</a></p>
+                    <ul>
+<li><a href="#%e5%89%8d%e8%a8%80">前言</a></li>
+<li><a href="#%e5%be%9e%e9%9b%b6%e9%96%8b%e5%a7%8b---pytorch%e5%85%a5%e9%96%80%e6%87%b6%e4%ba%ba%e5%8c%85">從零開始 - Pytorch入門懶人包</a></li>
+<li><a href="#%e7%b0%a1%e4%bb%8b">簡介</a></li>
+<li><a href="#%e4%b8%80%e5%ae%89%e8%a3%9d">一、安裝</a></li>
+<li><a href="#%e4%ba%8c%e5%9f%ba%e6%9c%ac%e6%a6%82%e5%bf%b5">二、基本概念</a></li>
+<li><a href="#%e4%b8%89-research-code">三、 Research Code</a></li>
+<li><a href="#%e5%9b%9b%e9%80%8f%e9%81%8etrainer%e8%87%aa%e5%8b%95%e8%a8%93%e7%b7%b4">四、透過Trainer自動訓練</a></li>
+<li><a href="#training">Training</a></li>
+<li><a href="#evaluation--inference">Evaluation / Inference</a></li>
+<li><a href="#%e4%ba%94%e5%be%8c%e8%a8%98">五、後記</a></li>
+</ul>
 <hr>
+<h1>前言</h1>
+<p>在了解Pytorch的基本使用後，透過<code>Pytorch Lightning</code>框架能夠讓我們更有效率的進行開發。如果對於Pytorch的基本使用還不熟悉的讀者，可以先看看我先前寫的小文章: </p>
+<h2><a href="https://minglunwu.github.io/notes/2020/20200324.html">從零開始 - Pytorch入門懶人包</a></h2>
+<h1>簡介</h1>
 <p>透過Pytorch撰寫Deep Learning相關程式碼時，程式碼大致可分成兩種類型:</p>
 <ol>
 <li>
@@ -364,7 +377,7 @@
 
 <hr>
 <h1>四、透過Trainer自動訓練</h1>
-<h2>訓練</h2>
+<h2>Training</h2>
 <p>在你重新將程式碼改寫為<code>Pytorch Lightning</code>格式後，輕鬆的部分來了！接下來我們只需要透過<code>Trainer</code> Class即可自動處理訓練。我們看看以下的範例:</p>
 <div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">PytorchLightningModel</span><span class="p">(</span><span class="n">param1</span><span class="o">=</span><span class="mi">768</span><span class="p">,</span> <span class="n">param2</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># 自行封裝成Pytorch Lightning的模型</span>
 
@@ -389,7 +402,8 @@
 
 
 <hr>
-<h1>五、結語</h1>
+<h1>五、後記</h1>
+<p>從原生Pytorch 轉移到 <code>Pytorch Lightning</code>並不需要花費過多成本來學習新的語法，其概念只是將程式碼「重新組織」，將對應的程式碼放置到特定的Method中，如此一來在進行訓練時，將能省下許多工程面的實作時間、程式碼也會變得簡潔許多。</p>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
