@@ -262,7 +262,7 @@
 <p>此類型方法的回傳值有一定的格式，需要回傳一個Python的Dictionary，其中包含:</p>
 <ul>
 <li>loss: 當前Step計算出來的Training Loss. 用於接下來的Backward Propagation及參數調校。</li>
-<li>logs: 包含當前訓練的狀況，在訓練時會自動回傳成進度條。 如下圖所示:
+<li>log: 包含當前訓練的狀況，在訓練時會自動回傳成進度條。 如下圖所示:
 <img alt="" src="https://minglunwu.github.io/theme/images/20200414.png"></li>
 </ul>
 </li>
@@ -276,7 +276,7 @@
     <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
     <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
     <span class="n">logs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="p">}</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s2">&quot;logs&quot;</span><span class="p">:</span> <span class="n">logs</span><span class="p">}</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="n">logs</span><span class="p">}</span>
 </pre></div>
 
 
