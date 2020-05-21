@@ -137,7 +137,7 @@
 <p>Function: </p>
 <p>把要透過平行化進行加速的任務封裝在 Function中。</p>
 <p>舉例來說如果想要計算當前資料集每一個商品id的"price"欄位總和: </p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sum_function</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">sum_function</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 
@@ -146,7 +146,7 @@
 <li>
 <p>Tasks:</p>
 <p>Tasks是一個 List，因為我們要同時使用多個Process進行計算，所以要在此對參數進行分割。 假設共有 500 篇文章，我們可以將資料分割為:</p>
-<div class="highlight"><pre><span></span><span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">100</span><span class="p">:</span><span class="mi">200</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">200</span><span class="p">:</span><span class="mi">300</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">300</span><span class="p">:</span><span class="mi">400</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">400</span><span class="p">:</span><span class="mi">500</span><span class="p">]]</span>
+<div class="codehilite"><pre><span></span><span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">100</span><span class="p">:</span><span class="mi">200</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">200</span><span class="p">:</span><span class="mi">300</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">300</span><span class="p">:</span><span class="mi">400</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">400</span><span class="p">:</span><span class="mi">500</span><span class="p">]]</span>
 </pre></div>
 
 
@@ -154,7 +154,7 @@
 <li>
 <p>Pool:</p>
 <p>透過 <code>multiprocessing.pool</code>可以自動建立分工機制，我們不需要做額外的處理與設定:</p>
-<div class="highlight"><pre><span></span><span class="n">pool</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><span class="n">pool</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
 </pre></div>
 
 
@@ -162,7 +162,7 @@
 <li>
 <p>Map: </p>
 <p>在設定好 Function, Tasks 及 Pool後，我們就能透過 <code>pool</code>的 <code>map</code>進行平行處理:</p>
-<div class="highlight"><pre><span></span><span class="c1"># 第一個放Function, 第二個放分割後的參數</span>
+<div class="codehilite"><pre><span></span><span class="c1"># 第一個放Function, 第二個放分割後的參數</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sum_function</span><span class="p">,</span> <span class="n">tasks</span><span class="p">)</span>
 </pre></div>
 
@@ -173,7 +173,7 @@
 <p>因為 tasks 中共有5個 Element，所以最後Result也會有5個處理完畢的Element. 這時候可以再根據需要將其 Aggregate成最後的結果。</p>
 <p>再來一個較為複雜的範例：</p>
 <p>我們要將一個Dataframe先移除 Stop word (<code>remove_stopwrods()</code>)，再將其裁切為長度512的段落(<code>truncate_text()</code>)</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
+<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">multiprocessing</span> <span class="k">as</span> <span class="nn">mp</span>
 
 <span class="k">def</span> <span class="nf">remove_stopwords</span><span class="p">(</span><span class="n">text</span><span class="p">):</span> <span class="c1"># 移除 Stop word</span>
         <span class="c1"># Do something.</span>
@@ -199,7 +199,7 @@
 <li><code>process()</code>則是接受分割後的「dataframe」，使用 <code>remove_stopwords()</code>及 <code>truncate_text()</code>對dataframe中的每一筆資料進行處理。</li>
 </ol>
 <p>我們可以在平行化的過程中使用多個Function，但是在使用 <code>multiprocessing.pool</code>進行平行化處理時，只能接受一個Function，所以需要把所有流程中使用到的Function都打包在一起。 (就如同上例將 <code>remove_stopwords()</code>及 <code>truncate_text()</code>都打包在 <code>process()</code>中。)</p>
-<div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
     <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[:</span><span class="mi">100</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">100</span><span class="p">:</span><span class="mi">200</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">200</span><span class="p">:</span><span class="mi">300</span><span class="p">]]</span>
     <span class="n">pool</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">processes</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
