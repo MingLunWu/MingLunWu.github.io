@@ -138,7 +138,7 @@
 <div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">SomeModel</span><span class="p">()</span> <span class="c1"># 假設這是你按照Pytorch Lightning封裝好的Model.</span>
 <span class="c1"># 透過GPU訓練</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> 
+<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
 <span class="c1"># 透過CPU訓練</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -207,14 +207,10 @@
 <li>如果對於優化的參數有任何設定(例如只想對特定參數進行調整)，也是在這個地方調整。</li>
 <li>在自動訓練時，會呼叫此方法來取得Optimizer。</li>
 </ul>
+<p>:::python
+def configure_optimizers(self):
+        return Adam(self.parameters(), lr=1e-3)</p>
 </li>
-</ul>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
-</pre></div>
-
-
-<ul>
 <li>
 <h4><strong>train_dataloader(self)</strong> / <strong>val_dataloader(self)</strong> / <strong>test_dataloader(self)</strong>:</h4>
 <ul>
@@ -222,15 +218,11 @@
 <li>這三個方法定義了training/ validation/ test時使用的DataLoader。其中會使用到的資料可以透過 <code>prepare_data()</code>先行取得。</li>
 <li>在自動訓練的過程中，會呼叫這邊定義的Function來取得不同時期(Train/Validation/Test)的DataLoader。</li>
 </ul>
+<p>:::python
+def train_dataloader(self):
+    # self.train_dataset 通常由 self.prepare_data()產生.
+    return DataLoader(self.train_dataset, batch_size= self.batch_size, shuffle=True) </p>
 </li>
-</ul>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="c1"># self.train_dataset 通常由 self.prepare_data()產生.</span>
-    <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
-</pre></div>
-
-
-<ul>
 <li>
 <h4><strong>forward(self, args)</strong>:</h4>
 <ul>
@@ -241,18 +233,13 @@
 <p>特別注意在建立instance時，直接將參數傳入instance等同於呼叫forward function。來個具體例子。</p>
 </li>
 </ul>
+<p>:::python
+model = TestModel()
+x = torch.Tensor([1, 2, 3])
+output1 = model(x)
+output2 = model.forward(x)</p>
+<p>output1 == output2  # 實際上這兩個是相同的.</p>
 </li>
-</ul>
-<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">TestModel</span><span class="p">()</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-<span class="n">output1</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="n">output2</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-<span class="n">output1</span> <span class="o">==</span> <span class="n">output2</span>  <span class="c1"># 實際上這兩個是相同的.</span>
-</pre></div>
-
-
-<ul>
 <li>
 <h4><strong>training_step/val_step/test_step(self, batch, batch_idx)</strong>:</h4>
 <ul>
@@ -268,20 +255,18 @@
 </ul>
 </li>
 </ul>
-</li>
-</ul>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>  <span class="c1"># 這裡的batch會對應到 self.train_dataloader()所回傳的DataLoader Object，對其取用一個batch.</span>
-
-    <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># 將Input進行 forward propagation.</span>
-    <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
-    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    <span class="n">logs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="p">}</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span> <span class="n">logs</span><span class="p">}</span>
+<p>:::python
+def training_step(self, batch, batch_idx):
+    x, y = batch  # 這裡的batch會對應到 self.train_dataloader()所回傳的DataLoader Object，對其取用一個batch.</p>
+<div class="highlight"><pre><span></span><span class="err">output = self.forward(x) # 將Input進行 forward propagation.</span>
+<span class="err">criterion = nn.CrossEntropyLoss()</span>
+<span class="err">loss = criterion(output, y)</span>
+<span class="err">logs = {&quot;loss&quot;: loss}</span>
+<span class="err">return {&quot;loss&quot;: loss, &quot;log&quot;: logs}</span>
 </pre></div>
 
 
-<ul>
+</li>
 <li>
 <h4><strong>(training/validation/test)_epoch_end(self, outputs)</strong>:</h4>
 <ul>
@@ -289,93 +274,91 @@
 <li><code>outputs</code> 參數為「當前Epoch中所有Step的{"loss": loss, "logs": logs}」(也就是每一個self.training_step()的回傳值)。</li>
 <li>以下範例示範了在「每一個Validation Epoch結束後計算Average Loss」。</li>
 </ul>
-</li>
-</ul>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
-        <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-        <span class="n">avg_val_acc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;val_acc&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-
-        <span class="n">tensorboard_logs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="s1">&#39;avg_val_acc&#39;</span><span class="p">:</span> <span class="n">avg_val_acc</span><span class="p">}</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;avg_val_loss&#39;</span><span class="p">:</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="s1">&#39;progress_bar&#39;</span><span class="p">:</span> <span class="n">tensorboard_logs</span><span class="p">}</span>
+<p>:::python
+def validation_epoch_end(self, outputs):
+        avg_loss = torch.stack([x['val_loss'] for x in outputs]).mean()
+        avg_val_acc = torch.stack([x['val_acc'] for x in outputs]).mean()</p>
+<div class="highlight"><pre><span></span><span class="err">    tensorboard_logs = {&#39;val_loss&#39;: avg_loss, &#39;avg_val_acc&#39;: avg_val_acc}</span>
+<span class="err">    return {&#39;avg_val_loss&#39;: avg_loss, &#39;progress_bar&#39;: tensorboard_logs}</span>
 </pre></div>
 
 
-<ul>
+</li>
 <li>
 <h4>統整版本:</h4>
-</li>
-</ul>
-<div class="highlight"><pre><span></span>    <span class="k">class</span> <span class="nc">PytorchLightningModel</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span> <span class="c1"># 這邊一定要繼承pl.LightningModule</span>
-        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># 初始化時可以將基本設定傳入。</span>
-            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ln1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">768</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ln2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<p>:::python
+class PytorchLightningModel(pl.LightningModule): # 這邊一定要繼承pl.LightningModule
+    def <strong>init</strong>(self): # 初始化時可以將基本設定傳入。
+        super().<strong>init</strong>()
+        self.ln1 = nn.Linear(768, 256)
+        self.ln2 = nn.Linear(256, 3)</p>
+<div class="highlight"><pre><span></span><span class="n">def</span> <span class="n">prepare_data</span><span class="p">(</span><span class="k">self</span><span class="p">):</span> <span class="o">#</span> <span class="err">此方法會在初始化後優先執行。</span> <span class="err">所以可以在此方法中先將會用到的資料都讀取進來</span><span class="p">.</span>
+    <span class="k">self</span><span class="p">.</span><span class="n">train_set</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="ss">&quot;train&quot;</span><span class="p">)</span> <span class="o">#</span> <span class="n">read_data是自定義的讀取資料Method</span><span class="p">.</span> <span class="err">可以按照自己需求調整</span>
+    <span class="k">self</span><span class="p">.</span><span class="n">test_set</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="ss">&quot;test&quot;</span><span class="p">)</span>
+    <span class="k">self</span><span class="p">.</span><span class="n">val_set</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="ss">&quot;validation&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="p">.</span><span class="n">info</span><span class="p">(</span><span class="ss">&quot;===== Data is ready... =====&quot;</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># 此方法會在初始化後優先執行。 所以可以在此方法中先將會用到的資料都讀取進來.</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">train_set</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="s2">&quot;train&quot;</span><span class="p">)</span> <span class="c1"># read_data是自定義的讀取資料Method. 可以按照自己需求調整</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">test_set</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">val_set</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="s2">&quot;validation&quot;</span><span class="p">)</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;===== Data is ready... =====&quot;</span><span class="p">)</span>
+<span class="n">def</span> <span class="n">configure_optimizer</span><span class="p">(</span><span class="k">self</span><span class="p">):</span> <span class="o">#</span> <span class="err">自動訓練時會呼叫此方法來獲取</span><span class="n">Optimizer</span><span class="p">.</span>
+    <span class="k">return</span> <span class="n">Adam</span><span class="p">(</span><span class="k">self</span><span class="p">.</span><span class="k">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span> <span class="o">#</span> <span class="err">這邊注意要調整的參數是</span><span class="o">`</span><span class="k">self</span><span class="p">.</span><span class="k">parameters</span><span class="p">()</span><span class="o">`</span>
 
-        <span class="k">def</span> <span class="nf">configure_optimizer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># 自動訓練時會呼叫此方法來獲取Optimizer.</span>
-            <span class="k">return</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span> <span class="c1"># 這邊注意要調整的參數是`self.parameters()`</span>
+<span class="o">#</span> <span class="err">以下三個方法則是設定進行訓練及驗證時所要使用的</span><span class="k">Data</span> <span class="n">Loader格式</span><span class="err">。</span>
+<span class="n">def</span> <span class="n">train_dataloader</span><span class="p">(</span><span class="k">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="k">self</span><span class="p">.</span><span class="n">train_set</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
 
-        <span class="c1"># 以下三個方法則是設定進行訓練及驗證時所要使用的Data Loader格式。</span>
-        <span class="k">def</span> <span class="nf">train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_set</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="n">def</span> <span class="n">val_dataloader</span><span class="p">(</span><span class="k">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="k">self</span><span class="p">.</span><span class="n">val_set</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">val_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_set</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="n">def</span> <span class="n">test_dataloader</span><span class="p">(</span><span class="k">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="k">self</span><span class="p">.</span><span class="n">test_set</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">test_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_set</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+<span class="n">def</span> <span class="k">forward</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span> <span class="o">#</span> <span class="err">定義模型在</span><span class="k">forward</span> <span class="n">propagation時如何進行</span><span class="p">.</span>
+    <span class="k">output</span> <span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="n">ln1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">output</span> <span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="n">ln2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="k">output</span>
 
-        <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span> <span class="c1"># 定義模型在forward propagation時如何進行.</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ln1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ln2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">output</span>
+<span class="n">def</span> <span class="n">training_step</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span> <span class="o">#</span> <span class="err">定義訓練過程的</span><span class="n">Step要如何進行</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span> <span class="o">#</span> <span class="err">從</span><span class="k">self</span><span class="p">.</span><span class="n">train_dataloader</span><span class="p">()</span><span class="err">的</span><span class="k">Data</span> <span class="n">Loader取一個batch出來</span><span class="err">。</span>
+    <span class="k">output</span> <span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="k">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="p">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="k">output</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">logs</span> <span class="o">=</span> <span class="err">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="err">}</span>
+    <span class="k">return</span> <span class="err">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span><span class="n">loss</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span><span class="n">logs</span><span class="err">}</span>
 
-        <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span> <span class="c1"># 定義訓練過程的Step要如何進行</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span> <span class="c1"># 從self.train_dataloader()的Data Loader取一個batch出來。</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
-            <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-            <span class="n">logs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">}</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span><span class="n">loss</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span><span class="n">logs</span><span class="p">}</span>
+<span class="n">def</span> <span class="n">validation_step</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span> <span class="o">#</span> <span class="err">定義</span><span class="n">Validation如何進行</span><span class="err">，以這邊為例就再加上了計算</span><span class="n">Acc</span><span class="p">.</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="k">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span> <span class="c1"># 定義Validation如何進行，以這邊為例就再加上了計算Acc.</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
-            <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="o">#</span> <span class="n">acc</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">y_hat</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="k">max</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">val_acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_hat</span><span class="p">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">y</span><span class="p">.</span><span class="n">cpu</span><span class="p">())</span>
+    <span class="n">val_acc</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">val_acc</span><span class="p">)</span>
 
-            <span class="c1"># acc</span>
-            <span class="n">a</span><span class="p">,</span> <span class="n">y_hat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">val_acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_hat</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
-            <span class="n">val_acc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">val_acc</span><span class="p">)</span>
+    <span class="k">return</span> <span class="err">{</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s1">&#39;val_acc&#39;</span><span class="p">:</span> <span class="n">val_acc</span><span class="err">}</span>
 
-            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s1">&#39;val_acc&#39;</span><span class="p">:</span> <span class="n">val_acc</span><span class="p">}</span>
+<span class="n">def</span> <span class="n">validation_epoch_end</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span> <span class="o">#</span> <span class="err">在</span><span class="n">Validation的一個Epoch結束後</span><span class="err">，計算平均的</span><span class="n">Loss及Acc</span><span class="p">.</span>
+    <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="k">in</span> <span class="n">outputs</span><span class="p">]).</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">avg_val_acc</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;val_acc&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="k">in</span> <span class="n">outputs</span><span class="p">]).</span><span class="n">mean</span><span class="p">()</span>
 
-        <span class="k">def</span> <span class="nf">validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span> <span class="c1"># 在Validation的一個Epoch結束後，計算平均的Loss及Acc.</span>
-            <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-            <span class="n">avg_val_acc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;val_acc&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">tensorboard_logs</span> <span class="o">=</span> <span class="err">{</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="s1">&#39;avg_val_acc&#39;</span><span class="p">:</span> <span class="n">avg_val_acc</span><span class="err">}</span>
+    <span class="k">return</span> <span class="err">{</span><span class="s1">&#39;avg_val_loss&#39;</span><span class="p">:</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="s1">&#39;progress_bar&#39;</span><span class="p">:</span> <span class="n">tensorboard_logs</span><span class="err">}</span>
 
-            <span class="n">tensorboard_logs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="s1">&#39;avg_val_acc&#39;</span><span class="p">:</span> <span class="n">avg_val_acc</span><span class="p">}</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;avg_val_loss&#39;</span><span class="p">:</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="s1">&#39;progress_bar&#39;</span><span class="p">:</span> <span class="n">tensorboard_logs</span><span class="p">}</span>
+<span class="n">def</span> <span class="n">test_step</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span> <span class="o">#</span><span class="err">定義</span> <span class="n">Test</span> <span class="err">階段</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="k">self</span><span class="p">.</span><span class="k">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="p">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span> <span class="c1">#定義 Test 階段</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
-            <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="o">#</span> <span class="n">acc</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">y_hat</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="k">max</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">val_acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_hat</span><span class="p">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">y</span><span class="p">.</span><span class="n">cpu</span><span class="p">())</span>
+    <span class="n">val_acc</span> <span class="o">=</span> <span class="n">torch</span><span class="p">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">val_acc</span><span class="p">)</span>
 
-            <span class="c1"># acc</span>
-            <span class="n">a</span><span class="p">,</span> <span class="n">y_hat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">val_acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_hat</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
-            <span class="n">val_acc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">val_acc</span><span class="p">)</span>
-
-            <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;test_acc&#39;</span><span class="p">:</span> <span class="n">val_acc</span><span class="p">}</span>
+    <span class="k">return</span> <span class="err">{</span><span class="s1">&#39;test_acc&#39;</span><span class="p">:</span> <span class="n">val_acc</span><span class="err">}</span>
 </pre></div>
 
 
+</li>
+</ul>
 <hr>
 <h1>四、透過Trainer自動訓練</h1>
 <h2>Training</h2>
