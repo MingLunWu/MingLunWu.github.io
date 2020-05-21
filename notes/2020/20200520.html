@@ -114,9 +114,11 @@
 <p>使用Python 進行資料前處理時，大量的資料常會造成處理時間過長，這時候總希望能透過平行化處理來解決。 提到平行化處理又總會陷入疑惑: 「該使用Multi-Thread 還是 Multi-Process」?</p>
 <p>以我的經驗，<strong>在進行「資料前處理」時</strong>，其實是需要CPU持續計算的，所以並不適合使用「Multi-thread」。今天這則筆記是嘗試以「Multi-Process」的方式來對前處理階段進行加速。</p>
 <p>近期需要使用 <code>transformers</code>套件來將長篇幅的文字轉換成 index，並且裁切成長度512的 array。 <code>transformers</code>執行的速度並不慢，但是當處理的資料達到七～八萬篇時，整個過程也需要耗費將近三個小時。 但是在計算的過程中，打開 <code>htop</code>會發現只使用一顆CPU在計算，這時總會希望能夠用全部的CPU資源來進行加速:</p>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/theme/images/20200520/single_process.png">
-我希望能夠透過平行化處理達到下面這個狀態：</p>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/theme/images/20200520/multi_process.png">
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/theme/images/20200520/single_process.png"></p>
+<p><img alt="Single Process" src="../../images/20200520/single_process.png"></p>
+<p>我希望能夠透過平行化處理達到下面這個狀態：</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/theme/images/20200520/multi_process.png"></p>
+<p><img alt="Multi Process" src="../../images/20200520/single_process.png">
 最後成功地將處理時間從 2.5小時 縮短到 20 分鐘！</p>
 <hr>
 <p id="presquile"></p>
