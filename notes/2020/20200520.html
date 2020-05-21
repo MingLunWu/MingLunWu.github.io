@@ -137,14 +137,11 @@
 <p>Function: </p>
 <p>把要透過平行化進行加速的任務封裝在 Function中。</p>
 <p>舉例來說如果想要計算當前資料集每一個商品id的"price"欄位總和: </p>
-<p><code>python
+<p><code>def sum_function(df: pd.DataFrame):
+    return df.groupby('id').agg("price").sum()</code></p>
+<p><code>:::python
 def sum_function(df: pd.DataFrame):
     return df.groupby('id').agg("price").sum()</code></p>
-<p>```</p>
-<h1>!python</h1>
-<p>def sum_function(df: pd.DataFrame):
-    return df.groupby('id').agg("price").sum()
-```</p>
 </li>
 <li>
 <p>Tasks:</p>
