@@ -139,9 +139,15 @@
 <p>舉例來說如果想要計算當前資料集每一個商品id的"price"欄位總和: </p>
 <p><code>def sum_function(df: pd.DataFrame):
     return df.groupby('id').agg("price").sum()</code></p>
-<p><code>:::python
+<p>python test:</p>
+<p>:::python
 def sum_function(df: pd.DataFrame):
-    return df.groupby('id').agg("price").sum()</code></p>
+    return df.groupby('id').agg("price").sum()</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sum_function</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+
+
 <p>testtest updated!</p>
 </li>
 <li>
