@@ -176,13 +176,11 @@
 <li><strong>__init__()</strong>: </li>
 </ul>
 <p>定義在Initial此Class(Network)時需要初始化的元件。基本上在Network中需要使用到的Layer、Hyperparameter都需要在這邊先行定義。
-+ <strong>forward()</strong>: </p>
-<div class="highlight"><pre><span></span><span class="o">-</span> <span class="err">透過</span><span class="n">Override</span> <span class="n">forward這個Method來定義此Network的Forward</span> <span class="n">Propagation方式</span><span class="err">。</span>
-
-<span class="o">-</span> <span class="err">值得注意的是</span><span class="o">`</span><span class="k">forward</span><span class="p">()</span><span class="o">`</span> <span class="err">在</span><span class="n">Override以後</span><span class="err">，往後透過可以直接透過</span><span class="k">call</span> <span class="n">model來進行forward</span><span class="p">().</span> <span class="p">(</span><span class="err">請看下方範例</span><span class="p">)</span>
-</pre></div>
-
-
++ <strong>forward()</strong>: 
+  - 透過Override forward這個Method來定義此Network的Forward Propagation方式。 </p>
+<ul>
+<li>值得注意的是<code>forward()</code> 在Override以後，往後透過可以直接透過call model來進行forward(). (請看下方範例)</li>
+</ul>
 </li>
 </ol>
 <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyOwnNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
@@ -214,32 +212,35 @@
 2. DataLoader</p>
 <h2>Dataset</h2>
 <p>實作時，與上節建立Network相同，需要先定義一個Python Class來繼承 <code>torch.utils.data.Dataset</code>，並且要Override以下Methods:</p>
-<div class="highlight"><pre><span></span><span class="o">+</span> <span class="o">**</span><span class="err">\</span><span class="n">__init__</span><span class="p">(</span><span class="k">self</span><span class="p">)</span><span class="o">**</span><span class="p">:</span> <span class="err">初始化</span><span class="n">instance時需要進行的動作</span><span class="err">，通常會在這個地方載入資料集、或是進行前處理。</span>
-<span class="o">+</span> <span class="o">**</span><span class="err">\</span><span class="n">_getitem</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="k">index</span><span class="p">)</span><span class="n">__</span><span class="o">**</span><span class="p">:</span> <span class="err">定義使用</span><span class="n">idx去query元素時要進行的動作</span><span class="err">。</span> <span class="p">(</span><span class="err">通常直接回傳第</span><span class="n">index筆資料</span><span class="p">)</span>
-<span class="o">+</span> <span class="o">**</span><span class="err">\</span><span class="n">_len</span><span class="p">(</span><span class="k">self</span><span class="p">)</span><span class="n">__</span><span class="o">**</span><span class="p">:</span> <span class="err">定義使用</span><span class="n">len</span><span class="p">()</span><span class="err">去取得</span><span class="n">instance元素數量時要進行的動作</span><span class="err">。</span> <span class="err">（通常直接回傳資料筆數</span><span class="p">)</span>
+<ul>
+<li><strong>__init__(self)</strong>: 初始化instance時需要進行的動作，通常會在這個地方載入資料集、或是進行前處理。</li>
+<li><strong>_getitem(self, index)__</strong>: 定義使用idx去query元素時要進行的動作。 (通常直接回傳第index筆資料)</li>
+<li>
+<p><strong>_len(self)__</strong>: 定義使用len()去取得instance元素數量時要進行的動作。 （通常直接回傳資料筆數)</p>
+<p>:::python
+class OwnDataset(Dataset):
+    def <strong>init</strong>(self, file_path):
+        super(OwnDataset, self).<strong>init</strong>()
+        self.data = pickle.load(open(file_path, "rb")) # 讀取資料</p>
+<div class="highlight"><pre><span></span><span class="n">def</span> <span class="n">__len__</span><span class="p">(</span><span class="k">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">len</span><span class="p">(</span><span class="k">self</span><span class="p">.</span><span class="k">data</span><span class="p">)</span>
 
-<span class="p">:::</span><span class="n">python</span>
-<span class="k">class</span> <span class="n">OwnDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
-    <span class="n">def</span> <span class="n">__init__</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
-        <span class="n">super</span><span class="p">(</span><span class="n">OwnDataset</span><span class="p">,</span> <span class="k">self</span><span class="p">).</span><span class="n">__init__</span><span class="p">()</span>
-        <span class="k">self</span><span class="p">.</span><span class="k">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="p">.</span><span class="k">load</span><span class="p">(</span><span class="k">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="ss">&quot;rb&quot;</span><span class="p">))</span> <span class="o">#</span> <span class="err">讀取資料</span>
-
-    <span class="n">def</span> <span class="n">__len__</span><span class="p">(</span><span class="k">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">len</span><span class="p">(</span><span class="k">self</span><span class="p">.</span><span class="k">data</span><span class="p">)</span>
-
-    <span class="n">def</span> <span class="n">__getitem__</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
-        <span class="k">return</span> <span class="err">{</span><span class="ss">&quot;x&quot;</span><span class="p">:</span> <span class="k">self</span><span class="p">.</span><span class="k">data</span><span class="p">[</span><span class="ss">&quot;feature&quot;</span><span class="p">],</span> <span class="ss">&quot;y&quot;</span><span class="p">:</span> <span class="k">self</span><span class="p">.</span><span class="k">data</span><span class="p">[</span><span class="ss">&quot;label&quot;</span><span class="p">]</span><span class="err">}</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="ss">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="n">dataset</span> <span class="o">=</span> <span class="n">OwnDataset</span><span class="p">(</span><span class="ss">&quot;./data/test.pickle&quot;</span><span class="p">)</span> <span class="o">#</span><span class="n">Initial</span> <span class="n">an</span> <span class="n">instance</span><span class="p">.</span>
-
-    <span class="n">print</span><span class="p">(</span><span class="n">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span> <span class="o">#</span> <span class="k">Call</span> <span class="n">__len__</span><span class="p">()</span>
-    <span class="n">a_example</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">#</span> <span class="k">Call</span> <span class="n">__getitem__</span><span class="p">()</span>
-
-    <span class="n">feature</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">a_example</span><span class="p">[</span><span class="ss">&quot;x&quot;</span><span class="p">],</span> <span class="n">a_example</span><span class="p">[</span><span class="ss">&quot;y&quot;</span><span class="p">]</span>
+<span class="n">def</span> <span class="n">__getitem__</span><span class="p">(</span><span class="k">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+    <span class="k">return</span> <span class="err">{</span><span class="ss">&quot;x&quot;</span><span class="p">:</span> <span class="k">self</span><span class="p">.</span><span class="k">data</span><span class="p">[</span><span class="ss">&quot;feature&quot;</span><span class="p">],</span> <span class="ss">&quot;y&quot;</span><span class="p">:</span> <span class="k">self</span><span class="p">.</span><span class="k">data</span><span class="p">[</span><span class="ss">&quot;label&quot;</span><span class="p">]</span><span class="err">}</span>
 </pre></div>
 
 
+<p>if <strong>name</strong> == "<strong>main</strong>":
+    dataset = OwnDataset("./data/test.pickle") #Initial an instance.</p>
+<div class="highlight"><pre><span></span><span class="n">print</span><span class="p">(</span><span class="n">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span> <span class="o">#</span> <span class="k">Call</span> <span class="n">__len__</span><span class="p">()</span>
+<span class="n">a_example</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">#</span> <span class="k">Call</span> <span class="n">__getitem__</span><span class="p">()</span>
+
+<span class="n">feature</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">a_example</span><span class="p">[</span><span class="ss">&quot;x&quot;</span><span class="p">],</span> <span class="n">a_example</span><span class="p">[</span><span class="ss">&quot;y&quot;</span><span class="p">]</span>
+</pre></div>
+
+
+</li>
+</ul>
 <p>從範例中可以看到使用Dataset的好處在於先行定義好回傳資料的格式、以及如何取用資料。 進行訓練時就不需要再重複的撰寫取用資料的程式。</p>
 <p>也可以在Dataset中加入一個 <code>type</code>變數來切換要回傳 training、evaluation、testing set. 並且針對傳入的型態不同來進行資料的Sample。</p>
 <h2>DataLoader</h2>
