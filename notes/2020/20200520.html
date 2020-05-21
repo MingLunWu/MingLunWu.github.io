@@ -137,38 +137,36 @@
 <p>Function: </p>
 <p>把要透過平行化進行加速的任務封裝在 Function中。</p>
 <p>舉例來說如果想要計算當前資料集每一個商品id的"price"欄位總和: </p>
-<p><code>def sum_function(df: pd.DataFrame):
-    return df.groupby('id').agg("price").sum()</code></p>
-<p>python test:</p>
-<p>:::python
-def sum_function(df: pd.DataFrame):
-    return df.groupby('id').agg("price").sum()</p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sum_function</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="s2">&quot;price&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 
 
-<p>testtest updated!</p>
 </li>
 <li>
 <p>Tasks:</p>
 <p>Tasks是一個 List，因為我們要同時使用多個Process進行計算，所以要在此對參數進行分割。 假設共有 500 篇文章，我們可以將資料分割為:</p>
-<p><code>python
-tasks = [df[0:100], df[100:200], df[200:300], df[300:400], df[400:500]]</code></p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">100</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">100</span><span class="p">:</span><span class="mi">200</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">200</span><span class="p">:</span><span class="mi">300</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">300</span><span class="p">:</span><span class="mi">400</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="mi">400</span><span class="p">:</span><span class="mi">500</span><span class="p">]]</span>
+</pre></div>
+</td></tr></table>
+
 </li>
 <li>
 <p>Pool:</p>
 <p>透過 <code>multiprocessing.pool</code>可以自動建立分工機制，我們不需要做額外的處理與設定:</p>
-<p><code>python
-pool = multiprocessing.pool(processes= 5)</code></p>
+<div class="highlight"><pre><span></span><span class="n">pool</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+
 </li>
 <li>
 <p>Map: </p>
 <p>在設定好 Function, Tasks 及 Pool後，我們就能透過 <code>pool</code>的 <code>map</code>進行平行處理:</p>
-<p>```</p>
-<h1>第一個放Function, 第二個放分割後的參數</h1>
-<p>result = pool.map(sum_function, tasks) 
-```</p>
+<div class="highlight"><pre><span></span><span class="c1"># 第一個放Function, 第二個放分割後的參數</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sum_function</span><span class="p">,</span> <span class="n">tasks</span><span class="p">)</span>
+</pre></div>
+
+
 </li>
 </ol>
 <p>執行上述程式碼時， <code>pool</code>會自動將 tasks 中的參數依序丟到 N個 Process中執行 sum_function，並且在執行結束後，將結果回傳到result。 </p>
@@ -191,7 +189,7 @@ pool = multiprocessing.pool(processes= 5)</code></p>
         <span class="n">cleaned_text</span> <span class="o">=</span> <span class="n">remove_stopwords</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">])</span> <span class="c1"># Remove stopwords</span>
         <span class="n">truncated_res</span> <span class="o">=</span> <span class="n">truncate_text</span><span class="p">(</span><span class="n">cleaned_text</span><span class="p">)</span> <span class="c1"># Truncate long words to list.</span>
         <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">result</span> 
+    <span class="k">return</span> <span class="n">result</span>
 </pre></div>
 
 
