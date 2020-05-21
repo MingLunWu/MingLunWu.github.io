@@ -121,25 +121,25 @@
 <hr>
 <h1>Tensor的基本使用、格式轉換</h1>
 <h2>建立Tensor</h2>
-<div class="codehilite"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
 <span class="n">tensor_a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 </pre></div>
 
 
 <h2>Tensor 的維度轉換</h2>
-<div class="codehilite"><pre><span></span><span class="n">tensor_reshape</span> <span class="o">=</span> <span class="n">tensor_a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">tensor_reshape</span> <span class="o">=</span> <span class="n">tensor_a</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 
 
 <h2>Tensor 中的元素型態轉換</h2>
 <p>僅需要在tensor之後加上轉換的型態即可。</p>
-<div class="codehilite"><pre><span></span><span class="n">tensor_a_long</span> <span class="o">=</span> <span class="n">tensor_a</span><span class="o">.</span><span class="n">long</span><span class="p">()</span> <span class="c1"># 將tensor_a轉換為long資料型態。</span>
+<div class="highlight"><pre><span></span><span class="n">tensor_a_long</span> <span class="o">=</span> <span class="n">tensor_a</span><span class="o">.</span><span class="n">long</span><span class="p">()</span> <span class="c1"># 將tensor_a轉換為long資料型態。</span>
 <span class="n">tensor_a_float</span> <span class="o">=</span> <span class="n">tensor_a</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="c1"># 將tensor_a轉換為float資料型態。</span>
 </pre></div>
 
 
 <h2>與其他常用套件之轉換</h2>
-<div class="codehilite"><pre><span></span><span class="n">tensor_b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np_element</span><span class="p">)</span> <span class="c1"># numpy -&gt; torch</span>
+<div class="highlight"><pre><span></span><span class="n">tensor_b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np_element</span><span class="p">)</span> <span class="c1"># numpy -&gt; torch</span>
 <span class="n">np_a</span> <span class="o">=</span> <span class="n">tensor_a</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="c1"># torch -&gt; numpy</span>
 </pre></div>
 
@@ -147,7 +147,7 @@
 <hr>
 <h1>常會使用到的Module</h1>
 <p>通常在Pytorch時，常會使用到下列的Module</p>
-<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 <span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
@@ -177,7 +177,7 @@
 </ul>
 <p>定義在Initial此Class(Network)時需要初始化的元件。基本上在Network中需要使用到的Layer、Hyperparameter都需要在這邊先行定義。
 + <strong>forward()</strong>: </p>
-<div class="codehilite"><pre><span></span><span class="o">-</span> <span class="err">透過</span><span class="n">Override</span> <span class="n">forward這個Method來定義此Network的Forward</span> <span class="n">Propagation方式</span><span class="err">。</span>
+<div class="highlight"><pre><span></span><span class="o">-</span> <span class="err">透過</span><span class="n">Override</span> <span class="n">forward這個Method來定義此Network的Forward</span> <span class="n">Propagation方式</span><span class="err">。</span>
 
 <span class="o">-</span> <span class="err">值得注意的是</span><span class="o">`</span><span class="k">forward</span><span class="p">()</span><span class="o">`</span> <span class="err">在</span><span class="n">Override以後</span><span class="err">，往後透過可以直接透過</span><span class="k">call</span> <span class="n">model來進行forward</span><span class="p">().</span> <span class="p">(</span><span class="err">請看下方範例</span><span class="p">)</span>
 </pre></div>
@@ -185,7 +185,7 @@
 
 </li>
 </ol>
-<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">MyOwnNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyOwnNet</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">my_own_net</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span> <span class="c1">#初始化 nn.Module class</span>
 
@@ -214,13 +214,13 @@
 2. DataLoader</p>
 <h2>Dataset</h2>
 <p>實作時，與上節建立Network相同，需要先定義一個Python Class來繼承 <code>torch.utils.data.Dataset</code>，並且要Override以下Methods:</p>
-<div class="codehilite"><pre><span></span><span class="err">+ **\__init__(self)**: 初始化instance時需要進行的動作，通常會在這個地方載入資料集、或是進行前處理。</span>
+<div class="highlight"><pre><span></span><span class="err">+ **\__init__(self)**: 初始化instance時需要進行的動作，通常會在這個地方載入資料集、或是進行前處理。</span>
 <span class="err">+ **\_getitem(self, index)__**: 定義使用idx去query元素時要進行的動作。 (通常直接回傳第index筆資料)</span>
 <span class="err">+ **\_len(self)__**: 定義使用len()去取得instance元素數量時要進行的動作。 （通常直接回傳資料筆數)</span>
 </pre></div>
 
 
-<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">OwnDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">OwnDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">OwnDataset</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">))</span> <span class="c1"># 讀取資料</span>
@@ -253,7 +253,7 @@
 + num_workers: 透過Multi-Process來加速資料的取用，避免訓練時速度被IO給限制。（不建議使用在GPU環境)
 + pin_memory: 在使用GPU時，啟用此屬性能提升訓練速度。</p>
 <p>有關<code>num_workers</code>, <code>pin_memory</code>的探討，建議可以參考<a href="https://pytorch.org/docs/stable/data.html#single-and-multi-process-data-loading">官方文件</a></p>
-<div class="codehilite"><pre><span></span><span class="n">data_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">data_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_loader</span><span class="p">))</span> <span class="c1">#回傳當前共有幾個batch，可以直接用這個數值來作為Step.</span>
 
@@ -276,7 +276,7 @@
 <p>其中第一點以及第二點請參考本文前段。</p>
 <h2>定義Loss及Optimizer</h2>
 <p>在 <code>torch.nn</code> 以及 <code>torch.nn.Functional</code>中定義了許多不同的Loss Function，可以根據需求自行選擇. 以下範例以分類問題的CrossEntropy為例:</p>
-<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">F</span>
 <span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
 
@@ -290,7 +290,7 @@
 <p>首先，必須先建立計算Loss以及Optimizer的Instance。</p>
 <p>在建立Optimizer時會需要設定優化的對象，通常會直接放<code>model.parameters()</code>，代表<code>model</code>中所有可訓練的參數。而不同的Optimizer(SGD, Adam, ...)會有不同的參數要進行設定。</p>
 <h2>進行訓練</h2>
-<div class="codehilite"><pre><span></span><span class="n">feature</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">data_iter</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="c1">#透過前面提到的iterator取得一個batch的資料。</span>
+<div class="highlight"><pre><span></span><span class="n">feature</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">data_iter</span><span class="o">.</span><span class="n">next</span><span class="p">()</span> <span class="c1">#透過前面提到的iterator取得一個batch的資料。</span>
 
 <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># 將訓練資料送入model中進行forward propagation。</span>
 
@@ -309,7 +309,7 @@
 <strong>Forward propagation -&gt; 計算Loss -&gt; Backward propagation -&gt; Optimize (根據梯度調整Weight.)</strong></p>
 <p>實際訓練時可根據需求來不斷從Data Iterator中取得資料，重複上述迭代進行訓練，也因為會有不斷的迭代，所以記得使用<code>optimizer.zero_grad()</code>來清空上一次的梯度。</p>
 <p>另外，在Pytorch中的Tensor都會有<code>requires_grad</code>的屬性，如果啟用的話會自動追蹤計算圖，方便直接呼叫<code>backward()</code>，如果不希望啟用的話，可以透過下列方法解除:</p>
-<div class="codehilite"><pre><span></span><span class="c1"># Method 1</span>
+<div class="highlight"><pre><span></span><span class="c1"># Method 1</span>
 <span class="n">tensor_nograd</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Method 2</span>
@@ -322,7 +322,7 @@
 <h1>視覺化工具-TensorBoard</h1>
 <h2>基本使用</h2>
 <p>在訓練的過程中，我們需要觀察Loss或是Accuracy來確認訓練的效果，雖然可以透過Print Log的方式來顯示，但其實透過有更好的工具能夠協助視覺化。</p>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.tensorboard</span> <span class="kn">import</span> <span class="n">SummaryWriter</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch.utils.tensorboard</span> <span class="kn">import</span> <span class="n">SummaryWriter</span>
 
 <span class="n">LOGDIR</span> <span class="o">=</span> <span class="s2">&quot;./logs/&quot;</span> <span class="c1"># Define 資料要被寫入的位置</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">SummaryWriter</span><span class="p">(</span><span class="n">LOGDIR</span><span class="p">)</span>
@@ -337,7 +337,7 @@
 
 <p>也就是在定義了一個writer後，可以透過<code>writer.add_scalar</code>的方式將想要觀測的值記錄下來，同時可以分門別類的設定標籤、Step或是Epoch數目。 除了<code>add_scalar</code>外，還有許多如<code>add_image</code>、<code>add_graph</code>的方法可以使用。</p>
 <p>寫入資料後，執行tensorboard即可在LocalHost的瀏覽器觀察結果: </p>
-<div class="codehilite"><pre><span></span>pip install tensorboard
+<div class="highlight"><pre><span></span>pip install tensorboard
 tensorboard --logdir<span class="o">=</span><span class="s2">&quot;./logs&quot;</span>
 </pre></div>
 
@@ -347,13 +347,13 @@ tensorboard --logdir<span class="o">=</span><span class="s2">&quot;./logs&quot;<
 <h2>Remote Server</h2>
 <p>另外在進行機器學習時，常常會需要使用到遠端主機的GPU，紀錄一下如何在Localhost查看遠端機器的訓練狀態。 首先還是一樣要在訓練過程中透過<code>SummaryWriter</code>將log寫入。</p>
 <p>接著透過 SSH連線將本地端的一個Port 與 遠端機器的特定Port綁定在一起，首先在本地端執行:</p>
-<div class="codehilite"><pre><span></span>ssh -L <span class="m">16001</span>:127.0.0.1:16001 username@server_ip
+<div class="highlight"><pre><span></span>ssh -L <span class="m">16001</span>:127.0.0.1:16001 username@server_ip
 </pre></div>
 
 
 <p>透過特定Port與遠端主機連線。</p>
 <p>接著在 <strong>遠端主機</strong>執行</p>
-<div class="codehilite"><pre><span></span>tensorboard --logdir<span class="o">=</span><span class="s2">&quot;./logs&quot;</span> --port<span class="o">=</span><span class="m">16001</span>
+<div class="highlight"><pre><span></span>tensorboard --logdir<span class="o">=</span><span class="s2">&quot;./logs&quot;</span> --port<span class="o">=</span><span class="m">16001</span>
 </pre></div>
 
 
@@ -366,12 +366,12 @@ Pytorch 提供了兩種儲存方法: <code>完整模型</code>以及 <code>State
 <h2>完整模型:</h2>
 <p>官方較不推薦這種方式，由於是透過<code>pickle</code>的方式進行儲存，很可能會遭遇意料之外的問題。</p>
 <h3>Save</h3>
-<div class="codehilite"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">PATH</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">PATH</span><span class="p">)</span>
 </pre></div>
 
 
 <h3>Load</h3>
-<div class="codehilite"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">PATH</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">PATH</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 </pre></div>
 
@@ -380,12 +380,12 @@ Pytorch 提供了兩種儲存方法: <code>完整模型</code>以及 <code>State
 <h2>State Dict</h2>
 <p>State Dictionary 則是透過 <code>Python的Dictionary</code>來儲存每一層的內容以及權重。如果要查看的話可以透過<code>model.state_dict()</code>來取得。</p>
 <h3>Save</h3>
-<div class="codehilite"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">PATH</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">PATH</span><span class="p">)</span>
 </pre></div>
 
 
 <h3>Load</h3>
-<div class="codehilite"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">MyOwnNet</span><span class="p">()</span> <span class="c1"># 要先建立相同的Class Instance.</span>
+<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">MyOwnNet</span><span class="p">()</span> <span class="c1"># 要先建立相同的Class Instance.</span>
 <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">PATH</span><span class="p">))</span>
 <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 </pre></div>
@@ -396,18 +396,18 @@ Pytorch 提供了兩種儲存方法: <code>完整模型</code>以及 <code>State
 <p>在上述的內容完成後，基本上已經可以建立一個簡易的Neural Network了，接下來紀錄如何將快速的將資料從CPU訓練切換為GPU.</p>
 <p>首先要先確定自己的Pytorch是有安裝到CUDA版本。
 可以透過下列指令確認:</p>
-<div class="codehilite"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">())</span>
+<div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">())</span>
 </pre></div>
 
 
 <p>如果是True則代表有成功偵測到GPU，若為False則可能是設定錯誤！</p>
 <p>接著要建立一個device變數:</p>
-<div class="codehilite"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
 </pre></div>
 
 
 <p>接著就是將自己的Model以及需要送進Model的Input都轉換為GPU模式.</p>
-<div class="codehilite"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 <span class="c1"># 以下正常進行使用</span>
 </pre></div>

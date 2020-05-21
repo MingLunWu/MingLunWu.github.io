@@ -135,7 +135,7 @@
 <p>下面這張圖則是Pytorch Lightning 官網的例子，用來說明Pytorch Lightning 想要簡化的部分。
 <img alt="" src="https://pytorch-lightning.readthedocs.io/en/latest/_images/pt_trainer.png"></p>
 <p>我們來看個較為實際的例子:</p>
-<div class="codehilite"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">SomeModel</span><span class="p">()</span> <span class="c1"># 假設這是你按照Pytorch Lightning封裝好的Model.</span>
+<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">SomeModel</span><span class="p">()</span> <span class="c1"># 假設這是你按照Pytorch Lightning封裝好的Model.</span>
 <span class="c1"># 透過GPU訓練</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> 
@@ -153,7 +153,7 @@
 <hr>
 <h1>一、安裝</h1>
 <p>透過pip即可進行安裝:</p>
-<div class="codehilite"><pre><span></span>pip install pytorch-lightning<span class="o">==</span><span class="m">0</span>.7.1
+<div class="highlight"><pre><span></span>pip install pytorch-lightning<span class="o">==</span><span class="m">0</span>.7.1
 </pre></div>
 
 
@@ -185,7 +185,7 @@
 <h1>三、 Research Code</h1>
 <p>針對模型開發中最為重要的就是 Research Code了，在 <code>Pytorch Lightning</code>中透過 <code>pl.LightningModule</code>模組來實現，這個模組繼承了<code>torch.nn.Module</code>的功能，所以使用上其實跟使用原生Pytorch是相當類似的。</p>
 <p>實作時只需在定義的Class上繼承pl.LightningModule即可。</p>
-<div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">pytorch_lightning</span> <span class="k">as</span> <span class="nn">pl</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytorch_lightning</span> <span class="k">as</span> <span class="nn">pl</span>
 
 <span class="k">class</span> <span class="nc">YourOwnNet</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
 
@@ -209,7 +209,7 @@
 </ul>
 </li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
 </pre></div>
 
@@ -224,7 +224,7 @@
 </ul>
 </li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="c1"># self.train_dataset 通常由 self.prepare_data()產生.</span>
     <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
 </pre></div>
@@ -243,7 +243,7 @@
 </ul>
 </li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">TestModel</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">TestModel</span><span class="p">()</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="n">output1</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="n">output2</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -270,7 +270,7 @@
 </ul>
 </li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>  <span class="c1"># 這裡的batch會對應到 self.train_dataloader()所回傳的DataLoader Object，對其取用一個batch.</span>
 
     <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># 將Input進行 forward propagation.</span>
@@ -291,7 +291,7 @@
 </ul>
 </li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
         <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
         <span class="n">avg_val_acc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;val_acc&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
@@ -305,7 +305,7 @@
 <h4>統整版本:</h4>
 </li>
 </ul>
-<div class="codehilite"><pre><span></span>    <span class="k">class</span> <span class="nc">PytorchLightningModel</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span> <span class="c1"># 這邊一定要繼承pl.LightningModule</span>
+<div class="highlight"><pre><span></span>    <span class="k">class</span> <span class="nc">PytorchLightningModel</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span> <span class="c1"># 這邊一定要繼承pl.LightningModule</span>
         <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># 初始化時可以將基本設定傳入。</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ln1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">768</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
@@ -380,7 +380,7 @@
 <h1>四、透過Trainer自動訓練</h1>
 <h2>Training</h2>
 <p>在你重新將程式碼改寫為<code>Pytorch Lightning</code>格式後，輕鬆的部分來了！接下來我們只需要透過<code>Trainer</code> Class即可自動處理訓練。我們看看以下的範例:</p>
-<div class="codehilite"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">PytorchLightningModel</span><span class="p">(</span><span class="n">param1</span><span class="o">=</span><span class="mi">768</span><span class="p">,</span> <span class="n">param2</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># 自行封裝成Pytorch Lightning的模型</span>
+<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">PytorchLightningModel</span><span class="p">(</span><span class="n">param1</span><span class="o">=</span><span class="mi">768</span><span class="p">,</span> <span class="n">param2</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># 自行封裝成Pytorch Lightning的模型</span>
 
 <span class="c1"># Trainer 有不同的參數可以調整訓練時的行為</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">()</span> <span class="c1"># 使用CPU</span>
@@ -396,7 +396,7 @@
 <p>另外Trainer Class也針對了「使用多張GPU」、「accumulate_grad_batches」提供參數進行調整，細節的部分可以參考官方網站。 <a href="https://pytorch-lightning.readthedocs.io/en/latest/trainer.html">連結在此</a></p>
 <h2>Evaluation / Inference</h2>
 <p>在訓練完模型後，你也能夠載入先前訓練好的Checkpoint File並且重新進行Evaluation/Inference.</p>
-<div class="codehilite"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">PytorchLightningModel</span><span class="p">(</span><span class="n">param1</span><span class="o">=</span><span class="mi">768</span><span class="p">,</span> <span class="n">param2</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># 自行封裝成Pytorch Lightning的模型</span>
+<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">PytorchLightningModel</span><span class="p">(</span><span class="n">param1</span><span class="o">=</span><span class="mi">768</span><span class="p">,</span> <span class="n">param2</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># 自行封裝成Pytorch Lightning的模型</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">resume_from_checkpoint</span><span class="o">=</span><span class="s2">&quot;PATH&quot;</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">trainer</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
