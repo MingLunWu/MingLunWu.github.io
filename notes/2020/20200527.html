@@ -152,7 +152,7 @@
 </ul>
 </li>
 </ol>
-<p>原先在做實驗時，如果有下列兩種參數: </p>
+<p>原先在做實驗時，如果有下列兩種參數選項: </p>
 <div class="highlight"><pre><span></span><span class="n">max_depth</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
 <span class="n">min_leaf</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
 </pre></div>
@@ -170,7 +170,8 @@
 </pre></div>
 
 
-<p>當參數種類過多時，會需要過多層迴圈來進行參數組合。 而使用print方式列印模型結果，對於模型表現的管理相當不方便。</p>
+<p>當參數種類過多時，會需要過多層迴圈來進行參數組合。 </p>
+<p>而使用print方式列印模型結果，對於模型表現的管理相當不方便。</p>
 <p>透過MLFlow Tracking 管理後，可以透過 UI 介面得到下圖結果: </p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200527/mlflow_ui.png"></p>
 <p>此介面統整了所有的指標及超參數，所有實驗過程都一目了然。 </p>
