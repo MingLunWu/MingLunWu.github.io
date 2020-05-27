@@ -220,7 +220,7 @@
 <ul>
 <li>使用 <code>sklearn</code>的 <code>DecisionTreeClassifier</code> 來進行分類任務</li>
 <li>Training Set 跟 Testing Set 透過 Numpy 來隨機產生。</li>
-<li>此項任務的超參數有兩項:  (不知道是什麼意思也無所謂，反正就是我們想要監控的超參數）<ul>
+<li>此項任務的超參數有兩項:  (不知道是什麼意思也無所謂，反正就是我們想要監控的超參數）</li>
 <li>max_depth : 決定決策樹的深度。</li>
 <li>
 <p>min_leaf : 決定樹的葉節點容納個數。</p>
@@ -257,15 +257,13 @@ min_leaf = [1,2,3]</p>
 
 </li>
 </ul>
-</li>
-</ul>
 <hr>
 <p><p id="使用-mlflow-tracking進行管理"></p></p>
 <h1>使用 MLFlow Tracking進行管理</h1>
 <p id="安裝"></p>
 
 <h2>安裝</h2>
-<p>透過 pip 可以快速安裝</p>
+<p>透過 <code>pip</code> 可以快速安裝</p>
 <div class="highlight"><pre><span></span>pip install mlflow
 </pre></div>
 
@@ -275,9 +273,7 @@ min_leaf = [1,2,3]</p>
 <h2>基本語法使用</h2>
 <p>與上一小節同樣的情境，但此次使用 MLFlow Tracking 功能進行管理，有以下幾個重點：</p>
 <ul>
-<li>
-<p>使用MLFlow的功能時，需要將寫入指令放置在  <code>with mlflow.start_run():</code>的範圍中，常用的寫入指令包含：</p>
-<ul>
+<li>使用MLFlow的功能時，需要將寫入指令放置在  <code>with mlflow.start_run():</code>的範圍中，常用的寫入指令包含：</li>
 <li><code>mlflow.log_param("參數名稱", "參數值")</code>: 寫入特定參數的值。</li>
 <li>
 <p><code>mlflow.log_metric("指標名稱", "指標值")</code>: 寫入特定指標的值。</p>
@@ -290,8 +286,6 @@ import mlflow</p>
     # ...
     # ...
     mlflow.log_metric("train_acc", train_acc) # 寫入指標</p>
-</li>
-</ul>
 </li>
 <li>
 <p>我們可以將 <code>with mlflow.start_run()</code>視為一次「嘗試」，所以在此範圍內:</p>
@@ -375,12 +369,9 @@ mlflow ui <span class="c1"># 啟動 mlflow tracking dashboard</span>
 <img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20200527/mlflow_compare.png"></p>
 <hr>
 <h1>後記</h1>
-<p>這篇筆記的目的是希望能達到兩個目的:</p>
-<div class="highlight"><pre><span></span><span class="err">1. 更有效率的組合各種超參數</span>
-<span class="err">2. 使用MLFlow Tracking 來進行模型的管理</span>
-</pre></div>
-
-
+<p>這篇筆記的目的是希望能達到兩個目的:
+  1. 更有效率的組合各種超參數
+  2. 使用MLFlow Tracking 來進行模型的管理</p>
 <p>在進行資料分析相關任務時，找尋最佳模型這個階段，程式碼的架構其實不會有太大的變動，只是某些「超參數」會有調整。
 過去只知道使用Git來管理程式碼，卻疏忽「超參數」跟「模型」的管理也是相當重要的，畢竟這些變動的超參數只佔程式碼的一小部分，卻影響了我們真正在乎的結果。</p>
 <p>我認為使用這種管理模型及超參數的工具是有必要的，能夠省下許多整理結果、解讀結果的時間。很希望當時研究所時期在做論文實驗時能看到這種工具的介紹，所以寫下了這則筆記。</p>
