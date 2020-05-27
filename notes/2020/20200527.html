@@ -277,11 +277,11 @@
 <h2>基本語法使用</h2>
 <p>與上一小節同樣的情境，但此次使用 MLFlow Tracking 功能進行管理，有以下幾個重點：</p>
 <ul>
-<li>使用MLFlow的功能時，需要將寫入指令放置在  <code>with mlflow.start_run():</code>的範圍中，常用的寫入指令包含：</li>
-<li><code>mlflow.log_param("參數名稱", "參數值")</code>: 寫入特定參數的值。</li>
 <li>
-<p><code>mlflow.log_metric("指標名稱", "指標值")</code>: 寫入特定指標的值。</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mlflow</span>
+<p>使用MLFlow的功能時，需要將寫入指令放置在  <code>with mlflow.start_run():</code>的範圍中，常用的寫入指令包含：</p>
+<ul>
+<li><code>mlflow.log_param("參數名稱", "參數值")</code>: 寫入特定參數的值。</li>
+<li><code>mlflow.log_metric("指標名稱", "指標值")</code>: 寫入特定指標的值。<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mlflow</span>
 
 <span class="k">with</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">start_run</span><span class="p">():</span> <span class="c1"># 所有的mlflow寫入指令必須放置在 mlflow.start_run 範圍中. </span>
     <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s2">&quot;batch_size&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 寫入超參數</span>
@@ -293,6 +293,8 @@
 </pre></div>
 
 
+</li>
+</ul>
 </li>
 <li>
 <p>我們可以將 <code>with mlflow.start_run()</code>視為一次「嘗試」，所以在此範圍內:</p>
