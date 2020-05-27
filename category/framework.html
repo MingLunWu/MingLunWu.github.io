@@ -1,363 +1,863 @@
 <!DOCTYPE html>
-<html lang="en_us">
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
 <head>
-        <meta charset="utf-8" />
-        <title>MingLun's Blog - Framework</title>
-        <link rel="stylesheet" href="/theme/css/main.css" />
-        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="MingLun's Blog Atom Feed" />
+
+    <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <title>MingLun's Blog</title>
+    <meta name="description" content="Do our best to relish this remarkable ride.">
+    <meta name="author" content="MingLun Wu">
+    <link rel="image_src" type="image/jpeg" href="https://minglunwu.github.io/theme/images/header_3.jpeg"/>
+
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="https://minglunwu.github.io/theme/css/base.css">
+    <link rel="stylesheet" href="https://minglunwu.github.io/theme/css/vendor.css">
+    <link rel="stylesheet" href="https://minglunwu.github.io/theme/css/main.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="https://minglunwu.github.io/theme/js/modernizr.js"></script>
+    <script src="https://minglunwu.github.io/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="https://minglunwu.github.io/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://minglunwu.github.io/theme/favicon.ico" type="image/x-icon">
+
+    <style>
+        article.col-block>img{
+            width: 410px;
+            height: 308px;
+        }
+    </style>
+
 </head>
 
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="/">MingLun's Blog</a></h1>
-                <nav><ul>
-                    <li><a href="/category/deep-learning.html">Deep Learning</a></li>
-                    <li class="active"><a href="/category/framework.html">Framework</a></li>
-                    <li><a href="/category/parallelize.html">Parallelize</a></li>
-                    <li><a href="/category/system-related.html">System Related</a></li>
-                    <li><a href="/category/tool.html">Tool</a></li>
-                </ul></nav>
-        </header><!-- /#banner -->
+<body id="top">
+    <!-- header
+    ================================================== -->
+    <header class="s-header">
 
-            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="/notes/2020/20200416.html">Pytorch Lightning 入門筆記</a></h1>
-<footer class="post-info">
-        <abbr class="published" title="2020-04-16T12:00:00+08:00">
-                Published: 四 16 4月 2020
-        </abbr>
+        <div class="header-logo">
+            <a class="site-logo" href="index.html"><img src="https://minglunwu.github.io/theme/images/Logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
 
-        <address class="vcard author">
-                By                         <a class="url fn" href="/author/minglun-allen-wu.html">MingLun Allen Wu</a>
-        </address>
-<p>In <a href="/category/framework.html">Framework</a>.</p>
-<p>tags: <a href="/tag/pytorch.html">Pytorch</a> </p>
-</footer><!-- /.post-info --><ul>
-<li><a href="#%e5%89%8d%e8%a8%80">前言</a></li>
-<li><a href="#%e5%be%9e%e9%9b%b6%e9%96%8b%e5%a7%8b---pytorch%e5%85%a5%e9%96%80%e6%87%b6%e4%ba%ba%e5%8c%85">從零開始 - Pytorch入門懶人包</a></li>
-<li><a href="#%e7%b0%a1%e4%bb%8b">簡介</a></li>
-<li><a href="#%e4%b8%80%e5%ae%89%e8%a3%9d">一、安裝</a></li>
-<li><a href="#%e4%ba%8c%e5%9f%ba%e6%9c%ac%e6%a6%82%e5%bf%b5">二、基本概念</a></li>
-<li><a href="#%e4%b8%89-research-code">三、 Research Code</a></li>
-<li><a href="#%e5%9b%9b%e9%80%8f%e9%81%8etrainer%e8%87%aa%e5%8b%95%e8%a8%93%e7%b7%b4">四、透過Trainer自動訓練</a></li>
-<li><a href="#training">Training</a></li>
-<li><a href="#evaluation--inference">Evaluation / Inference</a></li>
-<li><a href="#%e4%ba%94%e5%be%8c%e8%a8%98">五、後記</a></li>
-</ul>
-<hr>
-<h1>前言</h1>
-<p>在了解Pytorch的基本使用後，透過<code>Pytorch Lightning</code>框架能夠讓我們更有效率的進行開發。如果對於Pytorch的基本使用還不熟悉的讀者，可以先看看我先前寫的文章: </p>
-<h2><a href="https://minglunwu.github.io/notes/2020/20200324.html">從零開始 - Pytorch入門懶人包</a></h2>
-<h1>簡介</h1>
-<p>透過Pytorch撰寫Deep Learning相關程式碼時，程式碼大致可分成兩種類型:</p>
-<ol>
-<li>
-<p><strong>依照專案有所不同</strong>: 這類程式碼會根據開發的需求而改變，例如「資料的前處理」、「模型的架構」。</p>
-</li>
-<li>
-<p><strong>跨專案重複使用</strong>: 這類程式碼在每一個應用中都會存在，且相似性非常高，例如「將資料送入DataLoader」、「計算Loss」、「透過Optimizer更新模型的weight」。</p>
-</li>
-</ol>
-<hr>
-<p><code>Pytorch Lightning</code>希望替使用者簡化的就是「<strong>跨專案重複使用</strong>」這部分的程式碼，讓使用者能省下精力及時間去處理更為重要的核心模型部分。 </p>
-<p>你可以將其視為是一種「樣式指南」(類似Python的PEP8)，透過一定規則將訓練過程中的幾個重要步驟封裝起來(Train, 計算Loss, Optimizer, 更新參數)。</p>
-<p>你可能很好奇這樣做的用意是什麼？ 你將可以透過特別的 <code>Trainer</code> Class來進行操作，不再需要花費時間撰寫 Evaluation的Loss、或是在每一個Epoch結束時顯示Loss、固定幾個Step要顯示當前訓練狀態、儲存Validation表現最好的Checkpoint。 <strong>只要你先按照Pytorch Lightning的格式封裝程式碼，在訓練時的瑣碎細節它會幫你處理好。</strong></p>
-<p>下面這張圖則是Pytorch Lightning 官網的例子，用來說明Pytorch Lightning 想要簡化的部分。
-<img alt="" src="https://pytorch-lightning.readthedocs.io/en/latest/_images/pt_trainer.png"></p>
-<p>我們來看個較為實際的例子:</p>
-<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">SomeModel</span><span class="p">()</span> <span class="c1"># 假設這是你按照Pytorch Lightning封裝好的Model.</span>
-<span class="c1"># 透過GPU訓練</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
-<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a class="smoothscroll"  href="https://minglunwu.github.io/#home" title="home">Home</a></li>
+                <li><a class="smoothscroll"  href="https://minglunwu.github.io/#about" title="about">About</a></li>
+                <li><a class="smoothscroll"  href="https://minglunwu.github.io/#blog" title="blog">Blogs</a></li>
+                <li><a class="smoothscroll"  href="https://minglunwu.github.io/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
 
-<span class="c1"># 透過CPU訓練</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
 
-<span class="c1"># 進行Evaluation</span>
-<span class="n">trainer</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
-</pre></div>
+    </header> <!-- end s-header -->
 
+    <!-- home
+    ================================================== -->
+    <section id="home" class="s-home page-hero target-section" data-parallax="scroll" data-image-src="https://minglunwu.github.io/theme/images/header_3.jpeg" data-natural-width=3000 data-natural-height=2000 data-position-y=center>
 
-<p>從上面的範例中可以看到，原先冗長的訓練過程現在只需要透過短短的幾行程式碼即可實現。將訓練時的細節按照特定規則封裝好後，就可直接透過 <code>Trainer</code> Class來進行訓練。</p>
-<hr>
-<h1>一、安裝</h1>
-<p>透過pip即可進行安裝:</p>
-<div class="highlight"><pre><span></span>pip install pytorch-lightning<span class="o">==</span><span class="m">0</span>.7.1
-</pre></div>
+            <div class="overlay"></div>
+            <div class="shadow-overlay"></div>
 
+            <div class="home-content">
+                <div class="row home-content__main">
 
-<hr>
-<h1>二、基本概念</h1>
-<p><code>Pytorch Lightning</code>將深度學習的程式碼分成三種類型:</p>
-<ol>
-<li>
-<p><strong>Research Code</strong>:
-    整個應用的核心架構，可能會根據任務的內容進行調整、或是在開發過程中加入自己的想法。通常可能會包含幾個核心元件:</p>
-<ul>
-<li>模型架構定義</li>
-<li>Train/Val/Test資料切分</li>
-<li>Optimizer定義</li>
-<li>Train/Val/Test Step Computation.</li>
-</ul>
-</li>
-<li>
-<p><strong>Engineer Code</strong>:</p>
-<p>「EarlyStopping」, 「將資料送入GPU」等常見且不同專案使用方式都類似的程式碼。這部分的程式碼是 <code>Pytorch Lightning</code>最希望能簡化的。</p>
-</li>
-<li>
-<p><strong>Non-Essential Code</strong>:</p>
-<p>檢查梯度、視覺化等偏向輔助性質的功能。</p>
-</li>
-</ol>
-<p><code>Pytorch Lightning</code>希望使用者只需要定義<strong>Research Code</strong>，而<strong>Engineer Code</strong>由它來代為處理、<strong>Non-Essential</strong>則是根據使用者的需要自行選用，由於不會影響正常使用，接下來我們著重探討如何重新將<strong>Research Code</strong>組織為<code>Pytorch Lightning</code>的格式。</p>
-<hr>
-<h1>三、 Research Code</h1>
-<p>針對模型開發中最為重要的就是 Research Code了，在 <code>Pytorch Lightning</code>中透過 <code>pl.LightningModule</code>模組來實現，這個模組繼承了<code>torch.nn.Module</code>的功能，所以使用上其實跟使用原生Pytorch是相當類似的。</p>
-<p>實作時只需在定義的Class上繼承pl.LightningModule即可。</p>
-<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytorch_lightning</span> <span class="k">as</span> <span class="nn">pl</span>
+                    <h3>Hello There</h3>
 
-<span class="k">class</span> <span class="nc">YourOwnNet</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
+                    <h1>
+                        I am MingLun Wu. <br>
+                        I am a data engineer <br>
+                        based in Kaohsiung.
+                    </h1>
 
-    <span class="k">def</span> <span class="nf">somemethod</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
-</pre></div>
+                    <div class="home-content__buttons">
+                        <a href="#blog" class="smoothscroll btn btn--stroke">
+                            My Blogs
+                        </a>
+                        <a href="#about" class="smoothscroll btn btn--stroke">
+                            More About Me
+                        </a>
+                    </div>
+
+                    <div class="home-content__scroll">
+                        <a href="#about" class="scroll-link smoothscroll">
+                            <span>Scroll Down</span>
+                        </a>
+                    </div>
+
+                </div>
+
+            </div> <!-- end home-content -->
+
+            <ul class="home-social">
+                <li>
+                    <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                </li>
+                <li>
+                    <a href="https://medium.com/@allen6997535" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                </li>
+                <li>
+                    <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                </li>
+                <li>
+                    <a href="https://www.linkedin.com/in/allen-ming-lun-wu-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                </li>
+                <li>
+                    <a href="https://www.instagram.com/whoisfater0724/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                </li>
+            </ul> 
+            <!-- end home-social -->
+
+        </section> <!-- end s-home -->
 
 
-<p>在繼承 <code>pl.LightingModule</code>後，有幾項重要的Method必須被Override，未來 <code>Pytorch Lightning</code>才能自動地進行訓練，以下將這些方法及目的條列出來:</p>
-<ul>
-<li>
-<h4><strong>prepare_data()</strong>:</h4>
-<p>負責資料的載入(包含Training Set, Evaluation Set, Test)都撰寫在方法中。 自動訓練時會優先執行此Method以獲取資料。</p>
-</li>
-<li>
-<h4><strong>configure_optimizer(self)</strong>:</h4>
-<ul>
-<li><strong>回傳特定的優化器</strong> (torch.nn.optimizer)</li>
-<li>如果對於優化的參數有任何設定(例如只想對特定參數進行調整)，也是在這個地方調整。</li>
-<li>在自動訓練時，會呼叫此方法來取得Optimizer。</li>
-</ul>
-<p>:::python
-def configure_optimizers(self):
-        return Adam(self.parameters(), lr=1e-3)</p>
-</li>
-<li>
-<h4><strong>train_dataloader(self)</strong> / <strong>val_dataloader(self)</strong> / <strong>test_dataloader(self)</strong>:</h4>
-<ul>
-<li><strong>回傳<code>Pytorch</code>的 <code>DataLoader</code> Object</strong>，</li>
-<li>這三個方法定義了training/ validation/ test時使用的DataLoader。其中會使用到的資料可以透過 <code>prepare_data()</code>先行取得。</li>
-<li>在自動訓練的過程中，會呼叫這邊定義的Function來取得不同時期(Train/Validation/Test)的DataLoader。</li>
-</ul>
-<p>:::python
-def train_dataloader(self):
-    # self.train_dataset 通常由 self.prepare_data()產生.
-    return DataLoader(self.train_dataset, batch_size= self.batch_size, shuffle=True) </p>
-</li>
-<li>
-<h4><strong>forward(self, args)</strong>:</h4>
-<ul>
-<li>
-<p>定義當前這個模型forward propagation時所要進行的動作。 </p>
-</li>
-<li>
-<p>特別注意在建立instance時，直接將參數傳入instance等同於呼叫forward function。來個具體例子。</p>
-</li>
-</ul>
-<p>:::python
-model = TestModel()
-x = torch.Tensor([1, 2, 3])
-output1 = model(x)
-output2 = model.forward(x)</p>
-<p>output1 == output2  # 實際上這兩個是相同的.</p>
-</li>
-<li>
-<h4><strong>training_step/val_step/test_step(self, batch, batch_idx)</strong>:</h4>
-<ul>
-<li>
-<p>分別定義了traing/ validation/ test時的每一個Step所要進行的任務，其中較特別的是參數<code>batch</code>, <code>batch_idx</code>，這是會自動從<code>train/val/test_dataloader()</code>中的<code>DataLoader</code>取出一個batch。具體使用方式請見下方範例。</p>
-</li>
-<li>
-<p>此類型方法的回傳值有一定的格式，需要回傳一個Python的Dictionary，其中包含:</p>
-<ul>
-<li>loss: 當前Step計算出來的Training Loss. 用於接下來的Backward Propagation及參數調校。</li>
-<li>log: 包含當前訓練的狀況，在訓練時會自動回傳成進度條。 如下圖所示:
-<img alt="" src="https://minglunwu.github.io/theme/images/20200414.png"></li>
-</ul>
-<p>:::python
-def training_step(self, batch, batch_idx):
-    x, y = batch  # 這裡的batch會對應到 self.train_dataloader()所回傳的DataLoader Object，對其取用一個batch.</p>
-<div class="highlight"><pre><span></span><span class="err">output = self.forward(x) # 將Input進行 forward propagation.</span>
-<span class="err">criterion = nn.CrossEntropyLoss()</span>
-<span class="err">loss = criterion(output, y)</span>
-<span class="err">logs = {&quot;loss&quot;: loss}</span>
-<span class="err">return {&quot;loss&quot;: loss, &quot;log&quot;: logs}</span>
-</pre></div>
+        <!-- about
+        ================================================== -->
+        <section id="about" class="s-about target-section">
+            
+            <div class="row narrow section-intro has-bottom-sep">
+                <div class="col-full text-center">
+                    <h3>About</h3>
+                    <h1>More About Me</h1>
+                    <!--<p class="lead">有好的故事、有可以傾訴的對象，光是如此人生就值得了<br>[如果這個世界貓消失了]</p>-->
+                    <p class="lead">We're all traveling through time together, every day of our lives. <br> All we can do is do our best to relish this remarkable ride.<br> [About Time, 2013]</p>
+                </div>
+            </div>
+
+            <div class="row about-content">
+
+                <div class="col-six tab-full left">
+                    <h3>超級新鮮的Data Engineer</h3>
+
+                    <p>研究所畢業後一腳踏入了資料分析的領域，面對眼前五花八門的技能樹，盡可能的打怪練功、累積經驗值。</p>
+                    
+                    <p>
+                        「有好的故事、有可以傾訴的對象，光是如此人生就值得了」(海上鋼琴師、如果這世界貓消失了)，踏入職場後，希望能夠記錄下自己成長的過程，
+                        也試著把這些過程轉變成好的故事，寫在這個地方。
+                    </p>
+                    <p>
+                        每個來到這個網站的人，對我來說都是傾訴的對象，在一邊寫故事、一邊成長的同時，如果能夠對
+                        一些人產生幫助，那就太棒了！
+                    </p>
+
+                    <p>
+                        在工作之餘，重新學習一個人生活，培養自己的興趣、找到讓自己快樂的方式。在目前的人生道路上，目前的興趣分佈大概如右所示，也許隨著時間的變化會有所更動！
+                    </p>
+                </div>
+
+                <div class="col-six tab-full right">
+                    <h3>興趣指數</h3>
+
+                    <ul class="skill-bars">
+                        <li>
+                        <div class="progress percent100"><span>100%</span></div>
+                        <strong>機器學習</strong>
+                        </li>
+                        <li>
+                        <div class="progress percent85"><span>90%</span></div>
+                        <strong>閱讀</strong>
+                        </li>
+                        <li>
+                        <div class="progress percent70"><span>70%</span></div>
+                        <strong>網頁開發</strong>
+                        </li>
+                        <li>
+                        <div class="progress percent95"><span>95%</span></div>
+                        <strong>自彈自唱</strong>
+                        </li>
+                        <li>
+                        <div class="progress percent75"><span>75%</span></div>
+                        <strong>料理</strong>
+                        </li>   
+                        <li>
+                        <div class="progress percent90"><span>90%</span></div>
+                        <strong>寫作、筆記術</strong>
+                        </li>   
+                    </ul>
+                </div>
+
+            </div> <!-- end about-content -->
+            <!--
+            <div class="row about-content about-content--buttons">
+
+                <div class="col-six tab-full left">
+                    <a href="#0" class="btn btn--primary full-width">Download My CV</a>
+                </div>
+                <div class="col-six tab-full right">
+                    <a href="#0" class="btn full-width">Hire Me Now</a>
+                </div>
+
+            </div>
+            -->
+            <!-- end about-content buttons -->
+
+            <div class="row about-content about-content--timeline">
+
+                <div class="col-full text-center">
+                    <h3>My Work Experience.</h3>
+                </div>
+                
+                <div class="col-six tab-full left">
+                    <div class="timeline">
+
+                        <div class="timeline__block">
+                            <div class="timeline__bullet"></div>
+                            <div class="timeline__header">
+                                <p class="timeline__timeframe">May 2020 - Present</p>
+                                <h3>Wistron Corp. 緯創資通</h3>
+                                <h5>Data Engineer</h5>
+                            </div>
+                            <div class="timeline__desc">
+                                <p>
+                                    研究當前知名的 Pre-training Language Model，將其整合為企業內部泛用模組，並且嘗試將其套用於醫囑、病理報告等醫療文字分析。
+                                </p>
+                            </div>
+                        </div> <!-- end timeline__block -->
+
+                        <div class="timeline__block">
+                            <div class="timeline__bullet"></div>
+                            <div class="timeline__header">
+                                <p class="timeline__timeframe">June 2018 - July 2019</p>
+                                <h3>National Sun Yat-Sen University</h3>
+                                <h5>Master of Information Management</h5>
+                            </div>
+                            <div class="timeline__desc">	
+                                <p>研究領域為文字探勘及跨語言情緒分析。論文 "An approach to Cross-Lingual Sentiment Lexicon Construction" 的共同作者，
+                                    該論文被登錄在 IEEE Big Data Congress 2019。 曾擔任「社群媒體分析」、「資料庫系統」課程助教。
+                                </p>
+                            </div>
+                        </div> <!-- end timeline__block -->
+
+                    </div> <!-- end timeline -->
+                </div> <!-- end left -->
+
+                <div class="col-six tab-full right">
+                    <div class="timeline">
+
+                        <div class="timeline__block">
+                            <div class="timeline__bullet"></div>
+                            <div class="timeline__header">
+                                <p class="timeline__timeframe">Sep. 2015 - June 2018</p>
+                                <h3>National Sun Yat-Sen University</h3>
+                                <h5>Bachelor of Information Management</h5>
+                            </div>
+                            <div class="timeline__desc">
+                                <p>大學時期擔任系學會副會長、公關長，並於系上多場重要活動擔任主持人。與系上同學共同開發Android App 獲得2017大專院校資訊應用服務競賽佳作。</p>
+                            </div>
+                        </div> <!-- end timeline__block -->
+
+                    </div> <!-- end timeline -->
+                </div> <!-- end right -->
+
+            </div> <!-- end about-content timeline -->
+
+        </section> <!-- end about -->
+        
+
+        <!-- works
+        ================================================== -->
+        <section id="blog" class="s-works target-section">
+
+            <div class="row narrow section-intro has-bottom-sep">
+                <div class="col-full">
+                    <h3>Portfolio</h3>
+                    <h1>See My Latest Blogs.</h1>
+                    
+                    <p class="lead">至今的生活點滴、書評心得<br>分享我所熱愛的事物、整理過往的人生經驗。</p>
+                </div>
+            </div>
+
+            <div class="row masonry-wrap">
+                <div class="masonry">
+                    <div class="masonry__brick">
+                        <div class="item-folio">
+
+                            <div class="item-folio__thumb">
+                                <a href="https://minglunwu.github.io/theme/images/portfolio/research_xlnet.jpeg" class="thumb-link" data-size="1050x700">
+                                    <img src="https://minglunwu.github.io/theme/images/portfolio/research_xlnet.jpeg"
+                                        srcset="https://minglunwu.github.io/theme/images/portfolio/research_xlnet.jpeg 1x, https://minglunwu.github.io/theme/images/portfolio/research_xlnet.jpeg 2x" alt="">
+                                    <span class="shadow-overlay"></span>
+                                </a>
+                            </div>
+
+                            <div class="item-folio__text">
+                                <h3 class="item-folio__title">
+                                    語言模型的豹子頭 - XLNet
+                                </h3>
+                                <p class="item-folio__cat">
+                                    論文筆記
+                                </p>
+                            </div>
+
+                            <a href="https://medium.com/@allen6997535/語言模型的豹子頭-xlnet-786542b78f2a" class="item-folio__project-link" title="Project link">
+                                <i class="im im-link"></i>
+                            </a>
+
+                            <div class="item-folio__caption">
+                                <p> 語言模型的豹子頭，不管是哪種流派的優點，我全都要！
+                                    <a href="https://medium.com/@allen6997535/語言模型的豹子頭-xlnet-786542b78f2a" target="_blank">點我前往文章</a>
+                                </p>
+                            </div>
+
+                        </div> <!-- end item-folio -->
+                    </div> <!-- end masonry__brick -->
+
+                    <div class="masonry__brick">
+                        <div class="item-folio">
+
+                            <div class="item-folio__thumb">
+                                <a href="https://minglunwu.github.io/theme/images/portfolio/person_chaiyi.png" class="thumb-link" data-size="1050x700">
+                                    <img src="https://minglunwu.github.io/theme/images/portfolio/person_chaiyi.png"
+                                        srcset="https://minglunwu.github.io/theme/images/portfolio/person_chaiyi.png 1x, https://minglunwu.github.io/theme/images/portfolio/person_chaiyi.png 2x" alt="">
+                                    <span class="shadow-overlay"></span>
+                                </a>
+                            </div>
+
+                            <div class="item-folio__text">
+                                <h3 class="item-folio__title">
+                                    當兵前你該知道的事情 - 2019嘉義中坑
+                                </h3>
+                                <p class="item-folio__cat">
+                                    人生經驗
+                                </p>
+                            </div>
+
+                            <a href="https://medium.com/@allen6997535/軍事訓練役100梯經驗分享-嘉義中坑新訓-b85ea1e9fbf4" class="item-folio__project-link" title="Project link">
+                                <i class="im im-link"></i>
+                            </a>
+
+                            <div class="item-folio__caption">
+                                <p>就算給你一百萬，你也不願意再當一次兵。就算給你一百萬，你也不願意賣掉當兵的回憶。
+                                    <a href="https://medium.com/@allen6997535/軍事訓練役100梯經驗分享-嘉義中坑新訓-b85ea1e9fbf4" target="_blank">點我前往文章</a>
+                                </p>
+                            </div>
+
+                        </div> <!-- end item-folio -->
+                    </div> <!-- end masonry__brick -->
+
+                    <div class="masonry__brick">
+                        <div class="item-folio">
+
+                            <div class="item-folio__thumb">
+                                <a href="https://minglunwu.github.io/theme/images/portfolio/book.png" class="thumb-link" title="Lighthouse" data-size="1050x700">
+                                    <img src="https://minglunwu.github.io/theme/images/portfolio/book.png" 
+                                        srcset="https://minglunwu.github.io/theme/images/portfolio/book.png" alt="">
+                                    <span class="shadow-overlay"></span>
+                                </a>
+                            </div>
+
+                            <div class="item-folio__text">
+                                <h3 class="item-folio__title">
+                                    研究所時期的經驗回顧、工具分享
+                                </h3>
+                                <p class="item-folio__cat">
+                                    人生經驗、工具分享
+                                </p>
+                            </div>
+
+                            <a href="https://www.behance.net/" class="item-folio__project-link" title="Project link">
+                                <i class="im im-link"></i>
+                            </a>
+
+                            <div class="item-folio__caption">
+                                <p>研究所是人生中最快樂也最不快樂的時期。是最自在也最不健康的時期。 
+                                    <a href="https://medium.com/@allen6997535/研究所時期的經驗回顧-工具分享-5180721c9ca8" target="_blank">點我前往文章</a>
+                                </p>
+                            </div>
+
+                        </div> <!-- end item-folio -->
+                    </div> <!-- end masonry__brick -->
+                    
+                    <div class="masonry__brick">
+                        <div class="item-folio">
+
+                            <div class="item-folio__thumb">
+                                <a href="https://minglunwu.github.io/theme/images/portfolio/book_deeplearning.jpeg" class="thumb-link" data-size="900x1050">
+                                    <img src="https://minglunwu.github.io/theme/images/portfolio/book_deeplearning.jpeg" 
+                                        srcset="https://minglunwu.github.io/theme/images/portfolio/book_deeplearning.jpeg 1x, https://minglunwu.github.io/theme/images/portfolio/book_deeplearning.jpeg 2x" alt="">
+                                    <span class="shadow-overlay"></span>
+                                </a>
+                            </div>
+
+                            <div class="item-folio__text">
+                                <h3 class="item-folio__title">
+                                    【好書推薦】— 我們都該學習關於「學習」這件事情
+                                </h3>
+                                <p class="item-folio__cat">
+                                    Book Review
+                                </p>
+                            </div>
+
+                            <a href="https://medium.com/@allen6997535/好書推薦-我們都該學習關於-學習-這件事情-3126508cefdb" class="item-folio__project-link" title="Project link">
+                                <i class="im im-link"></i>
+                            </a>
+
+                            <span class="item-folio__caption">
+                                <p>學習是一輩子的事情，正確的學習方式能提升自己的學習效果。
+                                    <a href="https://medium.com/@allen6997535/好書推薦-我們都該學習關於-學習-這件事情-3126508cefdb" target="_blank">點我前往文章</a>
+                                </p>
+                            </span>
+
+                        </div> <!-- end item-folio -->
+                    </div> <!-- end masonry__brick -->
+
+                    <div class="masonry__brick">
+                        <div class="item-folio">
+
+                            <div class="item-folio__thumb">
+                                <a href="https://minglunwu.github.io/theme/images/portfolio/book_product.png" class="thumb-link" data-size="900x1050">
+                                    <img src="https://minglunwu.github.io/theme/images/portfolio/book_product.png" 
+                                        srcset="https://minglunwu.github.io/theme/images/portfolio/book_product.png 1x, https://minglunwu.github.io/theme/images/portfolio/book_product.png 2x" alt="">
+                                    <span class="shadow-overlay"></span>
+                                </a>
+                            </div>
+
+                            <div class="item-folio__text">
+                                <h3 class="item-folio__title">
+                                    【好書推薦】- 最有生產力的一年
+                                </h3>
+                                <p class="item-folio__cat">
+                                    Book Review
+                                </p>
+                            </div>
+
+                            <a href="https://medium.com/@allen6997535/好書推薦-最有生產力的一年-a0b7ea1a5772" class="item-folio__project-link" title="Project link">
+                                <i class="im im-link"></i>
+                            </a>
+
+                            <span class="item-folio__caption">
+                                <p>何謂生產力? 如何衡量自己的生產力？ 如何提升生產力？ 
+                                    <a href="https://medium.com/@allen6997535/好書推薦-最有生產力的一年-a0b7ea1a5772" target="_blank">點我前往文章</a>
+                                </p>
+                            </span>
+
+                        </div> <!-- end item-folio -->
+                    </div> <!-- end masonry__brick -->
+
+                    <div class="masonry__brick">
+                        <div class="item-folio">
+
+                            <div class="item-folio__thumb">
+                                <a href="https://minglunwu.github.io/theme/images/portfolio/person_taipei.png" class="thumb-link" data-size="1050x700">
+                                    <img src="https://minglunwu.github.io/theme/images/portfolio/person_taipei.png"
+                                        srcset="https://minglunwu.github.io/theme/images/portfolio/person_taipei.png 1x, https://minglunwu.github.io/theme/images/portfolio/person_taipei.png 2x" alt="">
+                                    <span class="shadow-overlay"></span>
+                                </a>
+                            </div>
+
+                            <div class="item-folio__text">
+                                <h3 class="item-folio__title">
+                                    不一樣的國軍單位 - 2019北訓中心
+                                </h3>
+                                <p class="item-folio__cat">
+                                    人生經驗
+                                </p>
+                            </div>
+
+                            <a href="https://medium.com/@allen6997535/不一樣的國軍單位-2019-北訓中心-fd2427025b3b" class="item-folio__project-link" title="Project link">
+                                <i class="im im-link"></i>
+                            </a>
+
+                            <span class="item-folio__caption">
+                                <p>
+                                    上輩子一定是燒了好香，才會有機會能進到北訓中心。
+                                    <a href="https://medium.com/@allen6997535/不一樣的國軍單位-2019-北訓中心-fd2427025b3b" target="_blank">點我前往文章</a>
+                                </p>
+                            </span>
+
+                        </div> <!-- end item-folio -->
+                    </div> <!-- end masonry__brick -->
+
+                    <div class="masonry__brick">
+                        <div class="item-folio">
+                            <div class="item-folio__thumb">
+                                <a href="https://minglunwu.github.io/theme/images/portfolio/person_note.png" class="thumb-link" data-size="1050x700">
+                                    <img src="https://minglunwu.github.io/theme/images/portfolio/person_note.png"
+                                        srcset="https://minglunwu.github.io/theme/images/portfolio/person_note.png 1x, https://minglunwu.github.io/theme/images/portfolio/person_note.png 2x" alt="">
+                                    <span class="shadow-overlay"></span>
+                                </a>
+                            </div>
+
+                            <div class="item-folio__text">
+                                <h3 class="item-folio__title">
+                                    透過筆記，留下存在的足跡
+                                </h3>
+                                <p class="item-folio__cat">
+                                    個人經驗
+                                </p>
+                            </div>
+
+                            <a href="https://medium.com/@allen6997535/透過筆記-留下存在的足跡-f280b04c995e" class="item-folio__project-link" title="Project link">
+                                <i class="im im-link"></i>
+                            </a>
+
+                            <span class="item-folio__caption">
+                                <p>
+                                    在科技日新月異的年代，世界的步調隨之加快，快到難以留下自己存在的痕跡。
+                                    <a href="https://medium.com/@allen6997535/透過筆記-留下存在的足跡-f280b04c995e" target="_blank">點我前往文章</a>
+                                </p>
+                            </span>
+
+                        </div> <!-- end item-folio -->
+                    </div> <!-- end masonry__brick -->
+
+                    <div class="masonry__brick">
+                        <div class="item-folio">
+
+                            <div class="item-folio__thumb">
+                                <a href="https://minglunwu.github.io/theme/images/portfolio/tool_fundnotification.png" class="thumb-link" data-size="1050x700">
+                                    <img src="https://minglunwu.github.io/theme/images/portfolio/tool_fundnotification.png"
+                                        srcset="https://minglunwu.github.io/theme/images/portfolio/tool_fundnotification.png 1x, https://minglunwu.github.io/theme/images/portfolio/tool_fundnotification.png 2x" alt="">
+                                    <span class="shadow-overlay"></span>
+                                </a>
+                            </div>
+
+                            <div class="item-folio__text">
+                                <h3 class="item-folio__title">
+                                    自己動手做 - 基富通基金通知
+                                </h3>
+                                <p class="item-folio__cat">
+                                    Tool
+                                </p>
+                            </div>
+
+                            <a href="https://medium.com/@allen6997535/自己動手做-基富通基金通知-f8f27f8f1cbc" class="item-folio__project-link" title="Project link">
+                                <i class="im im-link"></i>
+                            </a>
+
+                            <span class="item-folio__caption">
+                                <p>
+                                    透過Beautiful Soup, Flask 撰寫的小工具，能自動從基富通網站取得屬於你的基金現況，透過電子郵件自動提醒你。
+                                    <a href="https://medium.com/@allen6997535/自己動手做-基富通基金通知-f8f27f8f1cbc" target="_blank">點我前往文章</a>
+                                </p>
+                            </span>
+
+                        </div> <!-- end item-folio -->
+                    </div> <!-- end masonry__brick -->
+
+                    <div class="masonry__brick">
+                        <div class="item-folio">
+
+                            <div class="item-folio__thumb">
+                                <a href="https://minglunwu.github.io/theme/images/portfolio/tool_notion.png" class="thumb-link" data-size="1050x700">
+                                    <img src="https://minglunwu.github.io/theme/images/portfolio/tool_notion.png"
+                                        srcset="https://minglunwu.github.io/theme/images/portfolio/tool_notion.png 1x, https://minglunwu.github.io/theme/images/portfolio/tool_notion.png 2x" alt="">
+                                    <span class="shadow-overlay"></span>
+                                </a>
+                            </div>
+
+                            <div class="item-folio__text">
+                                <h3 class="item-folio__title">
+                                    全方位的數位管理工具 - Notion.so
+                                </h3>
+                                <p class="item-folio__cat">
+                                    個人經驗、Tool
+                                </p>
+                            </div>
+
+                            <a href="https://medium.com/@allen6997535/全方位的數位管理工具-notion-so-f4fd05fd66ae" class="item-folio__project-link" title="Project link">
+                                <i class="im im-link"></i>
+                            </a>
+
+                            <span class="item-folio__caption">
+                                <p>
+                                    全方位的專案管理、筆記統整、整合完備的數位工具!
+                                    <a href="https://medium.com/@allen6997535/全方位的數位管理工具-notion-so-f4fd05fd66ae" target="_blank">點我前往文章</a>
+                                </p>
+                            </span>
+
+                        </div> <!-- end item-folio -->
+                    </div> <!-- end masonry__brick -->
+
+                    <div class="masonry__brick">
+                        <div class="item-folio">
+
+                            <div class="item-folio__thumb">
+                                <a href="https://minglunwu.github.io/theme/images/portfolio/tool_hexo.png" class="thumb-link" data-size="1050x700">
+                                    <img src="https://minglunwu.github.io/theme/images/portfolio/tool_hexo.png"
+                                        srcset="https://minglunwu.github.io/theme/images/portfolio/tool_hexo.png 1x, https://minglunwu.github.io/theme/images/portfolio/tool_hexo.png 2x" alt="">
+                                    <span class="shadow-overlay"></span>
+                                </a>
+                            </div>
+
+                            <div class="item-folio__text">
+                                <h3 class="item-folio__title">
+                                    建立一個屬於自己的(程式)部落格
+                                </h3>
+                                <p class="item-folio__cat">
+                                    個人經驗、Tool
+                                </p>
+                            </div>
+
+                            <a href="https://medium.com/@allen6997535/建立一個屬於自己的-程式-部落格-4d295ed96236" class="item-folio__project-link" title="Project link">
+                                <i class="im im-link"></i>
+                            </a>
+
+                            <span class="item-folio__caption">
+                                <p>
+                                    分享如何透過Hexo, Github Page來建立免費的個人網頁。
+                                    <a href="https://medium.com/@allen6997535/建立一個屬於自己的-程式-部落格-4d295ed96236" target="_blank">點我前往文章</a>
+                                </p>
+                            </span>
+
+                        </div> <!-- end item-folio -->
+                    </div> <!-- end masonry__brick -->
+
+                </div>
+            </div> <!-- end masonry -->
+
+        </section> <!-- end works -->
 
 
-</li>
-</ul>
-</li>
-<li>
-<h4><strong>(training/validation/test)_epoch_end(self, outputs)</strong>:</h4>
-<ul>
-<li>定義了「不同時期訓練完一個epoch時需要執行的事項」，舉例來說可能會在Validation的一個Epoch結束時計算所有Step平均的Loss是多少。</li>
-<li><code>outputs</code> 參數為「當前Epoch中所有Step的{"loss": loss, "logs": logs}」(也就是每一個self.training_step()的回傳值)。</li>
-<li>
-<p>以下範例示範了在「每一個Validation Epoch結束後計算Average Loss」。</p>
-<p>:::python
-def validation_epoch_end(self, outputs):
-        avg_loss = torch.stack([x['val_loss'] for x in outputs]).mean()
-        avg_val_acc = torch.stack([x['val_acc'] for x in outputs]).mean()</p>
-<div class="highlight"><pre><span></span><span class="err">    tensorboard_logs = {&#39;val_loss&#39;: avg_loss, &#39;avg_val_acc&#39;: avg_val_acc}</span>
-<span class="err">    return {&#39;avg_val_loss&#39;: avg_loss, &#39;progress_bar&#39;: tensorboard_logs}</span>
-</pre></div>
+
+        <!-- testimonials
+        ================================================== -->
+        <!--
+        <div class="s-testimonials">
+
+            <div class="overlay"></div>
+
+            <div class="row testimonials-header">
+                <div class="col-full">
+                    <h1 class="h02">What People Say.</h1>
+                </div>
+            </div>
+
+            <div class="row testimonials">
+
+                <div class="col-full testimonials__slider">
+
+                    <div class="testimonials__slide">
+                        <img src="images/avatars/user-01.jpg" alt="Author image" class="testimonials__avatar">
+                        <p>Qui ipsam temporibus quisquam velMaiores eos cumque distinctio nam accusantium ipsum. 
+                        Laudantium quia consequatur molestias delectus culpa facere hic dolores aperiam. Accusantium quos qui praesentium corpori.</p>
+                        <div class="testimonials__author h06">
+                            Tim Cook
+                            <span>CEO, Apple</span>
+                        </div>
+                    </div>
+
+                    <div class="testimonials__slide">
+                        <img src="images/avatars/user-05.jpg" alt="Author image" class="testimonials__avatar">
+                        <p>Excepturi nam cupiditate culpa doloremque deleniti repellat. Veniam quos repellat voluptas animi adipisci.
+                        Nisi eaque consequatur. Quasi voluptas eius distinctio. Atque eos maxime. Qui ipsam temporibus quisquam vel.</p>
+                        <div class="testimonials__author h06">
+                            Sundar Pichai
+                            <span>CEO, Google</span>
+                        </div>
+                    </div>
+
+                    <div class="testimonials__slide">
+                        <img src="images/avatars/user-02.jpg" alt="Author image" class="testimonials__avatar">
+                        <p>Repellat dignissimos libero. Qui sed at corrupti expedita voluptas odit. Nihil ea quia nesciunt. Ducimus aut sed ipsam.  
+                        Autem eaque officia cum exercitationem sunt voluptatum accusamus. Quasi voluptas eius distinctio.</p>
+                        <div class="testimonials__author h06">
+                            Satya Nadella
+                            <span>CEO, Microsoft</span>
+                        </div>
+                    </div>
+                    
+                </div> --><!-- end testimonials__slider -->
+
+            </div> <!-- end testimonials -->
+
+        </div> <!-- end s-testimonials -->
 
 
-</li>
-</ul>
-</li>
-<li>
-<h4>統整版本:</h4>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">PytorchLightningModel</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span> <span class="c1"># 這邊一定要繼承pl.LightningModule</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># 初始化時可以將基本設定傳入。</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ln1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">768</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ln2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <!-- blog
+        ================================================== -->
+        <section id="note" class="s-blog target-section">
+            <div class="row narrow section-intro has-bottom-sep">
+                <div class="col-full">
+                    <h3>Notes</h3>
+                    <h1>Latest From The Notes</h1>
+                    <p class="lead">
+                        The faintest ink is more powerful than the strongest memory. <br>在學習的過程中，我相信如果能把所見所得記錄下來，
+                        在未來的某一天，會有一個人，也許是我自己、也許是遇到相同問題的某個人，能藉此得到所需的知識。
+                    </p>
+                </div>
+            </div>
 
-    <span class="k">def</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># 此方法會在初始化後優先執行。 所以可以在此方法中先將會用到的資料都讀取進來.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">train_set</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="s2">&quot;train&quot;</span><span class="p">)</span> <span class="c1"># read_data是自定義的讀取資料Method. 可以按照自己需求調整</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">test_set</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">val_set</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="s2">&quot;validation&quot;</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;===== Data is ready... =====&quot;</span><span class="p">)</span>
+            <div class="row blog-content">
+                
+                <div class="col-full">
+                    <div class="blog-list block-1-2 block-tab-full">
+                        <article class="col-block">
+                                    
+                            <div class="blog-date">
+                                <a href="#">2020- 4-16 (四)</a>
+                            </div>  
+                            <img src="https://images.unsplash.com/photo-1500674425229-f692875b0ab7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80">
+                            <h2 class="h01"><a href="https://minglunwu.github.io/notes/2020/20200416.html">Pytorch Lightning 入門筆記</a></h2>
+                            <p>
+                                <p>Pytorch Lightning 是Pytorch的一種開發框架，目的是在撰寫Deep Learning的模型時，將注意力放在模型本身即可，由此框架來代為處理常見且繁瑣的工作(例如:Optimze、update parameter、check log、save checkpoints等等）。</p>
+                            </p>
+                            <div class="blog-cat">
+                                    <a href="blog.html">Pytorch</a>
+                            </div>
+                        </article>
+                    </div> <!-- end blog-list -->
+                    
 
-    <span class="k">def</span> <span class="nf">configure_optimizer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="c1"># 自動訓練時會呼叫此方法來獲取Optimizer.</span>
-        <span class="k">return</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span> <span class="c1"># 這邊注意要調整的參數是`self.parameters()`</span>
+                </div> <!-- end col-full -->
+            </div> <!-- end blog-content -->
 
-    <span class="c1"># 以下三個方法則是設定進行訓練及驗證時所要使用的Data Loader格式。</span>
-    <span class="k">def</span> <span class="nf">train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_set</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        </section> <!-- end s-blog -->
 
-    <span class="k">def</span> <span class="nf">val_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_set</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <!-- s-stats
+        ================================================== -->
+        <!--
+        <section id="stats" class="s-stats">
+            <div class="row block-1-4 block-tab-1-2 block-mob-full stats">
 
-    <span class="k">def</span> <span class="nf">test_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_set</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <div class="col-block stats__col ">
+                    <div class="stats__count">
+                        
+                    </div>
+                    <h4>Page View</h4>
+                </div>
+                
+                <div class="col-block stats__col">
+                    <div class="stats__count">
+                        1500
+                    </div>
+                    <h4>Cups of Coffee</h4>
+                </div>
+                <div class="col-block stats__col stats__col--highlight">
+                    <div class="stats__upsign">
+                        <a href="#"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                    </div>
+                    <div class="stats__count">
+                        110
+                    </div>
+                    <h4>Projects Completed</h4>
+                </div>
+                <div class="col-block stats__col">
+                    <div class="stats__count">
+                        101
+                    </div>
+                    <h4>Happy Clients</h4> 
+                </div>
+                -->
 
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span> <span class="c1"># 定義模型在forward propagation時如何進行.</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ln1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ln2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">output</span>
+            </div>
+        </section> <!-- end s-stats -->
+        <!-- footer
+        ================================================== -->
+        <footer>
+            <div class="row">
+                <div class="col-full">
 
-    <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span> <span class="c1"># 定義訓練過程的Step要如何進行</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span> <span class="c1"># 從self.train_dataloader()的Data Loader取一個batch出來。</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-        <span class="n">logs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">}</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span><span class="n">loss</span><span class="p">,</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span><span class="n">logs</span><span class="p">}</span>
+                    <div class="footer-logo">
+                        <a class="footer-site-logo" href="#0"><img src="https://minglunwu.github.io/theme/images/Logo.png" alt="Homepage"></a>
+                    </div>
+                    <ul class="footer-social">
+                        <li>
+                            <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                        </li>
+                        <li>
+                            <a href="https://medium.com/@allen6997535" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                        </li>
+                        <li>
+                            <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                        </li>
+                        <li>
+                            <a href="https://www.linkedin.com/in/allen-ming-lun-wu-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                        </li>
+                        <li>
+                            <a href="https://www.instagram.com/whoisfater0724/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                        </li>
+                    </ul>
+                        
+                </div>
+            </div>
 
-    <span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span> <span class="c1"># 定義Validation如何進行，以這邊為例就再加上了計算Acc.</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
-        <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <div class="row footer-bottom">
 
-        <span class="c1"># acc</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">y_hat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">val_acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_hat</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
-        <span class="n">val_acc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">val_acc</span><span class="p">)</span>
+                <div class="col-twelve">
+                    <div class="copyright">
+                        <span>© Copyright Hola 2017</span> 
+                        <span>Design by <a href="https://www.styleshout.com/">styleshout</a></span>	
+                    </div>
 
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s1">&#39;val_acc&#39;</span><span class="p">:</span> <span class="n">val_acc</span><span class="p">}</span>
+                    <div class="go-top">
+                    <a class="smoothscroll" title="Back to Top" href="#top"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                    </div>
+                </div>
 
-    <span class="k">def</span> <span class="nf">validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span> <span class="c1"># 在Validation的一個Epoch結束後，計算平均的Loss及Acc.</span>
-        <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-        <span class="n">avg_val_acc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;val_acc&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+            </div> <!-- end footer-bottom -->
 
-        <span class="n">tensorboard_logs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="s1">&#39;avg_val_acc&#39;</span><span class="p">:</span> <span class="n">avg_val_acc</span><span class="p">}</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;avg_val_loss&#39;</span><span class="p">:</span> <span class="n">avg_loss</span><span class="p">,</span> <span class="s1">&#39;progress_bar&#39;</span><span class="p">:</span> <span class="n">tensorboard_logs</span><span class="p">}</span>
-
-    <span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">):</span> <span class="c1">#定義 Test 階段</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
-        <span class="n">logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-
-        <span class="c1"># acc</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">y_hat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">val_acc</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_hat</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">cpu</span><span class="p">())</span>
-        <span class="n">val_acc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">val_acc</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;test_acc&#39;</span><span class="p">:</span> <span class="n">val_acc</span><span class="p">}</span>
-</pre></div>
-
-
-</li>
-</ul>
-<hr>
-<h1>四、透過Trainer自動訓練</h1>
-<h2>Training</h2>
-<p>在你重新將程式碼改寫為<code>Pytorch Lightning</code>格式後，輕鬆的部分來了！接下來我們只需要透過<code>Trainer</code> Class即可自動處理訓練。我們看看以下的範例:</p>
-<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">PytorchLightningModel</span><span class="p">(</span><span class="n">param1</span><span class="o">=</span><span class="mi">768</span><span class="p">,</span> <span class="n">param2</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># 自行封裝成Pytorch Lightning的模型</span>
-
-<span class="c1"># Trainer 有不同的參數可以調整訓練時的行為</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">()</span> <span class="c1"># 使用CPU</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># 使用GPU</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">fast_dev_run</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#訓練時，使用單一個batch作為ㄧ個Epoch，目的是快速的確認當前的模型設置有無結構上的問題(快速地跑完Train -&gt; Validation -&gt; Test)。</span>
-
-<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="c1"># 呼叫.fit() 就會自動進行Model的training step及validation step.</span>
-</pre></div>
+        </footer> <!-- end footer -->
 
 
-<p>原先從CPU切換為GPU，可能需要針對所有的變數、模型進行裝置的變更。<strong>但現在只需要調整Trainer的<code>gpus</code>參數即可</strong>。</p>
-<p>而訓練時如果需要以dry-run的方式，確定Model從頭到尾的結構沒有問題，現在也只需要設定<code>fast_dev_run</code>即可。</p>
-<p>另外Trainer Class也針對了「使用多張GPU」、「accumulate_grad_batches」提供參數進行調整，細節的部分可以參考官方網站。 <a href="https://pytorch-lightning.readthedocs.io/en/latest/trainer.html">連結在此</a></p>
-<h2>Evaluation / Inference</h2>
-<p>在訓練完模型後，你也能夠載入先前訓練好的Checkpoint File並且重新進行Evaluation/Inference.</p>
-<div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">PytorchLightningModel</span><span class="p">(</span><span class="n">param1</span><span class="o">=</span><span class="mi">768</span><span class="p">,</span> <span class="n">param2</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="c1"># 自行封裝成Pytorch Lightning的模型</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">resume_from_checkpoint</span><span class="o">=</span><span class="s2">&quot;PATH&quot;</span><span class="p">,</span> <span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">trainer</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-</pre></div>
+        <!-- photoswipe background
+        ================================================== -->
+        <div aria-hidden="true" class="pswp" role="dialog" tabindex="-1">
+
+            <div class="pswp__bg"></div>
+            <div class="pswp__scroll-wrap">
+
+                <div class="pswp__container">
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                    <div class="pswp__item"></div>
+                </div>
+
+                <div class="pswp__ui pswp__ui--hidden">
+                    <div class="pswp__top-bar">
+                        <div class="pswp__counter"></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button> <button class="pswp__button pswp__button--share" title=
+                        "Share"></button> <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button> <button class="pswp__button pswp__button--zoom" title=
+                        "Zoom in/out"></button>
+                        <div class="pswp__preloader">
+                            <div class="pswp__preloader__icn">
+                                <div class="pswp__preloader__cut">
+                                    <div class="pswp__preloader__donut"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                        <div class="pswp__share-tooltip"></div>
+                    </div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button> <button class="pswp__button pswp__button--arrow--right" title=
+                    "Next (arrow right)"></button>
+                    <div class="pswp__caption">
+                        <div class="pswp__caption__center"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div><!-- end photoSwipe background -->
+
+        <div id="preloader">
+            <div id="loader"></div>
+        </div>
 
 
-<hr>
-<h1>五、後記</h1>
-<p>從原生Pytorch 轉移到 <code>Pytorch Lightning</code>並不需要花費過多成本來學習新的語法，其概念只是將程式碼「重新組織」，將對應的程式碼放置到特定的Method中，如此一來在進行訓練時，將能省下許多工程面的實作時間、程式碼也會變得簡潔許多。</p>                </article>
-            </aside><!-- /#featured -->
-        <section id="extras" class="body">
-                <div class="blogroll">
-                        <h2>links</h2>
-                        <ul>
-                            <li><a href="http://getpelican.com/">Pelican</a></li>
-                            <li><a href="http://python.org/">Python.org</a></li>
-                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
-                            <li><a href="#">You can modify those links in your config file</a></li>
-                        </ul>
-                </div><!-- /.blogroll -->
-                <div class="social">
-                        <h2>social</h2>
-                        <ul>
-                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+        <!-- Java Script
+        ================================================== -->
+        <script src="https://minglunwu.github.io/theme/js/jquery-3.2.1.min.js"></script>
+        <script src="https://minglunwu.github.io/theme/js/plugins.js"></script>
+        <script src="https://minglunwu.github.io/theme/js/main.js"></script>
+    
 
-                            <li><a href="#">You can add links in your config file</a></li>
-                            <li><a href="#">Another social link</a></li>
-                        </ul>
-                </div><!-- /.social -->
-        </section><!-- /#extras -->
-
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
-
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
-    <script type="text/javascript">
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-161863471-1', 'auto');
-    ga('send', 'pageview');
-    </script>
 </body>
+
 </html>
