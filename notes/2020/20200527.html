@@ -124,7 +124,7 @@
 <li>模型架構 (Ex: 使用特定Fine-tune)</li>
 </ol>
 <p>我原先是透過 <code>Notion.so</code>的表格來簡單紀錄：</p>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20200527/notion.png"></p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200527/notion.png"></p>
 <p>然而每次模型訓練完成後，手動將結果填到表格上會遇到兩個心態上的掙扎:</p>
 <ol>
 <li>號稱在做人工智慧，居然還要手動將資料Key到表格中 xD</li>
@@ -281,15 +281,18 @@
 <li><code>mlflow.log_param("參數名稱", "參數值")</code>: 寫入特定參數的值。</li>
 <li>
 <p><code>mlflow.log_metric("指標名稱", "指標值")</code>: 寫入特定指標的值。</p>
-<p>:::python
-import mlflow</p>
-<p>with mlflow.start_run(): # 所有的mlflow寫入指令必須放置在 mlflow.start_run 範圍中. 
-    mlflow.log_param("batch_size", 16) # 寫入超參數
-    mlflow.log_param("learning_rate", 2e-5)
-    # ... 驗證程式碼 
-    # ...
-    # ...
-    mlflow.log_metric("train_acc", train_acc) # 寫入指標</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mlflow</span>
+
+<span class="k">with</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">start_run</span><span class="p">():</span> <span class="c1"># 所有的mlflow寫入指令必須放置在 mlflow.start_run 範圍中. </span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s2">&quot;batch_size&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 寫入超參數</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_param</span><span class="p">(</span><span class="s2">&quot;learning_rate&quot;</span><span class="p">,</span> <span class="mf">2e-5</span><span class="p">)</span>
+    <span class="c1"># ... 驗證程式碼 </span>
+    <span class="c1"># ...</span>
+    <span class="c1"># ...</span>
+    <span class="n">mlflow</span><span class="o">.</span><span class="n">log_metric</span><span class="p">(</span><span class="s2">&quot;train_acc&quot;</span><span class="p">,</span> <span class="n">train_acc</span><span class="p">)</span> <span class="c1"># 寫入指標</span>
+</pre></div>
+
+
 </li>
 <li>
 <p>我們可以將 <code>with mlflow.start_run()</code>視為一次「嘗試」，所以在此範圍內:</p>
@@ -311,7 +314,7 @@ import mlflow</p>
 
 
 <p>使用 <code>step</code>參數紀錄後，可以在 <code>tracking UI</code> 看到該指標的變化:</p>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20200527/mlflow_step.png"></p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200527/mlflow_step.png"></p>
 </li>
 </ul>
 </li>
@@ -366,11 +369,11 @@ mlflow ui <span class="c1"># 啟動 mlflow tracking dashboard</span>
 
 
 <p>執行成功後， <code>mlflow UI</code>預設會在 <code>127.0.0.1:5000</code>執行，進入後就能看到剛剛寫入的指標一目了然的以表格形式呈現:
-<img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20200527/mlflow_ui_2.png"></p>
+<img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200527/mlflow_ui_2.png"></p>
 <p>除了呈現清楚外，還能進行 filter，例如我想要 「min_leaf  = 3」且 「test_acc &gt; 0.44」的結果:
-<img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20200527/mlflow_filter.png"></p>
+<img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200527/mlflow_filter.png"></p>
 <p>或者是選定幾種不同的嘗試進行 compare ，內建有幾種簡單的圖表能讓你進行初步的視覺化:
-<img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20200527/mlflow_compare.png"></p>
+<img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200527/mlflow_compare.png"></p>
 <hr>
 <p><p id="後記"></p></p>
 <h1>後記</h1>
