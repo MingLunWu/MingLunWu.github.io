@@ -137,7 +137,7 @@
 <p>本篇筆記的重點 : </p>
 <ol>
 <li>在產生多種超參數的組合時，使用 <code>itertools</code> 套件來取代 <code>多層迴圈</code>，讓程式碼的執行能更簡潔。</li>
-<li>使用 <code>MLFlow</code>的 <code>tracking</code>功能協助管理，取代原先的<code>手動紀錄</code>：<ul>
+<li>使用 <code>MLFlow</code>的 <code>tracking</code>功能取代原先的<code>手動紀錄</code>，協助管理：<ul>
 <li>訓練前的參數配置</li>
 <li>訓練過程的資訊</li>
 <li>訓練後的各項指標</li>
@@ -162,10 +162,11 @@
 </pre></div>
 
 
-<p>當參數種類過多時，會需要過多層迴圈來進行參數組合。 而使用print方式列印模型結果，對於模型表現的管理相當不方便。
-透過MLFlow Tracking 管理後，可以透過 UI 介面得到下圖結果: </p>
+<p>當參數種類過多時，會需要過多層迴圈來進行參數組合。 而使用print方式列印模型結果，對於模型表現的管理相當不方便。</p>
+<p>透過MLFlow Tracking 管理後，可以透過 UI 介面得到下圖結果: </p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200527/mlflow_ui.png"></p>
-<p>此介面統整了所有的指標及超參數，所有實驗過程都一目了然。 除此之外，還能針對特定項目進行篩選 (例如我想找所有 <code>testing accuracy &gt; 0.75</code>的訓練)。</p>
+<p>此介面統整了所有的指標及超參數，所有實驗過程都一目了然。 </p>
+<p>除此之外，還能針對特定項目進行篩選 (例如我想找所有 <code>testing accuracy &gt; 0.75</code>的訓練)。</p>
 <hr>
 <p><p id="使用-itertools-簡化多層迴圈"></p></p>
 <h1>使用 itertools 簡化多層迴圈</h1>
@@ -206,12 +207,10 @@
 <h1>Introduction to MLFlow</h1>
 <p><code>MLFlow</code>是一個Open Source 的平台，主要用來管理 Machine Learning 相關的流程，優勢在與「深度學習的框架」是獨立的，不論使用哪一種深度學習框架(<code>Tensorflow</code>、<code>Pytorch</code>)，都能很方便地與<code>MLFlow</code>進行整合。</p>
 <p>MLFlow可以分為四項獨立的功能: </p>
-<ol>
-<li>MLFlow Tracking</li>
-<li>MLFlow Projects</li>
-<li>MLFlow Models</li>
-<li>Model Registry</li>
-</ol>
+<p><strong>1. MLFlow Tracking</strong>
+<strong>2. MLFlow Projects</strong>
+<strong>3. MLFlow Models</strong>
+<strong>4. Model Registry</strong></p>
 <p>各項功能是各自獨立的，你可以單獨使用其中一項功能，也能組合使用，本篇筆記將使用 <code>MLFlow Tracking</code>的功能來進行訓練指標的管理。</p>
 <hr>
 <p><p id="示範案例---傳統方式"></p></p>
