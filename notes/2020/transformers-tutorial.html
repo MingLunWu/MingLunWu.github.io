@@ -171,9 +171,11 @@
 <p>Tokenizer 的功用是將文字進行斷詞及轉換為Index，不同的 Pre-trained Language Model 所使用的斷詞方式以及 Index 也不盡相同，所以在使用前需要先進行「初始化」。</p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">BertTokenizer</span>
 
+<span class="c1"># 常見模型具有自己的Tokenizer</span>
 <span class="n">tokenizer_bert</span> <span class="o">=</span> <span class="n">BertTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;bert-base-cased&quot;</span><span class="p">)</span>
 
-<span class="n">tokenizer_other</span> <span class="o">=</span> <span class="n">BertTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;emilyalsentzer/Bio_ClinicalBERT&quot;</span><span class="p">)</span>
+<span class="c1"># AutoTokenizer 則是通用型</span>
+<span class="n">tokenizer_other</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;emilyalsentzer/Bio_ClinicalBERT&quot;</span><span class="p">)</span>
 </pre></div>
 
 
