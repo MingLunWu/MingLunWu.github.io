@@ -6,6 +6,22 @@
 <!--<![endif]-->
 
 <head>
+
+<style>
+    dr{
+        color:white;
+    }
+    section{
+        margin: auto;
+    }
+    .s-blog{
+        padding-top:0 !important;
+    }
+    article.col-block>img{
+        width: 410px;
+        height: 308px;
+    }
+</style>
     <!--- basic page needs
     ================================================== -->
     <meta charset="utf-8">
@@ -34,25 +50,140 @@
     ================================================== -->
     <link rel="shortcut icon" href="https://minglunwu.github.io/theme/favicon.ico" type="image/x-icon">
     <link rel="icon" href="https://minglunwu.github.io/theme/favicon.ico" type="image/x-icon">
+
 </head>
 
 <body id="top">
-<h1>Archives for MingLun's Blog</h1>
+    <!-- header
+    ================================================== -->
+    <header class="s-header">
 
-<dl>
-    <dt>四 18 6月 2020</dt>
-    <dd><a href="./notes/2020/transformers-tutorial.html">NLP深度學習不能不用的套件 - Transformers</a></dd>
-    <dt>三 27 5月 2020</dt>
-    <dd><a href="./notes/2020/20200527.html">不再被大量超參數及模型表現淹沒！使用MLFlow進行實驗管理</a></dd>
-    <dt>三 20 5月 2020</dt>
-    <dd><a href="./notes/2020/20200520.html">Python 平行化運算 - Multi-Processing</a></dd>
-    <dt>四 16 4月 2020</dt>
-    <dd><a href="./notes/2020/20200416.html">Pytorch Lightning 入門筆記</a></dd>
-    <dt>二 24 3月 2020</dt>
-    <dd><a href="./notes/2020/20200324.html">從零開始 - Pytorch 入門懶人包</a></dd>
-    <dt>三 18 3月 2020</dt>
-    <dd><a href="./notes/2020/20200318.html">安裝 Miniconda 以及 Pytorch</a></dd>
-</dl>
+        <div class="header-logo">
+            <a class="site-logo" href="index.html"><img src="https://minglunwu.github.io/theme/images/logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
+
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a class="smoothscroll"  href="https://minglunwu.github.io/#home" title="home">Home</a></li>
+                <li><a class="smoothscroll"  href="https://minglunwu.github.io/#about" title="about">About</a></li>
+                <li><a class="smoothscroll"  href="https://minglunwu.github.io/#blog" title="blog">Blogs</a></li>
+                <li><a class="smoothscroll"  href="https://minglunwu.github.io/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+    <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1545569341-9eb8b30979d9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80)">
+        <div class="row page-header__content narrow">
+            <article class="col-full">
+                <div class="page-header__info">
+                </div>
+                <h1 class="page-header__title">
+                    <a href="#0" title="">
+                        Archived Page
+                    </a>
+                </h1>
+            </article>
+        </div>
+    </div> <!-- end page-header -->
+    <section id="note" class="s-blog target-section">
+    <div class="row blog-content">
+        <div class="col-full">
+            <div class="blog-list block-1-2 block-tab-full">
+                <article class="col-block">
+                            
+                    <div class="blog-date">
+                        <a href="#">2020- 6-18 (四)</a>
+                    </div>  
+                    <img src="https://images.unsplash.com/photo-1554631995-6c22c6e729fe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=733&q=80">
+                    <h2 class="h01"><a href="https://minglunwu.github.io/notes/2020/transformers-tutorial.html">NLP深度學習不能不用的套件 - Transformers</a></h2>
+                    <p>
+                        <p>透過Transformers套件使用多種Pre-trained Language Model，並且實作Text Feature Extraction.</p>
+                    </p>
+                    <div class="blog-cat">
+                            <a href="blog.html">transformers</a>
+                    </div>
+                </article>
+                <article class="col-block">
+                            
+                    <div class="blog-date">
+                        <a href="#">2020- 5-27 (三)</a>
+                    </div>  
+                    <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80">
+                    <h2 class="h01"><a href="https://minglunwu.github.io/notes/2020/20200527.html">不再被大量超參數及模型表現淹沒！使用MLFlow進行實驗管理</a></h2>
+                    <p>
+                        <p>使用itertools搭配MLFlow Tracking 來進行多種參數組合的實驗管控。</p>
+                    </p>
+                    <div class="blog-cat">
+                            <a href="blog.html">MLFlow</a>
+                    </div>
+                </article>
+                <article class="col-block">
+                            
+                    <div class="blog-date">
+                        <a href="#">2020- 5-20 (三)</a>
+                    </div>  
+                    <img src="https://images.unsplash.com/photo-1509099652299-30938b0aeb63?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80">
+                    <h2 class="h01"><a href="https://minglunwu.github.io/notes/2020/20200520.html">Python 平行化運算 - Multi-Processing</a></h2>
+                    <p>
+                        <p>透過 Python 的 Multi-Processing Pool來進行平行處理，對於資料前處理的效率有很大的提升。</p>
+                    </p>
+                    <div class="blog-cat">
+                            <a href="blog.html">Python</a>
+                            <a href="blog.html">Parallelize</a>
+                    </div>
+                </article>
+                <article class="col-block">
+                            
+                    <div class="blog-date">
+                        <a href="#">2020- 4-16 (四)</a>
+                    </div>  
+                    <img src="https://images.unsplash.com/photo-1500674425229-f692875b0ab7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80">
+                    <h2 class="h01"><a href="https://minglunwu.github.io/notes/2020/20200416.html">Pytorch Lightning 入門筆記</a></h2>
+                    <p>
+                        <p>Pytorch Lightning 是Pytorch的一種開發框架，目的是在撰寫Deep Learning的模型時，將注意力放在模型本身即可，由此框架來代為處理常見且繁瑣的工作(例如:Optimze、update parameter、check log、save checkpoints等等）。</p>
+                    </p>
+                    <div class="blog-cat">
+                            <a href="blog.html">Pytorch</a>
+                    </div>
+                </article>
+                <article class="col-block">
+                            
+                    <div class="blog-date">
+                        <a href="#">2020- 3-24 (二)</a>
+                    </div>  
+                    <img src="https://images.unsplash.com/photo-1502951682449-e5b93545d46e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1566&q=80">
+                    <h2 class="h01"><a href="https://minglunwu.github.io/notes/2020/20200324.html">從零開始 - Pytorch 入門懶人包</a></h2>
+                    <p>
+                        <p>研究所時有花時間去了解Neural Network的概念，但卻一直沒有機會進行實作，最近有機會可以從頭開始學習Pytorch，把學習的過程整理記錄下來，希望想要快速上手Pytorch的人，可以透過這篇文章快速入門！</p>
+                    </p>
+                    <div class="blog-cat">
+                            <a href="blog.html">Pytorch</a>
+                    </div>
+                </article>
+                <article class="col-block">
+                            
+                    <div class="blog-date">
+                        <a href="#">2020- 3-18 (三)</a>
+                    </div>  
+                    <img src="https://images.unsplash.com/photo-1502951682449-e5b93545d46e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1566&q=80">
+                    <h2 class="h01"><a href="https://minglunwu.github.io/notes/2020/20200318.html">安裝 Miniconda 以及 Pytorch</a></h2>
+                    <p>
+                        <p>因為工作需要在GPU Server上安裝Pytorch，從頭紀錄需要的指令</p>
+                    </p>
+                    <div class="blog-cat">
+                            <a href="blog.html">Pytorch</a>
+                            <a href="blog.html">conda</a>
+                    </div>
+                </article>
+            </div> <!-- end blog-list -->
+        </div> <!-- end col-full -->
+    </div>
+    </section>
+    
     <!-- footer
     ================================================== -->
     <footer>
