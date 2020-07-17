@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+        <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <!--
+    <meta name="description" content="">
+    <meta name="author" content="">
+    -->
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="https://minglunwu.github.io/theme/css/base.css">
+    <!--<link rel="stylesheet" href="https://minglunwu.github.io/theme/css/vendor.css">-->
+    <link rel="stylesheet" href="https://minglunwu.github.io/theme/css/main.css">
+    <link rel="stylesheet" href="https://minglunwu.github.io/theme/css/styles.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="https://minglunwu.github.io/theme/js/modernizr.js"></script>
+    <script src="https://minglunwu.github.io/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="https://minglunwu.github.io/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://minglunwu.github.io/theme/favicon.ico" type="image/x-icon">
+
+    <title>進職場學到的Git - (1) Gitlab CI/CD</title>
+    <meta property="og:title" content="進職場學到的Git - (1) Gitlab CI/CD">
+    <meta name="description" content="<p>使用 Gitlab 內建的 CI/CD 功能來了解基本CI/CD。</p>">
+    <meta property="og:description" content="<p>使用 Gitlab 內建的 CI/CD 功能來了解基本CI/CD。</p>">
+    <meta name="author" content="MingLun Allen Wu">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80">
+    
+    <link rel="image_src" type="image/jpeg" href="https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80" />
+    <style>
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body id="top">
+            <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+        <div class="header-logo">
+            <a class="site-logo" href="https://minglunwu.github.io"><img src="https://minglunwu.github.io/theme/images/logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
+
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a href="https://minglunwu.github.io/#home" title="home">Home</a></li>
+                <li><a href="https://minglunwu.github.io/#about" title="about">About</a></li>
+                <li><a href="https://minglunwu.github.io/#blog" title="blog">Blogs</a></li>
+                <li><a href="https://minglunwu.github.io/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1556075798-4825dfaaf498?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80)">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                    <a href="#0">git</a>
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                進職場學到的Git - (1) Gitlab CI/CD
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">2020- 7-17 (五)</li>
+                            <li class="author">
+                                By
+                                <span>MingLun Allen Wu</span>
+                            </li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    
+                    <h1>前言</h1>
+<p>這篇好難寫...</p>
+<h1>何謂 CI/CD</h1>
+<p>CI 及 CD 概念上相同，在程式碼進行更動後，自動運行「預先定義好的流程」：</p>
+<p>按照目的來劃分： </p>
+<ul>
+<li>
+<p>Continuous Integration - <strong>檢驗程式碼的正確性</strong>:</p>
+<p>在開發程式的過程中，為了避免Bug影響到整個系統，通常修改完模組後會做一些測試。 這些重複性高的測試就能透過 pipeline來自動檢驗。目的是協助開發者進行檢驗，避免開發時把「有問題」的程式碼整併回重要的主支中。</p>
+</li>
+<li>
+<p>Continuous Deployment - <strong>將正確的程式碼部署到正式環境中運行</strong> :</p>
+<p>在確定開發完成後，可以透過自動的 pipeline來將更新後的程式碼重新啟動、Build新的系統、部署到正式的伺服器上。</p>
+</li>
+</ul>
+<p><img src="https://docs.gitlab.com/ee/ci/introduction/img/gitlab_workflow_example_11_9.png"></p>
+<h1>Gitlab CI/CD Pipeline</h1>
+<p>在前一小節提到，CI/CD其實是在程式碼更動後，自動進行預先定義好的 Pipeline，接下來要介紹Pipeline 的 重要概念。</p>
+<p>首先在 Pipeline 中有兩個概念 Stage 及 Job : </p>
+<h2>Job</h2>
+<p>Job 是 Pipeline 中最基礎的單位，每一個Job可以是數行 Script，其中可能也會執行某些預先寫好的 Script File. 當執行完所有定義好的 Script 沒有發生錯誤，就算是成功完成這項 Job. </p>
+<h2>Stage</h2>
+<p>一個 Stage 中包含了一至多項的 Job，在執行 Job 時是先以「先 Stage 後 Job 」的方針執行。</p>
+<p>舉例來說 ，以下工作的執行順序將是:
+<img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200717/job_list.png"></p>
+<ol>
+<li>Show_PIP_List</li>
+<li>Test </li>
+<li>Download</li>
+</ol>
+<p>當前一項 Stage 中的任一項 Job 執行失敗時，將不會執行下一個 Stage. (舉例來說如果執行 <code>Test</code> 時失敗了， <code>Download</code>將不會被執行)</p>
+<h1>How to set pipeline?</h1>
+<p>在了解Pipeline的概念後，在 Gitlab 中預設以 Repo中的 <code>.gitlab-ci.yml</code> 檔案來做為 CI/CD 流程的設定檔。</p>
+<p>我們透過簡單的範例來說明 <code>.gitlab-ci.yml</code>的結構 : </p>
+<div class="highlight"><pre><span></span><span class="nt">before_script</span><span class="p">:</span>          <span class="c1"># 執行測試前所要執行的程式碼。 (例如安裝套件)</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">export PATH=$PATH:/home/allen_wu/miniconda3/envs/pytorch/bin/</span>
+
+<span class="nt">stages</span><span class="p">:</span>                  <span class="c1"># 定義不同的階段(stage)，每一個stage可以包含許多job.</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">preprocessing</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">download</span>
+
+<span class="nt">Show_PIP_list</span><span class="p">:</span>          <span class="c1"># 第一項Job (名稱可以自訂)</span>
+    <span class="nt">stage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">preprocessing</span>  <span class="c1"># 隸屬的 Stage               </span>
+    <span class="nt">script</span><span class="p">:</span> 
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">ls -al</span>              <span class="c1"># 第一項Job 的第一項步驟 (Bash指令)</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">pip list</span>            <span class="c1"># 第一項Job 的第二項步驟 (Bash指令)</span>
+
+<span class="nt">Test</span><span class="p">:</span>                   <span class="c1"># 第二項Job (名稱可以自訂)</span>
+    <span class="nt">stage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">preprocessing</span> 
+    <span class="nt">script</span><span class="p">:</span>  
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo &quot;Test&quot;</span>   <span class="c1"># 第二項Job的第一項步驟 (Bash指令)</span>
+
+<span class="nt">Download</span><span class="p">:</span>               <span class="c1"># 第三項Job (名稱可以自訂)</span>
+    <span class="nt">stage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">download</span>
+    <span class="nt">script</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">echo &quot;Download&quot;</span>  <span class="c1"># 第三項Job的第一項步驟 (Bash指令)</span>
+</pre></div>
+
+
+<p>當你在 Repository Push了此份 <code>.gitlab-ci.yml</code> 後，整個 CI/CD 流程就設定完成了。但是此時當你將程式碼 Push 至 Repo時可能會發現一件奇怪的事情 : 我的任務都顯示 "Pending" !</p>
+<p>這是因為雖然設定了 CI 流程，卻沒有設定 Runner，也就是執行的機器。 </p>
+<p>完整的 CI /CD 流程如下:
+<img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200717/process.png"></p>
+<p>在Gitlab 偵測到 Code 的更動後，會嘗試在 "Runner" 上執行 .gitlab-ci.yml所定義的任務，所以接下來我們必須要設定一台可供執行任務的主機，你可以在雲端租用主機，或是直接使用手邊的主機作為Runner。</p>
+<h2>建立 Gitlab Runner</h2>
+<h3>安裝</h3>
+<p>可以參考此篇官方文章，根據做為Runner的主機的作業系統選擇安裝方式：</p>
+<p><a href="https://docs.gitlab.com/runner/install/linux-repository.html">Install GitLab Runner using the official GitLab repositories</a></p>
+<p>以 Ubuntu 為例，透過下列指令即可安裝：</p>
+<div class="highlight"><pre><span></span>::: bash
+<span class="c1"># For Debian/Ubuntu/Mint</span>
+curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh <span class="p">|</span> sudo bash
+
+<span class="c1"># For Debian/Ubuntu/Mint</span>
+sudo apt-get install gitlab-runner
+</pre></div>
+
+
+<h3>註冊</h3>
+<p>詳細流程請參閱官方文件，寫得非常清楚 : </p>
+<p><a href="https://docs.gitlab.com/runner/register/index.html">Registering Runners</a></p>
+<p>開始註冊之前可以先到 Gitlab Repo 中的 <code>Setting -&gt; CI/CD -&gt; Runners</code> 頁面，此頁面包含稍後會使用到的資訊 : </p>
+<ol>
+<li>
+<p>開始註冊流程</p>
+<p>:::bash
+sudo gitlab-runner register</p>
+</li>
+<li>
+<p>輸入當前的 Gitlab URL (在剛剛開啟的頁面會提示)</p>
+<p>:::bash
+Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )
+https://gitlab.com</p>
+</li>
+<li>
+<p>輸入當前 Repository 的 Token (在剛剛開啟的頁面會提示)</p>
+<p>:::bash
+Please enter the gitlab-ci token for this runner
+xxx</p>
+</li>
+<li>
+<p>輸入當前這台機器的敘述 (未來可以再做更動）</p>
+<p>:::bash
+Please enter the gitlab-ci description for this runner
+[hostname] my-runner</p>
+</li>
+<li>
+<p>輸入當前這台機器的標籤 (某些 CI/CD 任務可以指定特定標籤的 Runner 運行）</p>
+<p>:::bash
+Please enter the gitlab-ci tags for this runner (comma separated):
+my-tag,another-tag</p>
+</li>
+<li>
+<p>最後要選擇 Executor，這會影響到運行時的機制，最常見的做法是選擇 docker. (細節我們在下篇文章探討)</p>
+<p>:::bash
+Please enter the executor: ssh, docker+machine, docker-ssh+machine, kubernetes, docker, parallels, virtualbox, docker-ssh, shell:
+docker</p>
+</li>
+<li>
+<p>如果是選擇使用 <code>docker</code>做為 Excutor，需要指定一個預設的 Docker Image. </p>
+<p>:::bash
+Please enter the Docker image (eg. ruby:2.6):
+python:latest</p>
+</li>
+</ol>
+<p>當我們回頭去看 <code>.gitlab-ci.yml</code>時，會發現第一行有一個 <code>images: python:latest</code> ，因為在運行時會先在Runner 建立一個 Docker 來進行任務，所以環境部分就會透過這裡指定的 Docker Image 來建立。 而步驟7是指當 <code>.gitlab-ci.yml</code>沒有指定 DockerFile時該使用哪一項DockerImage. (細節我們在下一篇文章探討)</p>
+<p>當你註冊完成後你應該會在 Gitlab 的 <code>Setting →  CI/CD → Runners</code> 頁面中看到剛剛所註冊的 Runner:
+<img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200717/runner.png"></p>
+<h2>測試 CI/CD 是否正常運行</h2>
+<p>在確認完成後我們實際送上一個 Commit，當我們點擊 Gitlab 頁面的 <code>Repository -&gt; Commits</code> 時，可以看到在每個 Commit 的右邊都出現 CI/CD 的狀態：</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200717/commit_ci.png"></p>
+<p>此時基本的 CI/CD 機制已經建構完成！</p>
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                             <a href="#0">git</a>
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="blog-content__next">
+                                <a href="https://minglunwu.github.io/notes/2020/transformers-tutorial.html" rel="next">
+                                    <span>Next Post</span>
+                                    NLP深度學習不能不用的套件 - Transformers
+                                </a>
+                            </div>
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="https://minglunwu.github.io/#note" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
+            <!-- footer
+    ================================================== -->
+    <footer>
+        <div class="row">
+            <div class="col-full">
+
+                <div class="footer-logo">
+                    <a class="footer-site-logo" href="#0"><img src="https://minglunwu.github.io/theme/images/logo.png" alt="Homepage"></a>
+                </div>
+                <ul class="footer-social">
+                    <li>
+                        <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                    </li>
+                    <li>
+                        <a href="https://medium.com/@allen6997535" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/allen-ming-lun-wu-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/whoisfater0724/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                    </li>
+                </ul>
+                    
+            </div>
+        </div>
+
+        <div class="row footer-bottom">
+
+            <div class="col-twelve">
+                <div class="copyright">
+                    <span>© Copyright Hola 2017</span> 
+                    <span>Design by <a href="https://www.styleshout.com/">styleshout</a></span>	
+                </div>
+
+                <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- end footer-bottom -->
+
+    </footer> <!-- end footer -->
+    <!-- Java Script
+        ================================================== -->
+        <script src="https://minglunwu.github.io/theme/js/jquery-3.2.1.min.js"></script>
+        <script src="https://minglunwu.github.io/theme/js/plugins.js"></script>
+        <script src="https://minglunwu.github.io/theme/js/main.js"></script>
+
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161863471-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-161863471-1');
+    </script>
+    
+</body>
