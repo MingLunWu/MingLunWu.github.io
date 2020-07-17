@@ -110,8 +110,27 @@
             <div class="row blog-content">
                 <div class="col-full blog-content__main">
                     
-                    <h1>前言</h1>
-<p>這篇好難寫...</p>
+                    <ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#何謂-cicd">何謂 CI/CD</a></li>
+<li><a href="#gitlab-cicd-pipeline">Gitlab CI/CD Pipeline</a></li>
+<li><a href="#job">Job</a></li>
+<li><a href="#stage">Stage</a></li>
+<li><a href="#how-to-set-pipeline">How to set pipeline?</a></li>
+<li><a href="#建立-gitlab-runner">建立 Gitlab Runner</a><ul>
+<li><a href="#安裝">安裝</a></li>
+<li><a href="#註冊">註冊</a></li>
+</ul>
+</li>
+<li><a href="#測試-cicd-是否正常運行">測試 CI/CD 是否正常運行</a></li>
+</ul>
+<p id="前言"></p>
+
+<h1>前言</h1>
+<p>CI/CD 是一套自動化工具，目的是在程式開發的過程中，能夠快速的驗證開發結果、根據產出盡快修正產品，將一些重複性高的工作交給自動化工具來達成。 </p>
+<p>研究所時期使用Gitlab來進行程式碼管控，只會做基本的Push, Pull，完全不知道原來Gitlab有這麼強大的功能！</p>
+<p id="何謂-cicd"></p>
+
 <h1>何謂 CI/CD</h1>
 <p>CI 及 CD 概念上相同，在程式碼進行更動後，自動運行「預先定義好的流程」：</p>
 <p>按照目的來劃分： </p>
@@ -126,21 +145,29 @@
 </li>
 </ul>
 <p><img src="https://docs.gitlab.com/ee/ci/introduction/img/gitlab_workflow_example_11_9.png"></p>
+<p id="gitlab-cicd-pipeline"></p>
+
 <h1>Gitlab CI/CD Pipeline</h1>
-<p>在前一小節提到，CI/CD其實是在程式碼更動後，自動進行預先定義好的 Pipeline，接下來要介紹Pipeline 的 重要概念。</p>
-<p>首先在 Pipeline 中有兩個概念 Stage 及 Job : </p>
+<p>在前一小節提到，CI/CD其實是在程式碼更動後，自動進行預先定義好的 Pipeline，接下來要介紹Pipeline 的重要概念。</p>
+<p>在 Pipeline 中有兩個概念 Stage 及 Job：</p>
+<p id="job"></p>
+
 <h2>Job</h2>
 <p>Job 是 Pipeline 中最基礎的單位，每一個Job可以是數行 Script，其中可能也會執行某些預先寫好的 Script File. 當執行完所有定義好的 Script 沒有發生錯誤，就算是成功完成這項 Job. </p>
+<p id="stage"></p>
+
 <h2>Stage</h2>
-<p>一個 Stage 中包含了一至多項的 Job，在執行 Job 時是先以「先 Stage 後 Job 」的方針執行。</p>
-<p>舉例來說 ，以下工作的執行順序將是:
+<p>一個 Stage 中包含了一至多項的 Job，通常Stage是用來區分「不同的工作階段」，較常見的區分方法是: build(建構系統)、validate(驗證系統)、deploy(部署至主要伺服器)。</p>
+<p>而在執行 Job 時是先以「先 Stage 後 Job 」的方針執行，舉例來說 ，以下工作的執行順序將是:
 <img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200717/job_list.png"></p>
 <ol>
-<li>Show_PIP_List</li>
-<li>Test </li>
-<li>Download</li>
+<li>Show_PIP_List (Stage: Processing)</li>
+<li>Test  (Stage: Processing)</li>
+<li>Download (Stage: Download)</li>
 </ol>
 <p>當前一項 Stage 中的任一項 Job 執行失敗時，將不會執行下一個 Stage. (舉例來說如果執行 <code>Test</code> 時失敗了， <code>Download</code>將不會被執行)</p>
+<p id="how-to-set-pipeline"></p>
+
 <h1>How to set pipeline?</h1>
 <p>在了解Pipeline的概念後，在 Gitlab 中預設以 Repo中的 <code>.gitlab-ci.yml</code> 檔案來做為 CI/CD 流程的設定檔。</p>
 <p>我們透過簡單的範例來說明 <code>.gitlab-ci.yml</code>的結構 : </p>
@@ -174,7 +201,11 @@
 <p>完整的 CI /CD 流程如下:
 <img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200717/process.png"></p>
 <p>在Gitlab 偵測到 Code 的更動後，會嘗試在 "Runner" 上執行 .gitlab-ci.yml所定義的任務，所以接下來我們必須要設定一台可供執行任務的主機，你可以在雲端租用主機，或是直接使用手邊的主機作為Runner。</p>
+<p id="建立-gitlab-runner"></p>
+
 <h2>建立 Gitlab Runner</h2>
+<p id="安裝"></p>
+
 <h3>安裝</h3>
 <p>可以參考此篇官方文章，根據做為Runner的主機的作業系統選擇安裝方式：</p>
 <p><a href="https://docs.gitlab.com/runner/install/linux-repository.html">Install GitLab Runner using the official GitLab repositories</a></p>
@@ -188,6 +219,8 @@ sudo apt-get install gitlab-runner
 </pre></div>
 
 
+<p id="註冊"></p>
+
 <h3>註冊</h3>
 <p>詳細流程請參閱官方文件，寫得非常清楚 : </p>
 <p><a href="https://docs.gitlab.com/runner/register/index.html">Registering Runners</a></p>
@@ -195,49 +228,65 @@ sudo apt-get install gitlab-runner
 <ol>
 <li>
 <p>開始註冊流程</p>
-<p>:::bash
-sudo gitlab-runner register</p>
+<div class="highlight"><pre><span></span>sudo gitlab-runner register
+</pre></div>
+
+
 </li>
 <li>
 <p>輸入當前的 Gitlab URL (在剛剛開啟的頁面會提示)</p>
-<p>:::bash
-Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )
-https://gitlab.com</p>
+<div class="highlight"><pre><span></span>Please enter the gitlab-ci coordinator URL <span class="o">(</span>e.g. https://gitlab.com <span class="o">)</span>
+https://gitlab.com
+</pre></div>
+
+
 </li>
 <li>
 <p>輸入當前 Repository 的 Token (在剛剛開啟的頁面會提示)</p>
-<p>:::bash
-Please enter the gitlab-ci token for this runner
-xxx</p>
+<div class="highlight"><pre><span></span>Please enter the gitlab-ci token <span class="k">for</span> this runner
+xxx
+</pre></div>
+
+
 </li>
 <li>
 <p>輸入當前這台機器的敘述 (未來可以再做更動）</p>
-<p>:::bash
-Please enter the gitlab-ci description for this runner
-[hostname] my-runner</p>
+<div class="highlight"><pre><span></span>Please enter the gitlab-ci description <span class="k">for</span> this runner
+<span class="o">[</span>hostname<span class="o">]</span> my-runner
+</pre></div>
+
+
 </li>
 <li>
 <p>輸入當前這台機器的標籤 (某些 CI/CD 任務可以指定特定標籤的 Runner 運行）</p>
-<p>:::bash
-Please enter the gitlab-ci tags for this runner (comma separated):
-my-tag,another-tag</p>
+<div class="highlight"><pre><span></span>Please enter the gitlab-ci tags <span class="k">for</span> this runner <span class="o">(</span>comma separated<span class="o">)</span>:
+my-tag,another-tag
+</pre></div>
+
+
 </li>
 <li>
 <p>最後要選擇 Executor，這會影響到運行時的機制，最常見的做法是選擇 docker. (細節我們在下篇文章探討)</p>
-<p>:::bash
-Please enter the executor: ssh, docker+machine, docker-ssh+machine, kubernetes, docker, parallels, virtualbox, docker-ssh, shell:
-docker</p>
+<div class="highlight"><pre><span></span>Please enter the executor: ssh, docker+machine, docker-ssh+machine, kubernetes, docker, parallels, virtualbox, docker-ssh, shell:
+docker
+</pre></div>
+
+
 </li>
 <li>
 <p>如果是選擇使用 <code>docker</code>做為 Excutor，需要指定一個預設的 Docker Image. </p>
-<p>:::bash
-Please enter the Docker image (eg. ruby:2.6):
-python:latest</p>
+<div class="highlight"><pre><span></span>Please enter the Docker image <span class="o">(</span>eg. ruby:2.6<span class="o">)</span>:
+python:latest
+</pre></div>
+
+
 </li>
 </ol>
 <p>當我們回頭去看 <code>.gitlab-ci.yml</code>時，會發現第一行有一個 <code>images: python:latest</code> ，因為在運行時會先在Runner 建立一個 Docker 來進行任務，所以環境部分就會透過這裡指定的 Docker Image 來建立。 而步驟7是指當 <code>.gitlab-ci.yml</code>沒有指定 DockerFile時該使用哪一項DockerImage. (細節我們在下一篇文章探討)</p>
 <p>當你註冊完成後你應該會在 Gitlab 的 <code>Setting →  CI/CD → Runners</code> 頁面中看到剛剛所註冊的 Runner:
 <img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200717/runner.png"></p>
+<p id="測試-cicd-是否正常運行"></p>
+
 <h2>測試 CI/CD 是否正常運行</h2>
 <p>在確認完成後我們實際送上一個 Commit，當我們點擊 Gitlab 頁面的 <code>Repository -&gt; Commits</code> 時，可以看到在每個 Commit 的右邊都出現 CI/CD 的狀態：</p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200717/commit_ci.png"></p>
