@@ -123,12 +123,17 @@
 </ul>
 </li>
 <li><a href="#測試-cicd-是否正常運行">測試 CI/CD 是否正常運行</a></li>
+<li><a href="#後記">後記</a></li>
 </ul>
 <p id="前言"></p>
 
 <h1>前言</h1>
 <p>CI/CD 是一套自動化工具，目的是在程式開發的過程中，能夠快速的驗證開發結果、根據產出盡快修正產品，將一些重複性高的工作交給自動化工具來達成。 </p>
-<p>研究所時期使用Gitlab來進行程式碼管控，只會做基本的Push, Pull，完全不知道原來Gitlab有這麼強大的功能！</p>
+<p>研究所時期使用Gitlab來進行程式碼管控，只會做基本的Push, Pull，完全不知道原來Gitlab內建有這麼強大的功能！本篇筆記的兩個重點：</p>
+<ol>
+<li>何謂 CI/CD</li>
+<li>如何設定Gitlab內建的CI/CD功能</li>
+</ol>
 <p id="何謂-cicd"></p>
 
 <h1>何謂 CI/CD</h1>
@@ -200,7 +205,7 @@
 <p>這是因為雖然設定了 CI 流程，卻沒有設定 Runner，也就是執行的機器。 </p>
 <p>完整的 CI /CD 流程如下:
 <img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200717/process.png"></p>
-<p>在Gitlab 偵測到 Code 的更動後，會嘗試在 "Runner" 上執行 .gitlab-ci.yml所定義的任務，所以接下來我們必須要設定一台可供執行任務的主機，你可以在雲端租用主機，或是直接使用手邊的主機作為Runner。</p>
+<p>在Gitlab 偵測到 Code 的更動後，會將更動後的Code傳到 "Runner" 上執行特定的任務 (也就是<code>.gitlab-ci.yml</code>所定義的任務)，所以接下來我們必須要設定一台可供執行任務的主機，你可以租用雲端主機，或是直接使用手邊的主機作為Runner。</p>
 <p id="建立-gitlab-runner"></p>
 
 <h2>建立 Gitlab Runner</h2>
@@ -210,8 +215,7 @@
 <p>可以參考此篇官方文章，根據做為Runner的主機的作業系統選擇安裝方式：</p>
 <p><a href="https://docs.gitlab.com/runner/install/linux-repository.html">Install GitLab Runner using the official GitLab repositories</a></p>
 <p>以 Ubuntu 為例，透過下列指令即可安裝：</p>
-<div class="highlight"><pre><span></span>::: bash
-<span class="c1"># For Debian/Ubuntu/Mint</span>
+<div class="highlight"><pre><span></span><span class="c1"># For Debian/Ubuntu/Mint</span>
 curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh <span class="p">|</span> sudo bash
 
 <span class="c1"># For Debian/Ubuntu/Mint</span>
@@ -266,7 +270,7 @@ my-tag,another-tag
 
 </li>
 <li>
-<p>最後要選擇 Executor，這會影響到運行時的機制，最常見的做法是選擇 docker. (細節我們在下篇文章探討)</p>
+<p>最後要選擇 Executor，這會影響到運行時的機制，最常見的做法是選擇 <code>docker</code>. (細節我們在下篇文章探討)</p>
 <div class="highlight"><pre><span></span>Please enter the executor: ssh, docker+machine, docker-ssh+machine, kubernetes, docker, parallels, virtualbox, docker-ssh, shell:
 docker
 </pre></div>
@@ -282,7 +286,8 @@ python:latest
 
 </li>
 </ol>
-<p>當我們回頭去看 <code>.gitlab-ci.yml</code>時，會發現第一行有一個 <code>images: python:latest</code> ，因為在運行時會先在Runner 建立一個 Docker 來進行任務，所以環境部分就會透過這裡指定的 Docker Image 來建立。 而步驟7是指當 <code>.gitlab-ci.yml</code>沒有指定 DockerFile時該使用哪一項DockerImage. (細節我們在下一篇文章探討)</p>
+<p>當我們的Runner選擇 <code>docker</code> 作為Excutor時，運行CI任務時會先建立一個Docker環境，當我們回頭去看 <code>.gitlab-ci.yml</code>時，會發現第一行有一個 <code>images: python:latest</code>，這代表指定執行任務時使用的Docker Image。</p>
+<p>而步驟7是指當 <code>.gitlab-ci.yml</code>沒有指定 DockerImage 時該使用哪一項DockerImage. (Executor的更多細節我們在下一篇文章探討)</p>
 <p>當你註冊完成後你應該會在 Gitlab 的 <code>Setting →  CI/CD → Runners</code> 頁面中看到剛剛所註冊的 Runner:
 <img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200717/runner.png"></p>
 <p id="測試-cicd-是否正常運行"></p>
@@ -290,7 +295,13 @@ python:latest
 <h2>測試 CI/CD 是否正常運行</h2>
 <p>在確認完成後我們實際送上一個 Commit，當我們點擊 Gitlab 頁面的 <code>Repository -&gt; Commits</code> 時，可以看到在每個 Commit 的右邊都出現 CI/CD 的狀態：</p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200717/commit_ci.png"></p>
-<p>此時基本的 CI/CD 機制已經建構完成！</p>
+<p>此時基本的 Gitlab CI/CD 機制已經建構完成！ 每次上傳程式碼後，Gitlab會自動協助進行程式碼的檢核，可以在Gitlab的頁面確認每次開發是否有發生異常。</p>
+<p id="後記"></p>
+
+<h1>後記</h1>
+<p>本篇筆記介紹了何為 CI/CD 以及如何使用 Gitlab 內建的工具進行 CI/CD。然而進行深度學習的模組開發時，常會遇到「模型」檔案體積龐大，此時使用 Docker 作為 Executor 在建立過程中常會遇到網路不穩導致CI中斷的問題。</p>
+<p>在下篇筆記中我們會介紹安裝Gilab Runner 時的 Executor 有何不同？、如何選用其他Executor來解決CI中斷的問題，以及實際在開發過程中該怎麼使用「CI/CD功能」結合「分支」、「Merge Requests」！ 我們下次見！</p>
+<p>這篇筆記是我在實際部署CI/CD過程中所做的紀錄，實際上我對於這個領域還非常不熟悉，如果你願意與我分享更多資訊，非常歡迎直接聯絡我！</p>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
