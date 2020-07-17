@@ -113,9 +113,11 @@
                     <ul>
 <li><a href="#前言">前言</a></li>
 <li><a href="#何謂-cicd">何謂 CI/CD</a></li>
-<li><a href="#gitlab-cicd-pipeline">Gitlab CI/CD Pipeline</a></li>
+<li><a href="#gitlab-cicd-pipeline">Gitlab CI/CD Pipeline</a><ul>
 <li><a href="#job">Job</a></li>
 <li><a href="#stage">Stage</a></li>
+</ul>
+</li>
 <li><a href="#how-to-set-pipeline">How to set pipeline?</a></li>
 <li><a href="#建立-gitlab-runner">建立 Gitlab Runner</a><ul>
 <li><a href="#安裝">安裝</a></li>
@@ -157,11 +159,11 @@
 <p>在 Pipeline 中有兩個概念 Stage 及 Job：</p>
 <p id="job"></p>
 
-<h2>Job</h2>
+<h3>Job</h3>
 <p>Job 是 Pipeline 中最基礎的單位，每一個Job可以是數行 Script，其中可能也會執行某些預先寫好的 Script File. 當執行完所有定義好的 Script 沒有發生錯誤，就算是成功完成這項 Job. </p>
 <p id="stage"></p>
 
-<h2>Stage</h2>
+<h3>Stage</h3>
 <p>一個 Stage 中包含了一至多項的 Job，通常Stage是用來區分「不同的工作階段」，較常見的區分方法是: build(建構系統)、validate(驗證系統)、deploy(部署至主要伺服器)。</p>
 <p>而在執行 Job 時是先以「先 Stage 後 Job 」的方針執行，舉例來說 ，以下工作的執行順序將是:
 <img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200717/job_list.png"></p>
