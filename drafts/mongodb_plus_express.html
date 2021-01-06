@@ -111,8 +111,35 @@
             <div class="row blog-content">
                 <div class="col-full blog-content__main">
                     
-                    <h1>前言</h1>
-<p>最近工作時，需要寫爬蟲收集某些論壇的資料</p>
+                    <ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#step-1-基本設定">Step 1. 基本設定</a></li>
+<li><a href="#網路設定-docker-network">網路設定 (docker-network)</a><ul>
+<li><a href="#建立network">建立Network</a></li>
+</ul>
+</li>
+<li><a href="#設定volume-optional">設定Volume (Optional)</a></li>
+<li><a href="#step-2-設定-mongodb">Step 2. 設定 MongoDB</a></li>
+<li><a href="#下載-docker-image">下載 Docker Image</a></li>
+<li><a href="#docker-run-標籤">Docker run 標籤</a><ul>
+<li><a href="#設定環境變數--e">設定環境變數 <code>-e</code></a></li>
+<li><a href="#設定-volume--v">設定 Volume <code>-v</code></a></li>
+<li><a href="#設定網路模式---network">設定網路模式 <code>--network</code></a></li>
+<li><a href="#設定連線-port--p">設定連線 Port <code>-p</code></a></li>
+<li><a href="#啟動-mongodb-container">啟動 MongoDB Container</a></li>
+</ul>
+</li>
+<li><a href="#step-3-設定-mongo-express">Step 3. 設定 Mongo Express</a></li>
+<li><a href="#下載-docker-image-1">下載 Docker Image</a></li>
+<li><a href="#環境變數--e">環境變數 <code>-e</code></a></li>
+<li><a href="#啟動-mongo-express-container">啟動 Mongo Express Container</a></li>
+<li><a href="#結語">結語</a></li>
+</ul>
+<p id="前言"></p>
+
+<h1>前言</h1>
+<p>最近工作時，需要寫爬蟲收集某些論壇的資料，不想要透過 <code>pickle</code> 或是 <code>csv</code> 來儲存有多層結構的資料。 但也不想要花費太多心力自行部署資料庫。 </p>
+<p>這篇筆記希望能: <strong>透過Docker快速的部署<code>MongoDB</code>及<code>Mongo Express</code></strong></p>
 <p>我們要做的事情是: </p>
 <ul>
 <li>使用 Docker 建立一個 <code>MongoDB</code> Container：
@@ -121,8 +148,12 @@
     這是一個輕量級的 MongoDB Web GUI，能夠透過網頁介面輕易地瀏覽資料結構、檔案內容。</li>
 </ul>
 <p>Mongo Express 的基本介紹請參閱<a href="https://github.com/mongo-express/mongo-express">官方 Github</a></p>
+<p id="step-1-基本設定"></p>
+
 <h1>Step 1. 基本設定</h1>
 <p>在這個章節我們需要先進行基本的環境設定: </p>
+<p id="網路設定-docker-network"></p>
+
 <h2>網路設定 (docker-network)</h2>
 <p>在這篇筆記中，我們會建立兩個 Docker Container，其中 <code>Mongo Express</code> 是 <code>MongoDB</code>的 GUI，兩個Container之間是需要連線的。</p>
 <p>Docker Container 在建立時，可以設定不同的網路模式(Docker Network)，這關係到外部與Container的連線，大致上可以分為幾種模式: </p>
@@ -133,12 +164,16 @@
 <li><code>Overlay</code>: 適用於跨主機間的Docker連線。</li>
 </ul>
 <p>更多 Docker Network 的細節可以參考 <a href="https://yu-jack.github.io/2020/05/18/docker-network/">Docker 網路介紹</a> 這篇文章。</p>
+<p id="建立network"></p>
+
 <h3>建立Network</h3>
 <div class="highlight"><pre><span></span><span class="c1"># docker network create -d &lt;模式&gt; &lt;名稱&gt;</span>
 docker network create -d bridge mongo-network  <span class="c1"># 建立 Docker Network</span>
 docker network ls <span class="c1"># 顯示所有的Docker Network</span>
 </pre></div>
 
+
+<p id="設定volume-optional"></p>
 
 <h2>設定Volume (Optional)</h2>
 <p>建立 <code>MongoDB</code> Container時，資料會儲存在 Container內部，在這樣的情境下是可以正常讀取/寫入的。</p>
@@ -154,18 +189,26 @@ docker network ls <span class="c1"># 顯示所有的Docker Network</span>
 </pre></div>
 
 
+<p id="#step-2-設定-mongodb"></p>
+
 <h1>Step 2. 設定 MongoDB</h1>
 <p>Docker Image 部分使用官方提供的Docker File: 
 <a href="https://hub.docker.com/_/mongo">Docker Hub 連結 - MongoDB</a></p>
 <p>其中也包含基本的設定文件。</p>
+<p id="下載-docker-image"></p>
+
 <h2>下載 Docker Image</h2>
 <div class="highlight"><pre><span></span>docker pull mongo:latest <span class="c1"># 從 Docker Hub 將 Image Pull到本地端</span>
 docker image <span class="c1"># 確認本地端現有的 Docker Image</span>
 </pre></div>
 
 
+<p id="docker-run-標籤"></p>
+
 <h2>Docker run 標籤</h2>
 <p>在建立Container時，會用到許多標籤，分別有不同的意義，接下來分別介紹:</p>
+<p id="設定環境變數--e"></p>
+
 <h3>設定環境變數 <code>-e</code></h3>
 <p>在啟動 <code>MongoDB</code> 的 Container 時，需要設定兩個環境變數，這兩個變數是用來設定 <code>MongoDB</code>的最高權限使用者帳號及密碼: </p>
 <ul>
@@ -173,6 +216,8 @@ docker image <span class="c1"># 確認本地端現有的 Docker Image</span>
 <li><code>MONGO_INITDB_ROOT_PASSWORD</code>: 密碼</li>
 </ul>
 <p>在啟動 Container 時，會透過 <code>-e</code> 標籤設定。</p>
+<p id="設定-volume---e"></p>
+
 <h3>設定 Volume <code>-v</code></h3>
 <p>介紹完 Docker Volume 的好處後，在實際建立Container時會透過:</p>
 <div class="highlight"><pre><span></span>docker run &lt;image名稱&gt; -v &lt;實體資料夾路徑&gt;:&lt;container中資料夾路徑&gt;
@@ -185,6 +230,8 @@ docker image <span class="c1"># 確認本地端現有的 Docker Image</span>
 </pre></div>
 
 
+<p id="設定網路模式---network"></p>
+
 <h3>設定網路模式 <code>--network</code></h3>
 <p>在第一小節介紹完並創立完 <code>Docker Network</code> ，在建立Container時透過:</p>
 <div class="highlight"><pre><span></span>docker run &lt;image名稱&gt; --network &lt;network名稱&gt;
@@ -192,6 +239,8 @@ docker image <span class="c1"># 確認本地端現有的 Docker Image</span>
 
 
 <p>來設定使用的網路模式。</p>
+<p id="設定連線-port--p"></p>
+
 <h3>設定連線 Port <code>-p</code></h3>
 <p>啟動 <code>MongoDB</code> Container時， <code>MongoDB</code>預設會將服務開設於 <code>27017</code> port.</p>
 <p>但可別忘了！ Container就像是一個小世界！ 我們需要將小世界中的 <code>27017</code> port 與 外面的主機連接在一起，這個動作稱之為 <code>Port Forwarding</code>:</p>
@@ -199,6 +248,8 @@ docker image <span class="c1"># 確認本地端現有的 Docker Image</span>
 docker run &lt;image名稱&gt; -p <span class="m">8080</span>:27017 <span class="c1"># 將Container的27017連接到主機的8080 port，所以可以從主機呼叫 127.0.0.1:8080 來取得MongoDB的服務</span>
 </pre></div>
 
+
+<p id="啟動-mongodb-container"></p>
 
 <h3>啟動 MongoDB Container</h3>
 <p>了解各項標籤後，接下來我們看看完整指令: </p>
@@ -220,8 +271,12 @@ mongo:latest <span class="c1"># 此Container要使用的Docker Image</span>
 
 <p>應該就能看到MongoDB正常運行！ 此時已經可以透過 <code>pymongo</code> 或是其他介面來進行操作。</p>
 <p>接下來要安裝 <code>Mongo Express</code> 來更方便的查看 <code>MongoDB</code>中的資料。</p>
+<p id="step-3-設定-mongo-express"></p>
+
 <h1>Step 3. 設定 Mongo Express</h1>
 <p>在Step 2 了解 Docker 的各項標籤後，這個步驟非常快速！</p>
+<p id="下載-docker-image-1"></p>
+
 <h2>下載 Docker Image</h2>
 <div class="highlight"><pre><span></span>docker pull mongo-express:latest <span class="c1"># 從 Docker Hub 將 Image Pull到本地端</span>
 docker image <span class="c1"># 確認本地端現有的 Docker Image</span>
@@ -229,6 +284,8 @@ docker image <span class="c1"># 確認本地端現有的 Docker Image</span>
 
 
 <p><a href="https://hub.docker.com/_/mongo-express">Docker Hub 連結 - Mongo Express</a></p>
+<p id="環境變數--e"></p>
+
 <h2>環境變數 <code>-e</code></h2>
 <p>與 <code>MongoDB</code> 一樣， <code>Mongo Express</code> 也提供了幾個環境變數讓使用者設定，這些設定的細節可以在上方連結中看到:</p>
 <ul>
@@ -238,6 +295,8 @@ docker image <span class="c1"># 確認本地端現有的 Docker Image</span>
 <li><code>ME_CONFIG_BASICAUTH_USERNAME</code>: 連線至 <code>Mongo Express</code> 網頁時所需的登入帳號。</li>
 <li><code>ME_CONFIG_BASICAUTH_PASSWORD</code>: 連線至 <code>Mongo Express</code> 網頁時所需的登入密碼。</li>
 </ul>
+<p id="啟動-mongo-express-container"></p>
+
 <h2>啟動 Mongo Express Container</h2>
 <p>我們來看看完整的指令 : </p>
 <div class="highlight"><pre><span></span>docker run --name mongo_express  <span class="se">\ </span><span class="c1"># 將 Container 命名為 mongo_express</span>
@@ -262,7 +321,12 @@ mongo-express:latest <span class="c1"># 此 Container 要使用的 Docker Image<
 <li>Query指令</li>
 <li>確認 Data Schema</li>
 </ul>
+<p id="結語"></p>
+
 <h1>結語</h1>
+<p>透過 <code>Docker</code> 能夠在主機上快速的部署 <code>MongoDB</code>，不需要過多時間進行設定及安裝。</p>
+<p>搭配 <code>Mongo Express</code> 能夠在三到五分鐘內建立好一套具有GUI的的完整資料庫！</p>
+<p>祝大家都能快樂採芒果～</p>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
