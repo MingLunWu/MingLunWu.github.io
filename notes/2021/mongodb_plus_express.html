@@ -129,12 +129,13 @@
 + <code>Bridge</code>: 最常見的模式，可以想像成建立一個獨立的橋樑，啟動Container時可以指定此橋樑，則這些擁有橋樑的Container之間可以互通有無。 (我們建立一個橋樑，並且提供給 <code>MongoDB</code> 及 <code>Mongo Express</code>，則這兩者之間就能互相連線)
 + <code>Overlay</code>: 適用於跨主機間的Docker連線。</p>
 <p>更多 Docker Network 的細節可以參考 <a href="https://yu-jack.github.io/2020/05/18/docker-network/">Docker 網路介紹</a> 這篇文章。</p>
-<p><strong>建立Network</strong>
-    :::bash
-    # docker network create -d &lt;模式&gt; &lt;名稱&gt;
-    docker network create -d bridge mongo-network  # 建立 Docker Network
-    docker network ls # 顯示所有的Docker Network
-    :::</p>
+<h3>建立Network</h3>
+<div class="highlight"><pre><span></span><span class="c1"># docker network create -d &lt;模式&gt; &lt;名稱&gt;</span>
+docker network create -d bridge mongo-network  <span class="c1"># 建立 Docker Network</span>
+docker network ls <span class="c1"># 顯示所有的Docker Network</span>
+</pre></div>
+
+
 <h1>Step 2. 啟動 MongoDB</h1>
 <p>Docker Image 部分使用官方提供的Docker File: 
 <a href="https://hub.docker.com/_/mongo">Docker Hub 連結</a></p>
@@ -142,7 +143,6 @@
 <h2>下載 Docker Image</h2>
 <div class="highlight"><pre><span></span>docker pull mongo:latest <span class="c1"># 從 Docker Hub 將 Image Pull到本地端</span>
 docker image <span class="c1"># 確認本地端現有的 Docker Image</span>
-:::
 </pre></div>
 
 
