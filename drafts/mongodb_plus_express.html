@@ -115,16 +115,16 @@
 <p>最近工作時，需要寫爬蟲收集某些論壇的資料</p>
 <p>我們要做的事情是: </p>
 <ul>
-<li>使用 Docker 建立一個 MongoDB Container</li>
-<li>使用 Docker 建立一個 Mongo Express Container </li>
+<li>使用 Docker 建立一個 <code>MongoDB</code> Container：
+    省去繁瑣的安裝及設定，以最短的時間建立一個MongoDB服務。</li>
+<li>使用 Docker 建立一個 <code>Mongo Express</code> Container:
+    這是一個輕量級的 MongoDB Web GUI，能夠透過網頁介面輕易地瀏覽資料結構、檔案內容。</li>
 </ul>
-<p>使用Docker快速建立 <code>MongoDB</code> ，省去繁瑣的安裝及設定，以最短的時間建立一個MongoDB服務。</p>
-<p>使用Docker建立<code>Mongo Express</code>，這是一個輕量級的 MongoDB Web GUI，方便我們對MongoDB進行簡單地操作、觀看資料的結構。</p>
 <p>Mongo Express 的基本介紹請參閱<a href="https://github.com/mongo-express/mongo-express">官方 Github</a></p>
 <h1>Step 1. 基本設定</h1>
 <p>在這個章節我們需要先進行基本的環境設定: </p>
 <h2>網路設定 (docker-network)</h2>
-<p>接下來我們會建立兩個 Docker Container，其中 <code>Mongo Express</code> 是 <code>MongoDB</code>的 GUI，所以兩者的互動需要連線。</p>
+<p>在這篇筆記中，我們會建立兩個 Docker Container，其中 <code>Mongo Express</code> 是 <code>MongoDB</code>的 GUI，兩個Container之間是需要連線的。</p>
 <p>Docker Container 在建立時，可以設定不同的網路模式(Docker Network)，這關係到外部與Container的連線，大致上可以分為幾種模式: </p>
 <ul>
 <li><code>None</code>: 外部無法與Container進行任何連線。</li>
@@ -144,14 +144,46 @@ docker network ls <span class="c1"># 顯示所有的Docker Network</span>
 <p>建立 <code>MongoDB</code> Container時，資料會儲存在 Container內部，在這樣的情境下是可以正常讀取/寫入的。</p>
 <p>然而如果這個Container被移除(<code>docker rm</code>)後，裡面的資料就會全部消失了！ 這好嗎？ 這不好</p>
 <p><strong>如果只是想要測試<code>MongoDB</code>的功能，不在乎資料遺失的話，可以直接跳過這個步驟！</strong></p>
-<p>在建立Container時，通常還會</p>
-<h1>Step 2. 啟動 MongoDB</h1>
+<p>在建立Container時，通常會進行<strong>Volume</strong>的操作，也就是將 <strong>Container內部的某個資料夾</strong> 與 <strong>主機上的某個實體資料夾</strong> 綁定</p>
+<p><strong>一榮俱榮、一損俱損，對實體資料夾的操作，也等於對Container內部的資料夾進行操作，反之亦然。</strong></p>
+<p>Container內部有自己的資料夾結構，就像是個獨立的小世界，<code>MongoDB</code>在執行時會將資料以某種特定的形式寫入到「某個資料夾」中。 我們所要做的，就是將這個資料夾透過<code>volume</code>鏡像映射到主機的某個資料夾。</p>
+<p>使用Volume有什麼好處呢？</p>
+<p>資料儲存在實體主機上後，將不會因為Container的移除而消失。啟動新的Container時，只要在進行一次掛載，即可無痛將資料「放回」Container中。</p>
+<p>接下來我們先在主機上創立一個實體的資料夾，用來存放Docker Volume的資料(路徑可以自訂)</p>
+<div class="highlight"><pre><span></span>mkdir /mnt/mongodb
+</pre></div>
+
+
+<h1>Step 2. 設定 MongoDB</h1>
 <p>Docker Image 部分使用官方提供的Docker File: 
 <a href="https://hub.docker.com/_/mongo">Docker Hub 連結</a></p>
 <p>其中也包含基本的設定文件。</p>
 <h2>下載 Docker Image</h2>
 <div class="highlight"><pre><span></span>docker pull mongo:latest <span class="c1"># 從 Docker Hub 將 Image Pull到本地端</span>
 docker image <span class="c1"># 確認本地端現有的 Docker Image</span>
+</pre></div>
+
+
+<p>在建立Container時，會用到許多標籤，分別有不同的意義，接下來分別介紹:</p>
+<h3><code>-e</code> 設定環境變數</h3>
+<p>在啟動 <code>MongoDB</code> 的 Container 時，需要設定兩個環境變數，這兩個變數是用來設定 <code>MongoDB</code>的最高權限使用者帳號及密碼: </p>
+<ul>
+<li><code>MONGO_INITDB_ROOT_USERNAME</code>: 帳號</li>
+<li><code>MONGO_INITDB_ROOT_PASSWORD</code>: 密碼</li>
+</ul>
+<p>在啟動 Container 時，會透過 <code>-e</code> 標籤設定。</p>
+<h3><code>-v</code> 設定 Volume</h3>
+<p>介紹完 Docker Volume 的好處後，在實際建立Container時會透過:</p>
+<div class="highlight"><pre><span></span>docker run &lt;image名稱&gt; -v <span class="sb">`</span>實體資料夾路徑<span class="sb">`</span>:<span class="sb">`</span>container中資料夾路徑<span class="sb">`</span>
+</pre></div>
+
+
+<p>來綁定 <strong>「主機上的實體資料夾」</strong> 及 <strong>「Container中的資料夾」</strong></p>
+<p>接下來我們看看完整的指令: </p>
+<div class="highlight"><pre><span></span>docker run --name mongodb <span class="se">\ </span><span class="c1"># 將這個Container命名為 mongodb</span>
+-e <span class="nv">MONGO_INITDB_ROOT_USERNAME</span><span class="o">=</span>root <span class="se">\ </span><span class="c1"># 設定環境變數</span>
+-e <span class="nv">MONGO_INITDB_ROOT_PASSWORD</span><span class="o">=</span>wistron123 <span class="se">\ </span><span class="c1"># 設定環境變數</span>
+-v /mnt
 </pre></div>
 
 
