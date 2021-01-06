@@ -165,29 +165,59 @@ docker image <span class="c1"># 確認本地端現有的 Docker Image</span>
 
 
 <p>在建立Container時，會用到許多標籤，分別有不同的意義，接下來分別介紹:</p>
-<h3><code>-e</code> 設定環境變數</h3>
+<h3>設定環境變數 <code>-e</code></h3>
 <p>在啟動 <code>MongoDB</code> 的 Container 時，需要設定兩個環境變數，這兩個變數是用來設定 <code>MongoDB</code>的最高權限使用者帳號及密碼: </p>
 <ul>
 <li><code>MONGO_INITDB_ROOT_USERNAME</code>: 帳號</li>
 <li><code>MONGO_INITDB_ROOT_PASSWORD</code>: 密碼</li>
 </ul>
 <p>在啟動 Container 時，會透過 <code>-e</code> 標籤設定。</p>
-<h3><code>-v</code> 設定 Volume</h3>
+<h3>設定 Volume <code>-v</code></h3>
 <p>介紹完 Docker Volume 的好處後，在實際建立Container時會透過:</p>
-<div class="highlight"><pre><span></span>docker run &lt;image名稱&gt; -v <span class="sb">`</span>實體資料夾路徑<span class="sb">`</span>:<span class="sb">`</span>container中資料夾路徑<span class="sb">`</span>
+<div class="highlight"><pre><span></span>docker run &lt;image名稱&gt; -v &lt;實體資料夾路徑&gt;:&lt;container中資料夾路徑&gt;
 </pre></div>
 
 
 <p>來綁定 <strong>「主機上的實體資料夾」</strong> 及 <strong>「Container中的資料夾」</strong></p>
-<p>接下來我們看看完整的指令: </p>
-<div class="highlight"><pre><span></span>docker run --name mongodb <span class="se">\ </span><span class="c1"># 將這個Container命名為 mongodb</span>
--e <span class="nv">MONGO_INITDB_ROOT_USERNAME</span><span class="o">=</span>root <span class="se">\ </span><span class="c1"># 設定環境變數</span>
--e <span class="nv">MONGO_INITDB_ROOT_PASSWORD</span><span class="o">=</span>wistron123 <span class="se">\ </span><span class="c1"># 設定環境變數</span>
--v /mnt
+<p>記得在Container中的資料夾可不能隨便亂選，必須要選擇<code>MongoDB</code>實際儲存檔案的位置，這個位置可以從官方文件找到 : <code>/data/db</code></p>
+<div class="highlight"><pre><span></span>docker run &lt;image名稱&gt; -v &lt;實體資料夾路徑&gt;:/data/db
 </pre></div>
 
 
-<h2>啟動 MongoDB Container</h2>
+<h3>設定網路模式 <code>--network</code></h3>
+<p>在第一小節介紹完並創立完 <code>Docker Network</code> ，在建立Container時透過:</p>
+<div class="highlight"><pre><span></span>docker run &lt;image名稱&gt; --network &lt;network名稱&gt;
+</pre></div>
+
+
+<p>來設定使用的網路模式。</p>
+<h3>設定連線 Port <code>-p</code></h3>
+<p>啟動 <code>MongoDB</code> Container時， <code>MongoDB</code>預設會將服務開設於 <code>27017</code> port.</p>
+<p>但可別忘了！ Container就像是一個小世界！ 我們需要將小世界中的 <code>27017</code> port 與 外面的主機連接在一起，這個動作稱之為 <code>Port Forwarding</code>:</p>
+<div class="highlight"><pre><span></span><span class="c1"># docker run &lt;image名稱&gt; -p &lt;外部的Port&gt;:&lt;Container的Port&gt;</span>
+docker run &lt;image名稱&gt; -p <span class="m">8080</span>:27017 <span class="c1"># 將Container的27017連接到主機的8080 port，所以可以從主機呼叫 127.0.0.1:8080 來取得MongoDB的服務</span>
+</pre></div>
+
+
+<h3>啟動 MongoDB Container</h3>
+<p>了解各項標籤後，接下來我們看看完整指令: </p>
+<div class="highlight"><pre><span></span>docker run --name mongodb <span class="se">\ </span><span class="c1"># 將這個Container命名為 mongodb</span>
+-e <span class="nv">MONGO_INITDB_ROOT_USERNAME</span><span class="o">=</span>root <span class="se">\ </span><span class="c1"># 設定環境變數</span>
+-e <span class="nv">MONGO_INITDB_ROOT_PASSWORD</span><span class="o">=</span>wistron123 <span class="se">\ </span><span class="c1"># 設定環境變數</span>
+-v /mnt/mongodb:/data/db <span class="se">\ </span><span class="c1"># 設定Volume</span>
+--network mongo-network <span class="se">\ </span><span class="c1"># 在Step1. 設定的Docker Network</span>
+-d <span class="se">\ </span><span class="c1"># 使整個Container在背景運行</span>
+mongo:latest <span class="c1"># 此Container要使用的Docker Image</span>
+</pre></div>
+
+
+<p>執行後如果沒有錯誤，透過下列語法:</p>
+<div class="highlight"><pre><span></span>docker ps
+</pre></div>
+
+
+<p>應該就能看到MongoDB正常運行！ 此時已經可以透過 <code>pymongo</code> 或是其他介面來進行操作。</p>
+<p>接下來要安裝 <code>Mongo Express</code> 來更方便的查看 <code>MongoDB</code>中的資料。</p>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
