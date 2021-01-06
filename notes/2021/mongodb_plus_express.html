@@ -123,11 +123,13 @@
 <p>在這個章節我們需要先進行基本的環境設定: </p>
 <h2>網路設定 (docker-network)</h2>
 <p>接下來我們會建立兩個 Docker Container，其中 <code>Mongo Express</code> 是 <code>MongoDB</code>的 GUI，所以兩者的互動需要連線。</p>
-<p>Docker Container 在建立時，可以設定不同的網路模式(Docker Network)，這關係到外部與Container的連線，大致上可以分為幾種模式: 
-+ <code>None</code>: 外部無法與Container進行任何連線。
-+ <code>Host</code>: 在主機A上開啟的Container B，可以直接在 <code>&lt;A的ip&gt;:&lt;B開啟的port&gt;</code> 取得服務
-+ <code>Bridge</code>: 最常見的模式，可以想像成建立一個獨立的橋樑，啟動Container時可以指定此橋樑，則這些擁有橋樑的Container之間可以互通有無。 (我們建立一個橋樑，並且提供給 <code>MongoDB</code> 及 <code>Mongo Express</code>，則這兩者之間就能互相連線)
-+ <code>Overlay</code>: 適用於跨主機間的Docker連線。</p>
+<p>Docker Container 在建立時，可以設定不同的網路模式(Docker Network)，這關係到外部與Container的連線，大致上可以分為幾種模式: </p>
+<ul>
+<li><code>None</code>: 外部無法與Container進行任何連線。</li>
+<li><code>Host</code>: 在主機A上開啟的Container B，可以直接在 <code>&lt;A的ip&gt;:&lt;B開啟的port&gt;</code> 取得服務</li>
+<li><code>Bridge</code>: 最常見的模式，可以想像成建立一個獨立的橋樑，啟動Container時可以指定此橋樑，則這些擁有橋樑的Container之間可以互通有無。 (我們建立一個橋樑，並且提供給 <code>MongoDB</code> 及 <code>Mongo Express</code>，則這兩者之間就能互相連線)</li>
+<li><code>Overlay</code>: 適用於跨主機間的Docker連線。</li>
+</ul>
 <p>更多 Docker Network 的細節可以參考 <a href="https://yu-jack.github.io/2020/05/18/docker-network/">Docker 網路介紹</a> 這篇文章。</p>
 <h3>建立Network</h3>
 <div class="highlight"><pre><span></span><span class="c1"># docker network create -d &lt;模式&gt; &lt;名稱&gt;</span>
