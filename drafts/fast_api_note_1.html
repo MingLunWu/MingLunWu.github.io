@@ -142,9 +142,9 @@ pip install uvicorn[standard] # ASGI Server</p>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Hello&quot;</span><span class="p">:</span> <span class="s2">&quot;World&quot;</span><span class="p">}</span>
 
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/items/</span><span class="si">{item_id}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">read_item</span><span class="p">(</span><span class="n">item_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;item_id&quot;</span><span class="p">:</span> <span class="n">item_id</span><span class="p">,</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">}</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/users/</span><span class="si">{user_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">read_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;item_id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">}</span>
 </pre></div>
 
 
@@ -152,23 +152,24 @@ pip install uvicorn[standard] # ASGI Server</p>
 <p>需要透過 ASGI Server <code>gvicorn</code> 來啟用：</p>
 <div class="highlight"><pre><span></span>uvicorn main:app --reload
 <span class="c1"># uvicorn &lt;檔名&gt;:&lt;app名稱&gt;</span>
+<span class="c1"># --reload 在專案更新時，自動重新載入，類似Flask的debug模式</span>
 </pre></div>
 
 
-<p>啟用後在瀏覽器輸入 <code>127.0.0.1:8000/items/8?q=minglunwu</code>，將會得到如下的回傳結果: </p>
+<p>啟用後在瀏覽器輸入 <code>127.0.0.1:8000/users/8?q=minglunwu</code>，將會得到如下的回傳結果: </p>
 <div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;item_id&quot;</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span><span class="nt">&quot;q&quot;</span><span class="p">:</span><span class="s2">&quot;minglunwu&quot;</span><span class="p">}</span>
 </pre></div>
 
 
-<p>與 <code>Flask</code> 相同，當我們鍵入 <code>127.0.0.1:8000/items/8?q=minglunwu</code>， <code>FastAPI</code>會在定義好的裝飾子中，尋找符合條件的路徑前綴: <code>/items</code></p>
+<p>與 <code>Flask</code> 相同，當我們鍵入 <code>127.0.0.1:8000/users/8?q=minglunwu</code>， <code>FastAPI</code>會在定義好的裝飾子中，尋找符合路徑前綴: <code>/users</code> 的 function，也就是 <code>read_user()</code></p>
 <p>不同的是：<code>FastAPI</code> 透過 <strong>型態提示 (Typing Hints)</strong> 來作為接受參數的依據，在定義參數時，需要一併定義參數型態。 </p>
-<p>舉例來說： 在上圖的 <code>read_item()</code> 中，定義了兩個參數：</p>
+<p>舉例來說： 在上圖的 <code>read_user()</code> 中，定義了兩個參數：</p>
 <ul>
-<li><code>item_id</code>: <code>int</code>格式</li>
+<li><code>user_id</code>: <code>int</code>格式</li>
 <li><code>q</code>: <code>str</code>格式</li>
 </ul>
 <p>如果此時我們嘗試在瀏覽器中輸入 <strong>不符合規則的URL</strong>: </p>
-<p><code>127.0.0.1:8000/items/error_type?q=minglunwu</code> 
+<p><code>127.0.0.1:8000/users/error_type?q=minglunwu</code> 
 (將原本的 <code>8</code> 換成字串 <code>error_type</code>)</p>
 <p>則我們會看到下列訊息:</p>
 <div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;detail&quot;</span><span class="p">:[{</span><span class="nt">&quot;loc&quot;</span><span class="p">:[</span><span class="s2">&quot;path&quot;</span><span class="p">,</span><span class="s2">&quot;item_id&quot;</span><span class="p">],</span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;value is not a valid integer&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;type_error.integer&quot;</span><span class="p">}]}</span>
@@ -176,6 +177,12 @@ pip install uvicorn[standard] # ASGI Server</p>
 
 
 <p>與 <code>Flask</code> 會直接噴錯不同， <code>FastAPI</code> 會回傳預設的錯誤訊息。</p>
+<h1>自動轉換文件:</h1>
+<p>完成了第一支 API 後，在瀏覽器輸入: <code>http://127.0.0.1:8000/docs</code>:</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20210118/fast_api_doc.png"></p>
+<p>在撰寫API時加入參數型態後， <code>FastAPI</code>能自動生成 API 文件！</p>
+<p>除了方便閱讀外，這些文件也有提供即時互動功能，能夠即時測試: </p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20210118/fast_api_trial.png"></p>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
