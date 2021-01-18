@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+        <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <!--
+    <meta name="description" content="">
+    <meta name="author" content="">
+    -->
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="https://minglunwu.github.io/theme/css/base.css">
+    <!--<link rel="stylesheet" href="https://minglunwu.github.io/theme/css/vendor.css">-->
+    <link rel="stylesheet" href="https://minglunwu.github.io/theme/css/main.css">
+    <link rel="stylesheet" href="https://minglunwu.github.io/theme/css/styles.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="https://minglunwu.github.io/theme/js/modernizr.js"></script>
+    <script src="https://minglunwu.github.io/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="https://minglunwu.github.io/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://minglunwu.github.io/theme/favicon.ico" type="image/x-icon">
+
+    <title>Fast API 入門筆記 (一)</title>
+    <meta property="og:title" content="Fast API 入門筆記 (一)">
+    <meta name="description" content="<p>待補</p>">
+    <meta property="og:description" content="<p>待補</p>">
+    <meta name="author" content="MingLun Allen Wu">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1484669970465-b0c50d7f6964?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2089&q=80">
+    
+    <link rel="image_src" type="image/jpeg" href="https://images.unsplash.com/photo-1484669970465-b0c50d7f6964?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2089&q=80" />
+    <style>
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body id="top">
+            <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+        <div class="header-logo">
+            <a class="site-logo" href="https://minglunwu.github.io"><img src="https://minglunwu.github.io/theme/images/logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
+
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a href="https://minglunwu.github.io/#home" title="home">Home</a></li>
+                <li><a href="https://minglunwu.github.io/#about" title="about">About</a></li>
+                <li><a href="https://minglunwu.github.io/#blog" title="blog">Blogs</a></li>
+                <li><a href="https://minglunwu.github.io/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1484669970465-b0c50d7f6964?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2089&q=80)">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                    <a href="#0">Fast API</a>
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                Fast API 入門筆記 (一)
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">2021- 1-21 (四)</li>
+                            <li class="author">
+                                By
+                                <span>MingLun Allen Wu</span>
+                            </li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    
+                    <h1>Introduction</h1>
+<p>FastAPI的特色: 
++ 快速： 最快速的Python Framework
++ 開發快速</p>
+<h1>Requirements</h1>
+<ul>
+<li>
+<p>Python 環境 : Python 3.6 + </p>
+<p>:::bash
+pip install fastapi # FastAPI
+pip install uvicorn[standard] # ASGI Server</p>
+</li>
+</ul>
+<h1>撰寫第一支簡單的API</h1>
+<p>在語法結構上，與<code>Flask</code>大同小異，透過 <code>@app</code> 裝飾子來定義 API路徑</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">read_root</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Hello&quot;</span><span class="p">:</span> <span class="s2">&quot;World&quot;</span><span class="p">}</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/items/</span><span class="si">{item_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">read_item</span><span class="p">(</span><span class="n">item_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;item_id&quot;</span><span class="p">:</span> <span class="n">item_id</span><span class="p">,</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">}</span>
+</pre></div>
+
+
+<p>與 <code>Flask</code> 不同的是，如果直接執行此 <code>main.py</code>  <strong>不會啟動服務</strong>。
+需要透過 ASGI Server <code>gvicorn</code> 來啟用：</p>
+<div class="highlight"><pre><span></span>::: bash
+uvicorn main:app --reload
+<span class="c1"># uvicorn &lt;檔名&gt;:&lt;app名稱&gt;</span>
+</pre></div>
+
+
+<p>啟用後在瀏覽器輸入 <code>127.0.0.1:8000/items/8?q=minglunwu</code>，將會得到如下的回傳結果: </p>
+<div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;item_id&quot;</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span><span class="s2">&quot;q&quot;</span><span class="p">:</span><span class="s2">&quot;minglunwu&quot;</span><span class="p">}</span>
+</pre></div>
+
+
+<p>與 <code>Flask</code> 相同，當我們鍵入 <code>127.0.0.1:8000/items/8?q=minglunwu</code>， <code>FastAPI</code>會自動尋找符合條件的路徑前綴: <code>/items</code></p>
+<p>不同的是：<code>FastAPI</code> 透過 <strong>型態提示 (Typing Hints)</strong> 來作為接受參數的依據，在定義參數時，需要連同參數的型態一併定義。 在上圖的 <code>read_item()</code> 中，定義了兩個參數：</p>
+<ul>
+<li><code>item_id</code>: <code>int</code>格式</li>
+<li><code>q</code>: <code>str</code>格式</li>
+</ul>
+<p>如果此時我們嘗試在瀏覽器中輸入 <strong>不符合規則的URL</strong>: <code>127.0.0.1:8000/items/error_type?q=minglunwu</code> (將原本的 <code>8</code> 換成字串 <code>error_type</code>)，則我們會看到下列訊息:</p>
+<div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;detail&quot;</span><span class="p">:[{</span><span class="nt">&quot;loc&quot;</span><span class="p">:[</span><span class="s2">&quot;path&quot;</span><span class="p">,</span><span class="s2">&quot;item_id&quot;</span><span class="p">],</span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;value is not a valid integer&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;type_error.integer&quot;</span><span class="p">}]}</span>
+</pre></div>
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                             <a href="#0">Fast API</a>
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="https://minglunwu.github.io/#note" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
+            <!-- footer
+    ================================================== -->
+    <footer>
+        <div class="row">
+            <div class="col-full">
+
+                <div class="footer-logo">
+                    <a class="footer-site-logo" href="#0"><img src="https://minglunwu.github.io/theme/images/logo.png" alt="Homepage"></a>
+                </div>
+                <ul class="footer-social">
+                    <li>
+                        <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                    </li>
+                    <li>
+                        <a href="https://medium.com/@allen6997535" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/allen-ming-lun-wu-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/whoisfater0724/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                    </li>
+                </ul>
+                    
+            </div>
+        </div>
+
+        <div class="row footer-bottom">
+
+            <div class="col-twelve">
+                <div class="copyright">
+                    <span>© Copyright Hola 2017</span> 
+                    <span>Design by <a href="https://www.styleshout.com/">styleshout</a></span>	
+                </div>
+
+                <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- end footer-bottom -->
+
+    </footer> <!-- end footer -->
+    <!-- Java Script
+        ================================================== -->
+        <script src="https://minglunwu.github.io/theme/js/jquery-3.2.1.min.js"></script>
+        <script src="https://minglunwu.github.io/theme/js/plugins.js"></script>
+        <script src="https://minglunwu.github.io/theme/js/main.js"></script>
+
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161863471-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-161863471-1');
+    </script>
+    
+</body>
