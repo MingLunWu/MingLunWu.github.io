@@ -148,8 +148,8 @@ pip install uvicorn[standard] # ASGI Server</p>
 </pre></div>
 
 
-<p>與 <code>Flask</code> 不同的是，如果直接執行此 <code>main.py</code>  <strong>不會啟動服務</strong>。
-需要透過 ASGI Server <code>gvicorn</code> 來啟用：</p>
+<p>與 <code>Flask</code> 不同的是，如果直接執行此 <code>main.py</code>  <strong>不會啟動服務</strong>。</p>
+<p>需要透過 ASGI Server <code>gvicorn</code> 來啟用：</p>
 <div class="highlight"><pre><span></span>uvicorn main:app --reload
 <span class="c1"># uvicorn &lt;檔名&gt;:&lt;app名稱&gt;</span>
 </pre></div>
@@ -160,8 +160,9 @@ pip install uvicorn[standard] # ASGI Server</p>
 </pre></div>
 
 
-<p>與 <code>Flask</code> 相同，當我們鍵入 <code>127.0.0.1:8000/items/8?q=minglunwu</code>， <code>FastAPI</code>會自動尋找符合條件的路徑前綴: <code>/items</code></p>
-<p>不同的是：<code>FastAPI</code> 透過 <strong>型態提示 (Typing Hints)</strong> 來作為接受參數的依據，在定義參數時，需要連同參數的型態一併定義。 在上圖的 <code>read_item()</code> 中，定義了兩個參數：</p>
+<p>與 <code>Flask</code> 相同，當我們鍵入 <code>127.0.0.1:8000/items/8?q=minglunwu</code>， <code>FastAPI</code>會在定義好的裝飾子中，尋找符合條件的路徑前綴: <code>/items</code></p>
+<p>不同的是：<code>FastAPI</code> 透過 <strong>型態提示 (Typing Hints)</strong> 來作為接受參數的依據，在定義參數時，需要一併定義參數型態。 </p>
+<p>舉例來說： 在上圖的 <code>read_item()</code> 中，定義了兩個參數：</p>
 <ul>
 <li><code>item_id</code>: <code>int</code>格式</li>
 <li><code>q</code>: <code>str</code>格式</li>
