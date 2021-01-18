@@ -123,11 +123,11 @@
 </li>
 <li>
 <p>基本套件:</p>
-</li>
-</ul>
 <p>:::bash
 pip install fastapi # FastAPI
 pip install uvicorn[standard] # ASGI Server</p>
+</li>
+</ul>
 <h1>撰寫第一支簡單的API</h1>
 <h2>基本結構</h2>
 <p>在語法結構上，與<code>Flask</code>大同小異，透過 <code>@app</code> 裝飾子來定義 API路徑</p>
@@ -181,6 +181,10 @@ pip install uvicorn[standard] # ASGI Server</p>
 <li><code>user_id</code>: <code>int</code>格式</li>
 <li><code>q</code>: <code>str</code>格式</li>
 </ul>
+<p>這個機制有兩個好處！</p>
+<ol>
+<li>接收Request時</li>
+</ol>
 <p><code>FastAPI</code>在收到請求時，會<strong>自動檢查參數的格式是否符合條件</strong></p>
 <p>如果此時我們嘗試在瀏覽器中輸入 <strong>不符合規則的URL</strong>: </p>
 <p><code>127.0.0.1:8000/users/error_type?q=minglunwu</code> 
@@ -196,6 +200,7 @@ pip install uvicorn[standard] # ASGI Server</p>
 <p>在撰寫API時加入參數型態後， <code>FastAPI</code>能自動生成 API 文件！</p>
 <p>除了方便閱讀外，這些文件也有提供即時互動功能，能夠即時測試: </p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20210118/fast_api_trial.png"></p>
+<h1>在API中加入物件</h1>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
