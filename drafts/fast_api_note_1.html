@@ -123,11 +123,11 @@
 </li>
 <li>
 <p>基本套件:</p>
+</li>
+</ul>
 <p>:::bash
 pip install fastapi # FastAPI
 pip install uvicorn[standard] # ASGI Server</p>
-</li>
-</ul>
 <h1>撰寫第一支簡單的API</h1>
 <h2>基本結構</h2>
 <p>在語法結構上，與<code>Flask</code>大同小異，透過 <code>@app</code> 裝飾子來定義 API路徑</p>
@@ -164,7 +164,17 @@ pip install uvicorn[standard] # ASGI Server</p>
 
 
 <p>與 <code>Flask</code> 相同，當我們鍵入 <code>127.0.0.1:8000/users/8?q=minglunwu</code>， <code>FastAPI</code>會在定義好的裝飾子中，尋找符合路徑前綴: <code>/users</code> 的 function，也就是 <code>read_user()</code></p>
-<p>不同的是：<code>FastAPI</code> 透過 <strong>型態提示 (Typing Hints)</strong> 來作為接受參數的依據，在定義參數時，需要一併定義參數型態。 </p>
+<p>不同的是：</p>
+<ul>
+<li><code>FastAPI</code> 透過 <strong>型態提示 (Typing Hints)</strong> 來作為接受參數的依據，在定義參數時，需要一併定義參數型態。 </li>
+<li>使用 <code>@app</code> 裝飾子來決定API適用的方法: <ul>
+<li><code>@app.post()</code></li>
+<li><code>@app.get()</code></li>
+<li><code>@app.put()</code></li>
+<li><code>@app.delete()</code></li>
+</ul>
+</li>
+</ul>
 <h2>型態提示(Typing Hints)</h2>
 <p>舉例來說： 在上圖的 <code>read_user()</code> 中，定義了兩個參數及對應的格式：</p>
 <ul>
