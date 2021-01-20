@@ -195,26 +195,32 @@ uvicorn main:app --reload
 <li><code>user_id</code>: <code>int</code>格式</li>
 <li><code>q</code>: <code>str</code>格式（Optional)</li>
 </ul>
-<p><code>Typing Hint</code> 的機制有兩個優點：</p>
+<p>使用 <code>Typing Hint</code> 有兩項優點：</p>
 <ol>
-<li>接收Request時</li>
+<li><strong><code>FastAPI</code>在收到請求時，會自動檢查參數的格式是否符合條件</strong></li>
 </ol>
-<p><code>FastAPI</code>在收到請求時，會<strong>自動檢查參數的格式是否符合條件</strong></p>
-<p>如果此時我們嘗試在瀏覽器中輸入 <strong>不符合規則的URL</strong>: </p>
-<p><code>127.0.0.1:8000/users/error_type?q=minglunwu</code> 
-(將原本的 <code>8</code> 換成字串 <code>error_type</code>)</p>
-<p>則我們會看到下列「有用」且「清楚」的錯誤訊息，不像<code>Flask</code>會噴出驚心動魄的錯誤訊息:</p>
+<p>當<code>FastAPI</code>收到 Request時，會先檢查URL，尋找符合 <code>@app</code> 所定義的路徑規則。</p>
+<p>在解析 Request 所攜帶的參數時，將比對定義的變數型態，如果有不符合的，將會回傳錯誤訊息，舉例來說：</p>
+<p>如果我們嘗試在瀏覽器中輸入 <strong>不符合規則的URL</strong>: </p>
+<p><code>127.0.0.1:8000/users/error_type?q=minglunwu</code> </p>
+<p>(將原本的整數 <code>8</code> 換成字串 <code>error_type</code>)</p>
+<p>此時因為不符合預先定義好的參數型態，此次Request無效。</p>
+<p>不像是 <code>Flask</code> 會有驚心動魄的錯誤訊息， <code>FastAPI</code> 會自動將錯誤訊息轉換成下列「有用」且「清楚」的錯誤訊息:</p>
 <div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;detail&quot;</span><span class="p">:[{</span><span class="nt">&quot;loc&quot;</span><span class="p">:[</span><span class="s2">&quot;path&quot;</span><span class="p">,</span><span class="s2">&quot;item_id&quot;</span><span class="p">],</span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;value is not a valid integer&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;type_error.integer&quot;</span><span class="p">}]}</span>
 </pre></div>
 
 
 <h1>自動轉換文件:</h1>
+<p><code>FastAPI</code> 的另一項特色在於:</p>
+<blockquote>
+<p>自動生成 API 文件</p>
+</blockquote>
 <p>完成了第一支 API 後，在瀏覽器輸入: <code>http://127.0.0.1:8000/docs</code>:</p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20210118/fast_api_doc.png"></p>
-<p>在撰寫API時加入參數型態後， <code>FastAPI</code>能自動生成 API 文件！</p>
 <p>除了方便閱讀外，這些文件也有提供即時互動功能，能夠即時測試: </p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20210118/fast_api_trial.png"></p>
-<h1>在API中加入物件</h1>
+<hr>
+<p>未完待續</p>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
