@@ -178,7 +178,7 @@ uvicorn main:app --reload
 <p>當我們鍵入 <code>127.0.0.1:8000/users/8?q=minglunwu</code>時， <code>FastAPI</code>會在定義好的裝飾子中，尋找符合路徑前綴: <code>/users</code> 的 function，也就是 <code>read_user()</code>。 這部分的機制與<code>Flask</code>相當類似。</p>
 <p><code>FastAPI</code> 與 <code>Flask</code>不同的地方在於：</p>
 <blockquote>
-<p><code>FastAPI</code> 在建立API時，需要以 <strong>型態提示 (Typing Hints)</strong> 來定義參數的型態。</p>
+<p>FastAPI 在建立API時，需要以 <strong>型態提示 (Typing Hints)</strong> 來定義參數的型態。</p>
 </blockquote>
 <h2>型態提示(Typing Hints)</h2>
 <p>舉例來說： 在上圖的 <code>read_user()</code> 中，定義了兩個參數及對應的格式：</p>
