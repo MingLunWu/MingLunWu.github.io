@@ -118,7 +118,7 @@
 <li><a href="#啟動服務">啟動服務</a></li>
 <li><a href="#型態提示typing-hints">型態提示(Typing Hints)</a><ul>
 <li><a href="#1-fastapi在收到請求時會自動檢查參數的格式是否符合條件">1. <strong><code>FastAPI</code>在收到請求時，會自動檢查參數的格式是否符合條件</strong></a></li>
-<li><a href="#2-自動轉換文件">2. 自動轉換文件:</a></li>
+<li><a href="#2-自動轉換文件">2. 自動轉換文件</a></li>
 </ul>
 </li>
 </ul>
@@ -208,7 +208,7 @@ def read_user<span class="o">(</span>user_id: int, q: Optional<span class="o">[<
 <li><code>q</code>: <code>str</code>格式（Optional)</li>
 </ul>
 <p>使用 <code>Typing Hint</code> 有兩項優點：</p>
-<h3>1. <strong><code>FastAPI</code>在收到請求時，會自動檢查參數的格式是否符合條件</strong></h3>
+<h4>1. <strong><code>FastAPI</code>在收到請求時，會自動檢查參數的格式是否符合條件</strong></h4>
 <p>當<code>FastAPI</code>收到 Request時，會先檢查URL，尋找符合 <code>@app</code> 所定義的路徑規則。</p>
 <p>在解析 Request 所攜帶的參數時，將比對定義的變數型態，如果有不符合的，將會回傳錯誤訊息，舉例來說：</p>
 <p>如果我們嘗試在瀏覽器中輸入 <strong>不符合規則的URL</strong>: </p>
@@ -220,7 +220,7 @@ def read_user<span class="o">(</span>user_id: int, q: Optional<span class="o">[<
 </pre></div>
 
 
-<h3>2. 自動轉換文件:</h3>
+<h4>2. 自動轉換文件</h4>
 <p><code>FastAPI</code> 的另一項特色在於:</p>
 <blockquote>
 <p>自動生成 API 文件</p>
@@ -229,6 +229,9 @@ def read_user<span class="o">(</span>user_id: int, q: Optional<span class="o">[<
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20210118/fast_api_doc.png"></p>
 <p>除了方便閱讀外，這些文件也有提供即時互動功能，能夠即時測試: </p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20210118/fast_api_trial.png"></p>
+<p>撰寫API是一件費力耗神的工作，我曾傻傻地使用 <code>Markdown</code> 手刻文件，大概寫到十來個函式時就崩潰放棄 Orz</p>
+<p>後來嘗試使用 <code>Sphinx</code> 工具，能直接將註解轉換為文件，不過在使用時還需要再多進行一次轉換。</p>
+<p>我蠻喜歡<code>FastAPI</code> 內建的轉換功能，在撰寫好API的同時就自動產生完整的文件。</p>
 <hr>
 <p>未完待續</p>
     
