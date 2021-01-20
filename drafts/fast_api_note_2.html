@@ -112,7 +112,7 @@
                     
                     <p>重溫舊夢： <a href="https://minglunwu.github.io/notes/2021/fast_api_note_1.html">Fast API 入門筆記(一)</a></p>
 <h1>Typing Hints</h1>
-<p>接續上一則筆記，我們繼續探討Typing Hint，這是 <code>FastAPI</code> 特別著重的重點：</p>
+<p>接續上一則筆記，我們繼續探討 Typing Hint 這個 <code>FastAPI</code> 特別著重的特點：</p>
 <p>在實作上，Typing Hint其實就是:</p>
 <blockquote>
 <p>在定義函式的參數時，連同型態一併定義</p>
@@ -129,15 +129,27 @@
 </pre></div>
 
 
-<p>實作Typing Hint的特色：</p>
+<p>透過實作 <code>Typing Hint</code> ， <code>FastAPI</code>將能提供下列的功能：</p>
 <h3>1.Data Conversion</h3>
 <blockquote>
-<p>自動將Request的字串轉換(cast)為指定的格式</p>
+<p>自動將Request所夾帶的參數轉換(cast)為指定的格式</p>
 </blockquote>
 <p>以下圖的API為例:</p>
-<div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/items/</span><span class="si">{item_id}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="k">async</span> <span class="k">def</span> <span class="nf">read_item</span><span class="p">(</span><span class="n">item_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;item_id&quot;</span><span class="p">:</span> <span class="n">item_id</span><span class="p">}</span>
+<div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/users/</span><span class="si">{user_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">read_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">}</span>
+</pre></div>
+
+
+<p>如果此時我們傳送了 <code>127.0.0.1:8080/users/3</code> Request至Server，我們將會得到以下的回傳：</p>
+<div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;user_id&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+</pre></div>
+
+
+<p>發現了嗎？ user_id 的 value 是 <code>3</code> 而不是 <code>"3"</code>，原先在Request所夾帶的參數是<strong>字串</strong>格式，但是在設計方法時已經將 <code>user_id</code> 設定為 <strong>整數</strong>，所以 <code>FastAPI</code> 會在處理過程中自動轉換格式。</p>
+<p>如果此時發生了「無法轉換」的狀況呢？</p>
+<p>例如傳送了: <code>127.0.0.1:8080/users/test</code> Request， "test"是沒有辦法轉換成整數的，此時就會發生錯誤， <code>FastAPI</code>將會回傳錯誤訊息。</p>
+<div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;detail&quot;</span><span class="p">:[{</span><span class="nt">&quot;loc&quot;</span><span class="p">:[</span><span class="s2">&quot;path&quot;</span><span class="p">,</span><span class="s2">&quot;user_id&quot;</span><span class="p">],</span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;value is not a valid integer&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;type_error.integer&quot;</span><span class="p">}]}</span>
 </pre></div>
     
                     <p class="blog-content__tags">

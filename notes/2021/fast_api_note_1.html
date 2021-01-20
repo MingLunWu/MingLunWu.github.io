@@ -228,8 +228,8 @@ def read_user<span class="o">(</span>user_id: int, q: Optional<span class="o">[<
 <p>如果我們嘗試在瀏覽器中輸入 <strong>不符合規則的URL</strong>: </p>
 <p><code>127.0.0.1:8000/users/error_type?q=minglunwu</code> </p>
 <p>(將原本的整數 <code>8</code> 換成字串 <code>error_type</code>)</p>
-<p>此時因為收到的參數 <code>error_type?q=minglunwu</code>  並不符合預先定義好的參數型態: <code>int</code> 及 <code>str</code>，此次Request無效。</p>
-<p>此時，不像 <code>Flask</code> 會回傳驚心動魄的錯誤訊息， <code>FastAPI</code> 會自動將錯誤訊息轉換成下列「有用」且「清楚」的錯誤訊息後，進行回傳:</p>
+<p>此時因為收到的參數 <code>error_type?q=minglunwu</code>  因為參數 <code>error_type</code> 並不符合預先定義好的參數型態: <code>int</code>，此次Request無效。</p>
+<p>不像 <code>Flask</code> 會回傳驚心動魄的錯誤訊息， <code>FastAPI</code> 會自動將錯誤訊息轉換成下列「有用」且「清楚」的錯誤訊息後，進行回傳:</p>
 <div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;detail&quot;</span><span class="p">:[{</span><span class="nt">&quot;loc&quot;</span><span class="p">:[</span><span class="s2">&quot;path&quot;</span><span class="p">,</span><span class="s2">&quot;user_id&quot;</span><span class="p">],</span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;value is not a valid integer&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;type_error.integer&quot;</span><span class="p">}]}</span>
 </pre></div>
 
