@@ -111,7 +111,7 @@
                 <div class="col-full blog-content__main">
                     
                     <h1>TL;DR</h1>
-<p><code>FastAPI</code>是近期受到矚目的網頁框架，與Python常用的框架 <code>Flask</code> 、 <code>Django</code> 相同，可以用來建立 API 及網頁服務， <code>FlaskAPI</code>的特色： </p>
+<p><code>FastAPI</code>是近期受到矚目的網頁框架，與Python常用的框架 <code>Flask</code> 、 <code>Django</code> 相同，可以用來建立 API 及網頁服務， 用以下幾點來概括<code>FlaskAPI</code>的特色： </p>
 <ul>
 <li><strong>快速</strong>： 如同它的名字，執行速度相當快速，是<strong>當前最快的Python框架</strong></li>
 <li><strong>直覺</strong>： <code>FastAPI</code> 使用 <code>OpenAPI</code> 的開源標準，所以在開發時，能夠套用 auto complete</li>
@@ -178,7 +178,7 @@ uvicorn main:app --reload
 <p>當我們鍵入 <code>127.0.0.1:8000/users/8?q=minglunwu</code>時， <code>FastAPI</code>會在定義好的裝飾子中，尋找符合路徑前綴: <code>/users</code> 的 function，也就是 <code>read_user()</code>。 這部分的機制與<code>Flask</code>相當類似。</p>
 <p><code>FastAPI</code> 與 <code>Flask</code>不同的地方在於：</p>
 <blockquote>
-<p>FastAPI 在建立API時，需要以 <strong>型態提示 (Typing Hints)</strong> 來定義參數的型態。</p>
+<p>FastAPI 在建立API時，需要以 <strong>型態提示 (Typing Hints)</strong> 來定義參數的型態</p>
 </blockquote>
 <h2>型態提示(Typing Hints)</h2>
 <p>舉例來說： 在上圖的 <code>read_user()</code> 中，我們定義了以下的格式：</p>
