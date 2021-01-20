@@ -117,23 +117,27 @@
 <blockquote>
 <p>在定義函式的參數時，連同型態一併定義</p>
 </blockquote>
-<p>:::python</p>
-<p>@app.get("/users/{user_id}) # Without typing hint
-def read_user(user_id, q): # 只放變數名稱
-    return {"user_id": user_id, "q": q}</p>
-<p>@app.get("/users/{user_id}) # With typing hint
-def read_user(user_id: int, q: Optional[str] = None): # 除了變數名稱，還設定變數的型態
-    return {"user_id": user_id, "q": q}</p>
+<div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/users/</span><span class="si">{user_id}</span><span class="s2">) # Without typing hint</span>
+<span class="k">def</span> <span class="nf">read_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span> <span class="c1"># 只放變數名稱</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">}</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/users/</span><span class="si">{user_id}</span><span class="s2">) # With typing hint</span>
+<span class="k">def</span> <span class="nf">read_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span> <span class="c1"># 除了變數名稱，還設定變數的型態</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">}</span>
+</pre></div>
+
+
 <p>實作Typing Hint的特色：</p>
 <h3>1.Data Conversion</h3>
 <blockquote>
 <p>自動將Request的字串轉換(cast)為指定的格式</p>
 </blockquote>
 <p>以下圖的API為例:</p>
-<p>:::python
-@app.get("/items/{item_id}")
-async def read_item(item_id: int):
-    return {"item_id": item_id}</p>
+<div class="highlight"><pre><span></span><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/items/</span><span class="si">{item_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">read_item</span><span class="p">(</span><span class="n">item_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;item_id&quot;</span><span class="p">:</span> <span class="n">item_id</span><span class="p">}</span>
+</pre></div>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
