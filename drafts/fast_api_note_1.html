@@ -137,12 +137,12 @@ pip install uvicorn<span class="o">[</span>standard<span class="o">]</span> <spa
 <h2>基本結構</h2>
 <p>與 <code>Flask</code> 的 <code>run.py</code> 類似， 可以將所有程式碼放在 <code>main.py</code> 中建立第一個 <code>fastAPI</code></p>
 <p>在語法結構上，與<code>Flask</code>大同小異，透過 <code>@app</code> 裝飾子來定義API路徑:</p>
-<p><code>FastAPI</code>在定義路徑時，會透過裝飾子一併定義 <strong>使用的方法</strong>:</p>
+<p><code>FastAPI</code>在定義路徑時，會透過裝飾子一併定義API可提供的<strong>HTTP Method</strong>:</p>
 <ul>
-<li><code>@app.post()</code></li>
-<li><code>@app.get()</code></li>
-<li><code>@app.put()</code></li>
-<li><code>@app.delete()</code></li>
+<li><code>@app.post()</code> : Post 方法</li>
+<li><code>@app.get()</code> : Get 方法</li>
+<li><code>@app.put()</code> : Put 方法</li>
+<li><code>@app.delete()</code> : Delete 方法</li>
 </ul>
 <p>接下來參考官方文件的範例，在<code>main.py</code>中輸入:</p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
