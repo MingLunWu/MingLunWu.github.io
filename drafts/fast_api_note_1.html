@@ -163,7 +163,8 @@ pip install uvicorn[standard] # ASGI Server</p>
 <h2>啟動服務</h2>
 <p>與 <code>Flask</code> 不同的是，如果直接執行此 <code>main.py</code>  <strong>不會啟動服務</strong>。</p>
 <p>需要透過 ASGI Server <code>gvicorn</code> 來啟用：</p>
-<div class="highlight"><pre><span></span>uvicorn main:app --reload
+<div class="highlight"><pre><span></span><span class="o">(</span>bash script<span class="o">)</span>
+uvicorn main:app --reload
 <span class="c1"># uvicorn &lt;檔名&gt;:&lt;app名稱&gt;</span>
 <span class="c1"># --reload 在專案更新時，自動重新載入，類似Flask的debug模式</span>
 </pre></div>
@@ -174,11 +175,11 @@ pip install uvicorn[standard] # ASGI Server</p>
 </pre></div>
 
 
-<p>與 <code>Flask</code> 相同，當我們鍵入 <code>127.0.0.1:8000/users/8?q=minglunwu</code>， <code>FastAPI</code>會在定義好的裝飾子中，尋找符合路徑前綴: <code>/users</code> 的 function，也就是 <code>read_user()</code></p>
-<p>不同的是：</p>
-<ul>
-<li><code>FastAPI</code> 透過 <strong>型態提示 (Typing Hints)</strong> 來作為接受參數的依據，在定義參數時，需要一併定義參數型態。 </li>
-</ul>
+<p>當我們鍵入 <code>127.0.0.1:8000/users/8?q=minglunwu</code>時， <code>FastAPI</code>會在定義好的裝飾子中，尋找符合路徑前綴: <code>/users</code> 的 function，也就是 <code>read_user()</code>。 這部分的機制與<code>Flask</code>相當類似。</p>
+<p><code>FastAPI</code> 與 <code>Flask</code>不同的地方在於：</p>
+<blockquote>
+<p><code>FastAPI</code> 在建立API時，需要以 <strong>型態提示 (Typing Hints)</strong> 來定義參數的型態。</p>
+</blockquote>
 <h2>型態提示(Typing Hints)</h2>
 <p>舉例來說： 在上圖的 <code>read_user()</code> 中，定義了兩個參數及對應的格式：</p>
 <ul>
