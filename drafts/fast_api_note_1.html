@@ -185,8 +185,8 @@ uvicorn main:app --reload
 <h2>型態提示(Typing Hints)</h2>
 <p>舉例來說： 在上圖的 <code>read_user()</code> 中，我們定義了以下的格式：</p>
 <div class="highlight"><pre><span></span>@app.get<span class="o">(</span><span class="s2">&quot;/users/{user_id}&quot;</span><span class="o">)</span> <span class="c1"># 指定 api 路徑 (get方法)</span>
-    def read_user<span class="o">(</span>user_id: int, q: Optional<span class="o">[</span>str<span class="o">]</span> <span class="o">=</span> None<span class="o">)</span>:
-        <span class="k">return</span> <span class="o">{</span><span class="s2">&quot;item_id&quot;</span>: user_id, <span class="s2">&quot;q&quot;</span>: q<span class="o">}</span>
+def read_user<span class="o">(</span>user_id: int, q: Optional<span class="o">[</span>str<span class="o">]</span> <span class="o">=</span> None<span class="o">)</span>:
+    <span class="k">return</span> <span class="o">{</span><span class="s2">&quot;item_id&quot;</span>: user_id, <span class="s2">&quot;q&quot;</span>: q<span class="o">}</span>
 </pre></div>
 
 
@@ -196,9 +196,7 @@ uvicorn main:app --reload
 <li><code>q</code>: <code>str</code>格式（Optional)</li>
 </ul>
 <p>使用 <code>Typing Hint</code> 有兩項優點：</p>
-<ol>
-<li><strong><code>FastAPI</code>在收到請求時，會自動檢查參數的格式是否符合條件</strong></li>
-</ol>
+<h3>1. <strong><code>FastAPI</code>在收到請求時，會自動檢查參數的格式是否符合條件</strong></h3>
 <p>當<code>FastAPI</code>收到 Request時，會先檢查URL，尋找符合 <code>@app</code> 所定義的路徑規則。</p>
 <p>在解析 Request 所攜帶的參數時，將比對定義的變數型態，如果有不符合的，將會回傳錯誤訊息，舉例來說：</p>
 <p>如果我們嘗試在瀏覽器中輸入 <strong>不符合規則的URL</strong>: </p>
@@ -210,7 +208,7 @@ uvicorn main:app --reload
 </pre></div>
 
 
-<h1>自動轉換文件:</h1>
+<h3>2. 自動轉換文件:</h3>
 <p><code>FastAPI</code> 的另一項特色在於:</p>
 <blockquote>
 <p>自動生成 API 文件</p>
