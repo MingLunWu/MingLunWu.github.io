@@ -110,13 +110,15 @@
             <div class="row blog-content">
                 <div class="col-full blog-content__main">
                     
-                    <h1>Introduction</h1>
-<p>FastAPI的特色: </p>
+                    <h1>TL;DR</h1>
+<p><code>FastAPI</code>是近期受到矚目的網頁框架，與Python常用的框架 <code>Flask</code> 、 <code>Django</code> 相同，可以用來建立 API 及網頁服務， <code>FlaskAPI</code>的特色： </p>
 <ul>
-<li>快速： 最快速的Python Framework</li>
-<li>開發快速</li>
+<li><strong>快速</strong>： 如同它的名字，執行速度相當快速，是<strong>當前最快的Python框架</strong></li>
+<li><strong>直覺</strong>： <code>FastAPI</code> 使用 <code>OpenAPI</code> 的開源標準，所以在開發時，能夠套用 auto complete</li>
+<li><strong>自動產生文件</strong>: API撰寫完成後，<code>FastAPI</code>會自動產生對應的文件。</li>
+<li><strong>簡單</strong>: 語法上與 <code>Flask</code> 相差不大，轉換陣痛並不高。</li>
 </ul>
-<h1>Requirements</h1>
+<h1>Requirements &amp; Installation</h1>
 <ul>
 <li>
 <p>Python 環境 : Python 3.6 + </p>
@@ -131,20 +133,28 @@ pip install uvicorn[standard] # ASGI Server</p>
 </ul>
 <h1>撰寫第一支簡單的API</h1>
 <h2>基本結構</h2>
-<p>在語法結構上，與<code>Flask</code>大同小異，透過 <code>@app</code> 裝飾子來定義 API路徑</p>
+<p>與 <code>Flask</code> 的 <code>run.py</code> 類似， 可以將所有程式碼放在 <code>main.py</code> 中建立第一個 <code>fastAPI</code></p>
+<p>在語法結構上，與<code>Flask</code>大同小異，透過 <code>@app</code> 裝飾子來定義API路徑:</p>
+<p><code>FastAPI</code>在定義路徑時，會透過裝飾子一併定義 <strong>使用的方法</strong>:</p>
+<ul>
+<li><code>@app.post()</code></li>
+<li><code>@app.get()</code></li>
+<li><code>@app.put()</code></li>
+<li><code>@app.delete()</code></li>
+</ul>
+<p>接下來參考官方文件的範例，在<code>main.py</code>中輸入:</p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
 
-<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span> <span class="c1"># 建立一個 Fast API application</span>
 
-
-<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="c1"># 指定 api 路徑 (get方法)</span>
 <span class="k">def</span> <span class="nf">read_root</span><span class="p">():</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Hello&quot;</span><span class="p">:</span> <span class="s2">&quot;World&quot;</span><span class="p">}</span>
 
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/users/</span><span class="si">{user_id}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/users/</span><span class="si">{user_id}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># 指定 api 路徑 (get方法)</span>
 <span class="k">def</span> <span class="nf">read_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;item_id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">}</span>
 </pre></div>
@@ -168,13 +178,6 @@ pip install uvicorn[standard] # ASGI Server</p>
 <p>不同的是：</p>
 <ul>
 <li><code>FastAPI</code> 透過 <strong>型態提示 (Typing Hints)</strong> 來作為接受參數的依據，在定義參數時，需要一併定義參數型態。 </li>
-<li>使用 <code>@app</code> 裝飾子來決定API適用的方法: <ul>
-<li><code>@app.post()</code></li>
-<li><code>@app.get()</code></li>
-<li><code>@app.put()</code></li>
-<li><code>@app.delete()</code></li>
-</ul>
-</li>
 </ul>
 <h2>型態提示(Typing Hints)</h2>
 <p>舉例來說： 在上圖的 <code>read_user()</code> 中，定義了兩個參數及對應的格式：</p>
