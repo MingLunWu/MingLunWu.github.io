@@ -113,22 +113,17 @@
                     <p>重溫舊夢： <a href="https://minglunwu.github.io/notes/2021/fast_api_note_1.html">Fast API 入門筆記(一)</a></p>
 <h1>Typing Hints</h1>
 <p>接續上一則筆記，我們繼續探討Typing Hint，這是 <code>FastAPI</code> 特別著重的重點：</p>
-<p>實作Typing Hint的意義其實就是:</p>
+<p>在實作上，Typing Hint其實就是:</p>
 <blockquote>
 <p>在定義函式的參數時，連同型態一併定義</p>
 </blockquote>
-<p>:::python
-    # Without typing hint
-    @app.get("/users/{user_id})
-    def read_user(user_id, q): # 只放變數名稱
-        return {"user_id": user_id, "q": q}</p>
-<div class="highlight"><pre><span></span><span class="err">#</span><span class="w"> </span><span class="k">With</span><span class="w"> </span><span class="n">typing</span><span class="w"> </span><span class="n">hint</span><span class="w"></span>
-<span class="nv">@app</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="ss">&quot;/users/{user_id})</span>
-<span class="ss">def read_user(user_id: int, q: Optional[str] = None): # 除了變數名稱，還設定的變數的型態</span>
-<span class="ss">    return {&quot;</span><span class="nf">user_id</span><span class="ss">&quot;: user_id, &quot;</span><span class="n">q</span><span class="err">&quot;:</span><span class="w"> </span><span class="n">q</span><span class="err">}</span><span class="w"></span>
-</pre></div>
-
-
+<p>:::python</p>
+<p>@app.get("/users/{user_id}) # Without typing hint
+def read_user(user_id, q): # 只放變數名稱
+    return {"user_id": user_id, "q": q}</p>
+<p>@app.get("/users/{user_id}) # With typing hint
+def read_user(user_id: int, q: Optional[str] = None): # 除了變數名稱，還設定變數的型態
+    return {"user_id": user_id, "q": q}</p>
 <p>實作Typing Hint的特色：</p>
 <h3>1.Data Conversion</h3>
 <blockquote>
