@@ -130,7 +130,12 @@
 
 
 <p>透過實作 <code>Typing Hint</code> ， <code>FastAPI</code>將能提供下列的功能：</p>
-<h3>1.Data Conversion</h3>
+<h3>1. Error Checks, Completion</h3>
+<blockquote>
+<p>撰寫程式時檢查變數格式、自動補齊</p>
+</blockquote>
+<p>這些功能嚴格來說並不是 <code>FastAPI</code> 提供，而是當你遵照 Python 的 Typing Hint時，就能搭配IDE的工具來協助開發，避免語法上的錯誤或是設計時的遺漏。</p>
+<h3>2.Data Conversion</h3>
 <blockquote>
 <p>自動將Request所夾帶的參數轉換(cast)為指定的格式</p>
 </blockquote>
@@ -146,7 +151,8 @@
 </pre></div>
 
 
-<p>發現了嗎？ user_id 的 value 是 <code>3</code> 而不是 <code>"3"</code>，原先在Request所夾帶的參數是<strong>字串</strong>格式，但是在設計方法時已經將 <code>user_id</code> 設定為 <strong>整數</strong>，所以 <code>FastAPI</code> 會在處理過程中自動轉換格式。</p>
+<p>發現了嗎？ user_id 的 value 是 <code>3</code> 而不是 <code>"3"</code>，原先在Request所夾帶的參數是<strong>字串</strong>格式，但是在設計函式時已經將 <code>user_id</code> 設定為 <strong>整數</strong>，所以 <code>FastAPI</code> 會在處理過程中自動轉換格式。</p>
+<h3>3. Data Validation</h3>
 <p>如果此時發生了「無法轉換」的狀況呢？</p>
 <p>例如傳送了: <code>127.0.0.1:8080/users/test</code> Request， "test"是沒有辦法轉換成整數的，此時就會發生錯誤， <code>FastAPI</code>將會回傳錯誤訊息。</p>
 <div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;detail&quot;</span><span class="p">:[{</span><span class="nt">&quot;loc&quot;</span><span class="p">:[</span><span class="s2">&quot;path&quot;</span><span class="p">,</span><span class="s2">&quot;user_id&quot;</span><span class="p">],</span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;value is not a valid integer&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;type_error.integer&quot;</span><span class="p">}]}</span>
