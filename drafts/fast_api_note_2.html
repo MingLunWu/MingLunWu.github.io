@@ -117,15 +117,18 @@
 <blockquote>
 <p>在定義函式的參數時，連同型態一併定義</p>
 </blockquote>
-<p>:::python</p>
-<h1>Without typing hint</h1>
-<p>@app.get("/users/{user_id})
-def read_user(user_id, q): # 只放變數名稱
-    return {"user_id": user_id, "q": q}</p>
-<h1>With typing hint</h1>
-<p>@app.get("/users/{user_id})
-def read_user(user_id: int, q: Optional[str] = None): # 除了變數名稱，還設定的變數的型態
-    return {"user_id": user_id, "q": q}</p>
+<p>:::python
+    # Without typing hint
+    @app.get("/users/{user_id})
+    def read_user(user_id, q): # 只放變數名稱
+        return {"user_id": user_id, "q": q}</p>
+<div class="highlight"><pre><span></span><span class="err">#</span><span class="w"> </span><span class="k">With</span><span class="w"> </span><span class="n">typing</span><span class="w"> </span><span class="n">hint</span><span class="w"></span>
+<span class="nv">@app</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="ss">&quot;/users/{user_id})</span>
+<span class="ss">def read_user(user_id: int, q: Optional[str] = None): # 除了變數名稱，還設定的變數的型態</span>
+<span class="ss">    return {&quot;</span><span class="nf">user_id</span><span class="ss">&quot;: user_id, &quot;</span><span class="n">q</span><span class="err">&quot;:</span><span class="w"> </span><span class="n">q</span><span class="err">}</span><span class="w"></span>
+</pre></div>
+
+
 <p>實作Typing Hint的特色：</p>
 <h3>1.Data Conversion</h3>
 <blockquote>
