@@ -114,6 +114,11 @@
 <p>從研究所開始接觸 <code>Flask</code> 也有兩三年的時間了。</p>
 <p>這個輕量級的框架的確很適合拿來「快速」產生網頁或是API，如果需要額外的功能，也有一些第三方工具可以支援。</p>
 <p>（例如透過 <code>Flask-login</code> 來處理會員登入功能)</p>
+<p>儘管開發方便，但每當我的 <code>Flask</code> 服務要讓多人使用時，心中總是忐忑不安，就怕人家問我說：</p>
+<blockquote>
+<p>欸！阿你網頁卡住了怎麼辦？</p>
+</blockquote>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/donotsay.png"></p>
 <p>有使用過 <code>Flask</code> 的人一定知道，啟動服務時， <code>Flask</code>總是會「友善」的跳出提醒: </p>
 <div style="background-color:black">
 <p style='color: red'>WARNING: This is a development server. Do not use it in a production deployment.</p>
@@ -122,11 +127,8 @@
 </div>
 
 <p><br></p>
-<p>每當我的 <code>Flask</code> 服務要同時讓多人使用時，心中總是忐忑不安，就怕人家問我說：</p>
-<blockquote>
-<p>欸！阿你網頁卡住了怎麼辦？</p>
-</blockquote>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/donotsay.png"></p>
+<p>連官方都提醒你要記得更換 <code>WSGI Server</code> 了，這到底是什麼東西？</p>
+<p>在開始記錄前，先分享 <code>WSGI</code> 的唸法，就跟你在唸英文的<strong>威士忌</strong>一樣！</p>
 <h1>Application Server</h1>
 <p>Flask，用來處理各種</p>
     
