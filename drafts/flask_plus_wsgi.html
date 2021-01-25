@@ -155,7 +155,7 @@
 <li>
 <p><strong>負載平衡(Load Balancer):</strong></p>
 <blockquote>
-<p>扮演門神，所有Request將依其指引去到該去的地方</p>
+<p>扮演門神，所有的Request將依循其指引，前往該去的地方</p>
 </blockquote>
 <p>當服務流量太高時，單靠一台Server可能不足以負載，會同時有多台Server提供服務。</p>
 <p>每一台Server的位置都不同，我們可不能請使用者自動分流：</p>
@@ -163,15 +163,15 @@
 <p>這時候我們就需要透過<code>Web Server</code>扮演看門人，所有的Request都會經過它，由其判斷該將Request導向哪一台Server，通常會有幾種策略：</p>
 <ul>
 <li>
-<p>輪循(Round Robin): </p>
+<p><strong>輪循(Round Robin):</strong></p>
 <p>假設共有三台Server(A,B,C)提供服務，每一個Request依照 A, B, C, A, B, C...的順序分配。</p>
 </li>
 <li>
-<p>最小負載: </p>
+<p><strong>最小負載:</strong> </p>
 <p>將當前Request導向目前負載量最小的Server</p>
 </li>
 <li>
-<p>IP Hashtable: </p>
+<p><strong>IP Hashtable:</strong> </p>
 <p>將發送Request的IP送入雜湊表中，決定該送往哪一台Server。特性是當同一個IP位置再次造訪時，能夠導向同一台Server。</p>
 </li>
 </ul>
@@ -180,9 +180,11 @@
 <li>
 <p><strong>反向代理:</strong></p>
 <blockquote>
-<p>隱藏真正的Server位置
-在造訪網路上的服務時，通常不會以 ip + port 的形式呈現</p>
+<p>隱藏真正的Server位置</p>
 </blockquote>
+<p>對於客戶端來說，所有的Request都是送往相同的位置，儘管負載平衡機制會指派不同的Server處理Request，但是對於客戶端來說，都是同樣的Server在處理，真正的Server位置被隱藏了。</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/load_balance.png"></p>
+<p>不管今天是由圖中的 <code>Server1</code>, <code>Server2</code> 還是 <code>Server3</code>提供服務，對於使用者來說，所有的Request都是送往 <code>123.45.67.89</code> 這個位置，使用者無從得知真正提供服務的Server路徑為何。</p>
 </li>
 </ol>
     
