@@ -133,18 +133,56 @@
 <blockquote>
 <p>接受客製化的Request，執行程式碼後，回傳客製化的Response</p>
 </blockquote>
-<p><code>Application Server</code><strong>接受使用者傳送的Request</strong>，將其<strong>轉送(Routing)</strong>至對應的程式碼進行處理、運算，最後回傳<strong>不同的結果</strong>。</p>
+<p><code>Application Server</code><strong>接受使用者傳送的Request</strong>，將其<strong>轉送(Routing)</strong>至對應的程式碼進行處理、運算，最後回傳<strong>客製化的結果</strong>。</p>
 <p>這段話看起來有點拗口，但其實就一般API所做的任務。</p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/app_server.png"></p>
 <p>由於 <code>Application Server</code> 可以根據使用者的需求(參數)進行不同的動作，例如：資料庫的存取、資料的匯總... (動態)</p>
-<p>了解了 <code>Application Server</code> 後，現在我們可以在地圖上先放上它: </p>
+<p>了解 <code>Application Server</code> 的結構後，現在我們可以在地圖上先放上它: </p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/step1.png"></p>
 <h1>Web Server</h1>
-<p>接下來我們會在 <code>Application Server</code> 前面加入下一個元件： <strong>Web Server</strong></p>
+<p>接下來我們會在 <code>Application Server</code> 前方加入下一個元件： <strong>Web Server</strong></p>
 <p>常見的 <code>Apache</code>, <code>Nginx</code> 都是屬於 <code>Web Server</code> 的範疇，它的功能有下列三項： </p>
 <ol>
-<li><strong>靜態檔案快取：</strong>
-    快取的目的是讓<strong>系統的回應速度變快，減少等待Response的時間</strong>。 如果網站中包含了大量的靜態檔案(圖片、js、css檔案)，設置快取可以讓瀏覽器緩存這些文件。 當使用第二次造訪網站時就不需要重新下載這些檔案，達到加速的效果。</li>
+<li>
+<p><strong>靜態檔案快取：</strong></p>
+<blockquote>
+<p>將大型的文件暫存在使用者的瀏覽器，以降低重複造訪時的讀取時間
+快取的目的是讓<strong>系統的回應速度變快，減少等待Response的時間</strong>。 如果網站中包含了大量的靜態檔案(圖片、js、css檔案)，設置快取可以讓瀏覽器緩存這些文件。 當使用第二次造訪網站時就不需要重新下載這些檔案，達到加速的效果。</p>
+</blockquote>
+<p>值得一提的是：這些快取僅限於 <strong>「靜態檔案」</strong>，在發送Request的過程中不涉及運算，任何使用者造訪都將取得相同內容。 如果發送Request時有額外的參數、需要進行客製化的運算，則屬於「動態」請求，這是屬於前一小節 <code>Application Server</code> 處理的範疇。</p>
+</li>
+<li>
+<p><strong>負載平衡(Load Balancer):</strong></p>
+<blockquote>
+<p>扮演門神，所有Request將依其指引去到該去的地方</p>
+</blockquote>
+<p>當服務流量太高時，單靠一台Server可能不足以負載，會同時有多台Server提供服務。</p>
+<p>每一台Server的位置都不同，我們可不能請使用者自動分流：</p>
+<p>請身分證字號最後一碼是奇數的，使用<code>xxx.xxx.xx.xxx</code> 位置、最後一碼是偶數的，則使用<code>yyy.yyy.yyy.yy</code>位置。</p>
+<p>這時候我們就需要透過<code>Web Server</code>扮演看門人，所有的Request都會經過它，由其判斷該將Request導向哪一台Server，通常會有幾種策略：</p>
+<ul>
+<li>
+<p>輪循(Round Robin): </p>
+<p>假設共有三台Server(A,B,C)提供服務，每一個Request依照 A, B, C, A, B, C...的順序分配。</p>
+</li>
+<li>
+<p>最小負載: </p>
+<p>將當前Request導向目前負載量最小的Server</p>
+</li>
+<li>
+<p>IP Hashtable: </p>
+<p>將發送Request的IP送入雜湊表中，決定該送往哪一台Server。特性是當同一個IP位置再次造訪時，能夠導向同一台Server。</p>
+</li>
+</ul>
+<p>這些策略相當繁多，在此不多做停留。</p>
+</li>
+<li>
+<p><strong>反向代理:</strong></p>
+<blockquote>
+<p>隱藏真正的Server位置
+在造訪網路上的服務時，通常不會以 ip + port 的形式呈現</p>
+</blockquote>
+</li>
 </ol>
     
                     <p class="blog-content__tags">
