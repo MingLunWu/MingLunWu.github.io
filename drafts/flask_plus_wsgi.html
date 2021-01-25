@@ -140,8 +140,12 @@
 <p>了解了 <code>Application Server</code> 後，現在我們可以在地圖上先放上它: </p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/step1.png"></p>
 <h1>Web Server</h1>
-<p>接下來我們需要在世界中加入下一個元件： <strong>Web Server</strong></p>
-<p>常見的 <code>Apache</code>, <code>Nginx</code> 屬於這個層級：</p>
+<p>接下來我們會在 <code>Application Server</code> 前面加入下一個元件： <strong>Web Server</strong></p>
+<p>常見的 <code>Apache</code>, <code>Nginx</code> 都是屬於 <code>Web Server</code> 的範疇，它的功能有下列三項： </p>
+<ol>
+<li><strong>靜態檔案快取：</strong>
+    快取的目的是讓<strong>系統的回應速度變快，減少等待Response的時間</strong>。 如果網站中包含了大量的靜態檔案(圖片、js、css檔案)，設置快取可以讓瀏覽器緩存這些文件。 當使用第二次造訪網站時就不需要重新下載這些檔案，達到加速的效果。</li>
+</ol>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
