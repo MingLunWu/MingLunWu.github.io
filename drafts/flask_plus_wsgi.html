@@ -123,16 +123,16 @@
 <font style='color: red'>WARNING: This is a development server. Do not use it in a production deployment.</font><br>
 <font style='color: green'>Use a production WSGI server instead.</p>
 </font>
+</div>
 
-連官方都提醒你要記得更換 `WSGI Server` 了，這到底是什麼東西？
-
-接下來讓我們從 `Flask` 為起點，依序介紹 `WSGI Server`, `Web Server`的概念，以及如何設定服務，提高 `Flask` 的負載率。
----
-# Application Server 
-
-常見的 `Flask`, `Django`框架都屬於這個層級，主要是負責:
-
-> 接受客製化的Request，執行程式碼後，回傳客製化的Response
+<p>連官方都提醒你要記得更換 <code>WSGI Server</code> 了，這到底是什麼東西？</p>
+<h2>接下來讓我們從 <code>Flask</code> 為起點，依序介紹 <code>WSGI Server</code>, <code>Web Server</code>的概念，以及如何設定服務，提高 <code>Flask</code> 的負載率。</h2>
+<h1>Application Server</h1>
+<p>常見的 <code>Flask</code>, <code>Django</code>框架都屬於這個層級，主要是負責:</p>
+<blockquote>
+<p>接受客製化的Request，執行程式碼後，回傳客製化的Response</p>
+</blockquote>
+<p>相較於 <code>Web Server</code> 負責處理靜態網頁， <code>Application Server</code>可以<strong>接受使用者傳送的參數</strong>，並將其送至對應的程式碼進行處理，</p>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
