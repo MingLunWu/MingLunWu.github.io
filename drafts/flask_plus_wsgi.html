@@ -146,6 +146,7 @@
 </blockquote>
 <p><code>WSGI Server</code> 加入的位置在<code>User</code> 跟 <code>Application Server</code>之間，加入後的地圖長這樣：</p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:60%;" src="https://minglunwu.github.io/images/20210122/step2.png"></p>
+<p>介紹 <code>WSGI Server</code> 前，我們必須先說明何謂 <code>WSGI</code> (備註：發音跟英文的威士忌一樣！)</p>
 <h2>WSGI 協定</h2>
 <blockquote>
 <p>Python Web Server Gateway Interface</p>
@@ -166,12 +167,12 @@
 <h4>2. Parse, 封裝Environ</h4>
 <p><code>WSGI Server</code> 接收到 HTTP Request 後，會將這些字串解析成Key-Value的形式，儲存至<code>environ</code>變數之中:</p>
 <div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="err">&#39;REQUEST_HEADER&#39;:</span> <span class="err">&#39;GET&#39;,</span>
-    <span class="err">&#39;PATH_INFO&#39;:</span> <span class="err">&#39;/url/&#39;,</span>
-    <span class="err">&#39;SERVER_PROTOCL&#39;:</span> <span class="err">&#39;HTTP/1.1&#39;,</span>
-    <span class="err">&#39;HTTP_EXAMPLE_HEADER&#39;:</span> <span class="err">&#39;example</span> <span class="err">value&#39;,</span>
-    <span class="err">&#39;wsgi.input&#39;:</span> <span class="err">&lt;_io.BytesIO&gt;,</span>
-    <span class="err">...</span>
+<span class="err">&#39;REQUEST_HEADER&#39;:</span> <span class="err">&#39;GET&#39;,</span>
+<span class="err">&#39;PATH_INFO&#39;:</span> <span class="err">&#39;/url/&#39;,</span>
+<span class="err">&#39;SERVER_PROTOCL&#39;:</span> <span class="err">&#39;HTTP/1.1&#39;,</span>
+<span class="err">&#39;HTTP_EXAMPLE_HEADER&#39;:</span> <span class="err">&#39;example</span> <span class="err">value&#39;,</span>
+<span class="err">&#39;wsgi.input&#39;:</span> <span class="err">&lt;_io.BytesIO&gt;,</span>
+<span class="err">...</span>
 <span class="p">}</span>
 </pre></div>
 
