@@ -167,12 +167,12 @@
 <h4>2. Parse, 封裝Environ</h4>
 <p><code>WSGI Server</code> 接收到 HTTP Request 後，會將這些字串解析成Key-Value的形式，儲存至<code>environ</code>變數之中:</p>
 <div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="err">&#39;REQUEST_HEADER&#39;:</span> <span class="err">&#39;GET&#39;,</span>
-<span class="err">&#39;PATH_INFO&#39;:</span> <span class="err">&#39;/url/&#39;,</span>
-<span class="err">&#39;SERVER_PROTOCL&#39;:</span> <span class="err">&#39;HTTP/1.1&#39;,</span>
-<span class="err">&#39;HTTP_EXAMPLE_HEADER&#39;:</span> <span class="err">&#39;example</span> <span class="err">value&#39;,</span>
-<span class="err">&#39;wsgi.input&#39;:</span> <span class="err">&lt;_io.BytesIO&gt;,</span>
-<span class="err">...</span>
+<span class="s1">&#39;REQUEST_HEADER&#39;</span><span class="p">:</span> <span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+<span class="s1">&#39;PATH_INFO&#39;</span><span class="p">:</span> <span class="s1">&#39;/url/&#39;</span><span class="p">,</span>
+<span class="s1">&#39;SERVER_PROTOCL&#39;</span><span class="p">:</span> <span class="s1">&#39;HTTP/1.1&#39;</span><span class="p">,</span>
+<span class="s1">&#39;HTTP_EXAMPLE_HEADER&#39;</span><span class="p">:</span> <span class="s1">&#39;example value&#39;</span><span class="p">,</span>
+<span class="s1">&#39;wsgi.input&#39;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">_io</span><span class="o">.</span><span class="n">BytesIO</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="o">...</span>
 <span class="p">}</span>
 </pre></div>
 
@@ -190,6 +190,10 @@
 <h4>7. HTTP Response</h4>
 <p>在步驟2中 <code>WSGI Server</code> 將<code>HTTP Request</code>由<code>字串</code>轉換為類似<code>Dictionary</code>的格式。</p>
 <p>在此步驟則是反向轉換，將前一步驟回傳的結果轉譯成 <code>HTTP Response</code>。</p>
+<h2>替換 WSGI Server</h2>
+<p>了解 <code>WSGI</code> 協定的基本流程後，我們可以將<code>WSGI Server</code>想像成處理 <code>HTTP Request</code>(字串) 與 <code>Python 的 Input/Output</code>的中繼站(Middleware)。</p>
+<p>所有支援 <code>WSGI</code> 協定的 Server 都可稱為 <code>WSGI Server</code>，現在比較常見的<code>WSGI Server</code>是:<code>gunicorn</code> 及 <code>uwsgi</code>。</p>
+<p>那麼在一開始所提及的，為什麼 <code>Flask</code> 會要求我們替換 <code>WSGI Server</code> 呢？</p>
 <hr>
 <h1>Web Server</h1>
 <p>接下來我們會在 <code>WSGI Server</code> 前方加入下一個元件： <strong>Web Server</strong></p>
