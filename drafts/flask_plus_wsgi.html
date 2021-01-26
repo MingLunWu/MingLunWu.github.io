@@ -194,9 +194,12 @@
 <p>了解 <code>WSGI</code> 協定的基本流程後，我們可以將<code>WSGI Server</code>想像成處理 <code>HTTP Request</code>(字串) 與 <code>Python 的 Input/Output</code>的中繼站(Middleware)。</p>
 <p>所有支援 <code>WSGI</code> 協定的 Server 都可稱為 <code>WSGI Server</code>，現在比較常見的<code>WSGI Server</code>是:<code>gunicorn</code> 及 <code>uwsgi</code>。</p>
 <p>那麼在一開始所提及的，為什麼 <code>Flask</code> 會要求我們替換 <code>WSGI Server</code> 呢？</p>
-<p><code>Flask</code>身為一個輕量級的框架，為了讓使用者不需要做太多的操作就能部署應用程式，所以內建較為陽春的<code>WSGI Server</code> (Werzburg)，負責處理<code>HTTP Request</code>及<code>Flask</code>間資料的轉換。</p>
+<p><code>Flask</code>身為一個輕量級的框架，為了讓使用者不需要做太多的操作就能部署應用程式，所以內建較為陽春的<code>WSGI Server</code> (<code>Werzburg</code>)，負責處理<code>HTTP Request</code>及<code>Flask</code>間資料的轉換。</p>
+<p>Flask官方文件有提到<code>Werzburg</code>只能算是<code>WSGI</code>工具包(Toolkit)，所以在處理「短時間多個Request」時的負載能力不佳，需要使用額外的<code>WSGI Server</code>來取代。</p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:80%;" src="https://minglunwu.github.io/images/20210122/change_wsgi.png"></p>
-<hr>
+<p>使用 <code>gunicorn</code> 等較為成熟的<code>WSGI Server</code>，能夠使用 Multithreading, Multiprocessing的機制來增加負載能力。 </p>
+<p>如何使用 <code>gunicorn</code> 來替換 <code>Flask</code> 內建的 <code>Werzburg</code>? 將在稍後的章節介紹。</p>
+<h2>讓我們先繼續完成地圖！</h2>
 <h1>Web Server</h1>
 <p>接下來我們會在 <code>WSGI Server</code> 前方加入下一個元件： <strong>Web Server</strong></p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:70%;" src="https://minglunwu.github.io/images/20210122/step3.png"></p>
