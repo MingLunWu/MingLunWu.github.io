@@ -130,8 +130,7 @@
 <hr>
 <h1>Application Server</h1>
 <p>在旅程的一開始，我們先在地圖上放上第一個元件: <strong>Application Server</strong></p>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/step1.png">
-<font style="text-align:center"><b>圖片說明：Step1. 加入 Application Server</b></font></p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/step1.png"></p>
 <p>常見的 <code>Flask</code>, <code>Django</code>框架都屬於這個層級，主要是負責:</p>
 <blockquote>
 <p>接受客製化的Request，執行程式碼後，回傳客製化的Response</p>
@@ -145,7 +144,7 @@
 <blockquote>
 <p><code>WSGI Server</code> 是用來處理 <code>WSGI</code> 協定的伺服器 </p>
 </blockquote>
-<p><code>WSGI Server</code> 的位置在 <code>Application Server</code>之前：</p>
+<p><code>WSGI Server</code> 加入的位置在<code>User</code> 跟 <code>Application Server</code>之間，加入後的地圖長這樣：</p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:60%;" src="https://minglunwu.github.io/images/20210122/step2.png"></p>
 <h2>WSGI 協定</h2>
 <blockquote>
@@ -154,6 +153,43 @@
 <p>這個協定制定了一套規則，規定<code>HTTP Request</code>要如何與<code>Application Server</code>(請見上節)溝通。</p>
 <p>我們透過下面這張圖來說明 WSGI 協定的流程：</p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:80%;" src="https://minglunwu.github.io/images/20210122/wsgi.png"></p>
+<p>接下來依序說明每一個步驟: </p>
+<h3>1. HTTP Request</h3>
+<p>從瀏覽器造訪服務、呼叫API時，會發送HTTP Request，可視為「有特定格式」的文字，通常會包含:</p>
+<ul>
+<li>Request Header </li>
+<li>Request Method </li>
+<li>Request URL</li>
+<li>Message Body</li>
+</ul>
+<p>細節部分不贅述，有興趣的讀者可以自行Google</p>
+<h3>2. Parse, 封裝Environ</h3>
+<p><code>WSGI Server</code> 接收到 HTTP Request 後，會將這些字串解析成Key-Value的形式，儲存至<code>environ</code>變數之中:</p>
+<div class="highlight"><pre><span></span><span class="err">#</span> <span class="err">environ</span>
+<span class="p">{</span>
+    <span class="err">&#39;REQUEST_HEADER&#39;:</span> <span class="err">&#39;GET&#39;,</span>
+    <span class="err">&#39;PATH_INFO&#39;:</span> <span class="err">&#39;/url/&#39;,</span>
+    <span class="err">&#39;SERVER_PROTOCL&#39;:</span> <span class="err">&#39;HTTP/1.1&#39;,</span>
+    <span class="err">&#39;HTTP_EXAMPLE_HEADER&#39;:</span> <span class="err">&#39;example</span> <span class="err">value&#39;,</span>
+    <span class="err">&#39;wsgi.input&#39;:</span> <span class="err">&lt;_io.BytesIO&gt;,</span>
+    <span class="err">...</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><code>environ</code>除了使用者資訊(例如表單資訊)外，還夾帶系統資訊，類似於環境變數，成為<code>Application Server</code>啟動函式的依據。</p>
+<h3>3. 調用App</h3>
+<p><code>WSGI Server</code> 會將封裝好的變數 <code>environ</code> 送至 <code>Application Server</code>。</p>
+<p>此外，還會傳送一個<code>callback function</code>。</p>
+<h3>4. 邏輯處理</h3>
+<p>當<code>Application Server</code> 接收到 <code>environ</code> 後，會以這些資訊做為環境變數，並呼叫特定的程式碼進行運算。</p>
+<h3>5. 回傳 HTTP Status Header</h3>
+<p>當前一步驟的「邏輯處理」完成後，再回傳結果前，會先透過步驟3的<code>callback function</code>將Response Header / 狀態碼(Ex: 200成功, 500失敗...)先傳回瀏覽器。</p>
+<h2>6. Response Body</h2>
+<p>在這個步驟才會將運算後的結果傳回 <code>WSGI Server</code>。</p>
+<h2>7. HTTP Response</h2>
+<p>在步驟2中 <code>WSGI Server</code> 將<code>HTTP Request</code>由<code>字串</code>轉換為類似<code>Dictionary</code>的格式。</p>
+<p>在此步驟則是反向轉換，將前一步驟回傳的結果轉譯成 <code>HTTP Response</code></p>
 <hr>
 <h1>Web Server</h1>
 <p>接下來我們會在 <code>WSGI Server</code> 前方加入下一個元件： <strong>Web Server</strong></p>
