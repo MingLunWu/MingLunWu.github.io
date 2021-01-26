@@ -126,9 +126,11 @@
 </div>
 
 <p>連官方都提醒你要記得更換 <code>WSGI Server</code> 了，這到底是什麼東西？</p>
-<p>接下來讓我們從 <code>Flask</code> 為起點，依序介紹 <code>WSGI Server</code>, <code>Web Server</code>的概念，以及如何設定服務，提高 <code>Flask</code> 的負載率。</p>
+<p>接下來讓我們從 <code>Flask</code> 為起點，依序介紹 <code>Application Server</code>, <code>WSGI Server</code>, <code>Web Server</code>的概念，以及如何設定服務，提高 <code>Flask</code> 的負載率。</p>
 <hr>
 <h1>Application Server</h1>
+<p>在旅程的一開始，我們先在地圖上放上第一個元件: <strong>Application Server</strong></p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/step1.png"></p>
 <p>常見的 <code>Flask</code>, <code>Django</code>框架都屬於這個層級，主要是負責:</p>
 <blockquote>
 <p>接受客製化的Request，執行程式碼後，回傳客製化的Response</p>
@@ -136,12 +138,17 @@
 <p><code>Application Server</code><strong>接受使用者傳送的Request</strong>，將其<strong>轉送(Routing)</strong>至對應的程式碼進行處理、運算，最後回傳<strong>客製化的結果</strong>。</p>
 <p>這段話看起來有點拗口，但其實就一般API所做的任務。</p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/app_server.png"></p>
-<p>由於 <code>Application Server</code> 可以根據使用者的需求(參數)進行不同的動作，例如：資料庫的存取、資料的匯總... (動態)</p>
-<p>了解 <code>Application Server</code> 的結構後，現在我們可以在架構圖上先放上它: </p>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/step1.png"></p>
+<p>由於 <code>Application Server</code> 可以根據使用者的需求(參數)進行不同的動作，例如：資料庫的存取、資料的匯總，最後回傳不同的結果，我們稱為「動態伺服器」。</p>
+<hr>
+<h1>WSGI Server</h1>
+<blockquote>
+<p><code>WSGI Server</code> 是用來處理 <code>WSGI</code> 協定的伺服器 </p>
+</blockquote>
+<p>我們先來看看在地圖上 <code>WSGI Server</code> 的位置</p>
 <hr>
 <h1>Web Server</h1>
 <p>接下來我們會在 <code>Application Server</code> 前方加入下一個元件： <strong>Web Server</strong></p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:70%;" src="https://minglunwu.github.io/images/20210122/step2.png"></p>
 <p>常見的 <code>Apache</code>, <code>Nginx</code> 都是屬於 <code>Web Server</code> 的範疇，它的功能有下列三項： </p>
 <ol>
 <li>
@@ -150,7 +157,7 @@
 <p>將大型的文件暫存在使用者的瀏覽器，以降低重複造訪時的讀取時間</p>
 </blockquote>
 <p>快取的目的是讓<strong>系統的回應速度變快，減少等待Response的時間</strong>。 如果網站中包含了大量的靜態檔案(圖片、js、css檔案)，設置快取可以讓瀏覽器緩存這些文件。 當使用第二次造訪網站時就不需要重新下載這些檔案，達到加速的效果。</p>
-<p>值得一提的是：這些快取僅限於 <strong>「靜態檔案」</strong>，在發送Request的過程中不涉及運算，任何使用者造訪都將取得相同內容。 如果發送Request時有額外的參數、需要進行客製化的運算，則屬於「動態」請求，這是屬於前一小節 <code>Application Server</code> 處理的範疇。</p>
+<p>值得一提的是：這些快取僅限於 <strong>「靜態檔案」</strong>，在發送Request的過程中不涉及運算，任何使用者造訪都將取得相同內容(例如首頁的封面圖)。 如果發送Request時有額外的參數、需要進行客製化的運算，則屬於「動態」請求，這是屬於前一小節 <code>Application Server</code> 處理的範疇。</p>
 </li>
 <li>
 <p><strong>負載平衡(Load Balancer):</strong></p>
@@ -182,13 +189,12 @@
 <blockquote>
 <p>隱藏真正的Server位置</p>
 </blockquote>
-<p>對於客戶端來說，所有的Request都是送往相同的位置，儘管負載平衡機制會指派不同的Server處理Request，但是對於客戶端來說，都是同樣的Server在處理，真正的Server位置被隱藏了。</p>
+<p>儘管負載平衡機制會指派不同的Server處理Request，但對於客戶端來說，所有的Request都是同一台Server在處理(下圖中的<strong>Web Server</strong>)，不需要也不會知道背後真正處理的Server是哪一台。 換言之: <strong>真正的Server位置被隱藏了</strong>。</p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/load_balance.png"></p>
 <p>不管今天是由圖中的 <code>Server1</code>, <code>Server2</code> 還是 <code>Server3</code>提供服務，對於使用者來說，所有的Request都是送往 <code>123.45.67.89</code> 這個位置，使用者無從得知真正提供服務的Server路徑為何。</p>
 </li>
 </ol>
-<p>在了解<code>Web Server</code>的特性後，現在將其加入到架構圖中：</p>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:70%;" src="https://minglunwu.github.io/images/20210122/step2.png"></p>
+<hr>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
