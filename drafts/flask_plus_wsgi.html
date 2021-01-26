@@ -154,7 +154,7 @@
 <p>我們透過下面這張圖來說明 WSGI 協定的流程：</p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:80%;" src="https://minglunwu.github.io/images/20210122/wsgi.png"></p>
 <p>接下來依序說明每一個步驟: </p>
-<h3>1. HTTP Request</h3>
+<h4>1. HTTP Request</h4>
 <p>從瀏覽器造訪服務、呼叫API時，會發送HTTP Request，可視為「有特定格式」的文字，通常會包含:</p>
 <ul>
 <li>Request Header </li>
@@ -163,7 +163,7 @@
 <li>Message Body</li>
 </ul>
 <p>細節部分不贅述，有興趣的讀者可以自行Google</p>
-<h3>2. Parse, 封裝Environ</h3>
+<h4>2. Parse, 封裝Environ</h4>
 <p><code>WSGI Server</code> 接收到 HTTP Request 後，會將這些字串解析成Key-Value的形式，儲存至<code>environ</code>變數之中:</p>
 <div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="err">&#39;REQUEST_HEADER&#39;:</span> <span class="err">&#39;GET&#39;,</span>
@@ -177,16 +177,16 @@
 
 
 <p><code>environ</code>除了使用者資訊(例如表單資訊)外，還夾帶系統資訊，這些資訊將成為<code>Application Server</code>啟動函式的依據。</p>
-<h3>3. 調用App</h3>
+<h4>3. 調用App</h4>
 <p><code>WSGI Server</code> 會將封裝好的變數 <code>environ</code> 送至 <code>Application Server</code>。</p>
 <p>此外，還會傳送一個<code>callback function</code>，其功能將於第五步驟說明。</p>
-<h3>4. 邏輯處理</h3>
+<h4>4. 邏輯處理</h4>
 <p>當<code>Application Server</code> 接收到 <code>environ</code> 後，會以這些資訊做為環境變數，並呼叫特定的程式碼進行運算。</p>
-<h3>5. 回傳 HTTP Status Header</h3>
+<h4>5. 回傳 HTTP Status Header</h4>
 <p>當前一步驟的「邏輯處理」完成後，再回傳結果前，會先透過步驟3的<code>callback function</code>將<strong>Response Header</strong>及<strong>狀態碼</strong>(Ex: 200成功, 500失敗...)先傳回瀏覽器。</p>
-<h2>6. Response Body</h2>
+<h4>6. Response Body</h4>
 <p>在這個步驟才會將運算後的結果傳回 <code>WSGI Server</code>。</p>
-<h2>7. HTTP Response</h2>
+<h4>7. HTTP Response</h4>
 <p>在步驟2中 <code>WSGI Server</code> 將<code>HTTP Request</code>由<code>字串</code>轉換為類似<code>Dictionary</code>的格式。</p>
 <p>在此步驟則是反向轉換，將前一步驟回傳的結果轉譯成 <code>HTTP Response</code>。</p>
 <hr>
