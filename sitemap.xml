@@ -96,7 +96,7 @@
 <changefreq>monthly</changefreq>
 <priority>0.40</priority>
 </url><url>
-<loc>https://minglunwu.github.io/tag/flask.html</loc>
+<loc>https://minglunwu.github.io/tag/flask-gunicorn-wsgi-nginx.html</loc>
 <lastmod>2021-01-22</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.40</priority>
@@ -108,11 +108,6 @@
 </url><url>
 <loc>https://minglunwu.github.io/tag/mongodb.html</loc>
 <lastmod>2021-01-06</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.40</priority>
-</url><url>
-<loc>https://minglunwu.github.io/tag/nginx.html</loc>
-<lastmod>2021-01-22</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.40</priority>
 </url><url>
@@ -131,11 +126,6 @@
 <changefreq>monthly</changefreq>
 <priority>0.40</priority>
 </url><url>
-<loc>https://minglunwu.github.io/tag/wsgi.html</loc>
-<lastmod>2021-01-22</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.40</priority>
-</url><url>
 <loc>https://minglunwu.github.io/tag/conda.html</loc>
 <lastmod>2020-03-18</lastmod>
 <changefreq>monthly</changefreq>
@@ -143,11 +133,6 @@
 </url><url>
 <loc>https://minglunwu.github.io/tag/git.html</loc>
 <lastmod>2020-07-17</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.40</priority>
-</url><url>
-<loc>https://minglunwu.github.io/tag/gunicorn.html</loc>
-<lastmod>2021-01-22</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.40</priority>
 </url><url>
