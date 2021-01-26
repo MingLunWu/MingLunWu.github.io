@@ -35,8 +35,8 @@
     <link rel="shortcut icon" href="https://minglunwu.github.io/theme/favicon.ico" type="image/x-icon">
     <link rel="icon" href="https://minglunwu.github.io/theme/favicon.ico" type="image/x-icon">
 
-    <title>從Flask走向WSGI的旅程</title>
-    <meta property="og:title" content="從Flask走向WSGI的旅程">
+    <title>MLFlow Project 筆記</title>
+    <meta property="og:title" content="MLFlow Project 筆記">
     <meta name="description" content="<p>待補</p>">
     <meta property="og:description" content="<p>待補</p>">
     <meta name="author" content="MingLun Allen Wu">
@@ -86,16 +86,16 @@
                     <article class="col-full">
                         <div class="page-header__info">
                             <div class="page-header__cat">
-                                    <a href="#0">Flask</a>
+                                    <a href="#0">MLFlow</a>
                             </div>
                         </div>
                         <h1 class="page-header__title">
                             <a href="#0" title="">
-                                從Flask走向WSGI的旅程
+                                MLFlow Project 筆記
                             </a>
                         </h1>
                         <ul class="page-header__meta">
-                            <li class="date">2021- 1-13 (三)</li>
+                            <li class="date">2021- 1-26 (二)</li>
                             <li class="author">
                                 By
                                 <span>MingLun Allen Wu</span>
@@ -110,106 +110,98 @@
             <div class="row blog-content">
                 <div class="col-full blog-content__main">
                     
-                    <h1>前言</h1>
-<p>從研究所開始接觸 <code>Flask</code> 也有兩三年的時間了。</p>
-<p>這個輕量級的框架的確很適合拿來「快速」產生網頁或是API，如果需要額外的功能，也有一些第三方工具可以支援: 例如透過 <code>Flask-login</code> 來處理會員登入/登出功能。</p>
-<p>一個人在本地端測試通常都沒有問題，但當 <code>Flask</code> 要上線讓多人使用時，心中總是忐忑不安，就怕人家問我說：</p>
-<blockquote>
-<p>欸！阿你網頁卡住了怎麼辦？</p>
-</blockquote>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/donotsay.png"></p>
-<p>有使用過 <code>Flask</code> 的人一定知道，啟動服務時， <code>Flask</code>總是會「友善」的跳出下方提醒: </p>
-<div style="background-color:black">
-<font style='color: red'>WARNING: This is a development server. Do not use it in a production deployment.</font><br>
-<font style='color: green'>Use a production WSGI server instead.</p>
-</font>
-</div>
-
-<p>連官方都提醒你要記得更換 <code>WSGI Server</code> 了，這到底是什麼東西？</p>
-<p>接下來讓我們從 <code>Flask</code> 為起點，依序介紹 <code>Application Server</code>, <code>WSGI Server</code>, <code>Web Server</code>的概念，以及如何設定服務，提高 <code>Flask</code> 的負載率。</p>
-<hr>
-<h1>Application Server</h1>
-<p>在旅程的一開始，我們先在地圖上放上第一個元件: <strong>Application Server</strong></p>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/step1.png">
-<font>Step1. 加入 Application Server</font></p>
-<p>常見的 <code>Flask</code>, <code>Django</code>框架都屬於這個層級，主要是負責:</p>
-<blockquote>
-<p>接受客製化的Request，執行程式碼後，回傳客製化的Response</p>
-</blockquote>
-<p><code>Application Server</code><strong>接受使用者傳送的Request</strong>，將其<strong>轉送(Routing)</strong>至對應的程式碼進行處理、運算，最後回傳<strong>客製化的結果</strong>。</p>
-<p>這段話看起來有點拗口，但其實就是一般API所做的任務。</p>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/app_server.png"></p>
-<p>由於 <code>Application Server</code> 可以根據使用者的需求(參數)進行不同的動作，例如：資料庫的存取、資料的匯總，最後回傳不同的結果，我們稱為「動態伺服器」。</p>
-<hr>
-<h1>WSGI Server</h1>
-<blockquote>
-<p><code>WSGI Server</code> 是用來處理 <code>WSGI</code> 協定的伺服器 </p>
-</blockquote>
-<p><code>WSGI Server</code> 的位置在 <code>Application Server</code>之前：</p>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:60%;" src="https://minglunwu.github.io/images/20210122/step2.png"></p>
-<h2>WSGI 協定</h2>
-<blockquote>
-<p>Python Web Server Gateway Interface</p>
-</blockquote>
-<p>這個協定制定了一套規則，規定<code>HTTP Request</code>要如何與<code>Application Server</code>(請見上節)溝通。</p>
-<p>我們透過下面這張圖來說明 WSGI 協定的流程：</p>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:80%;" src="https://minglunwu.github.io/images/20210122/wsgi.png"></p>
-<hr>
-<h1>Web Server</h1>
-<p>接下來我們會在 <code>WSGI Server</code> 前方加入下一個元件： <strong>Web Server</strong></p>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:70%;" src="https://minglunwu.github.io/images/20210122/step3.png"></p>
-<p>常見的 <code>Apache</code>, <code>Nginx</code> 都是屬於 <code>Web Server</code> 的範疇，它的功能有下列三項： </p>
-<ol>
-<li>
-<p><strong>靜態檔案快取：</strong></p>
-<blockquote>
-<p>將大型的文件暫存在使用者的瀏覽器，以降低重複造訪時的讀取時間</p>
-</blockquote>
-<p>快取的目的是讓<strong>系統的回應速度變快，減少等待Response的時間</strong>。 如果網站中包含了大量的靜態檔案(圖片、js、css檔案)，設置快取可以讓瀏覽器緩存這些文件。 當使用第二次造訪網站時就不需要重新下載這些檔案，達到加速的效果。</p>
-<p>值得一提的是：這些快取僅限於 <strong>「靜態檔案」</strong>，在發送Request的過程中不涉及運算，任何使用者造訪都將取得相同內容(例如首頁的封面圖)。 如果發送Request時有額外的參數、需要進行客製化的運算，則屬於「動態」請求，這是屬於前一小節 <code>Application Server</code> 處理的範疇。</p>
-</li>
-<li>
-<p><strong>負載平衡(Load Balancer):</strong></p>
-<blockquote>
-<p>扮演門神，所有的Request將依循其指引，前往該去的地方</p>
-</blockquote>
-<p>當服務流量太高時，單靠一台Server可能不足以負載，會同時有多台Server提供服務。</p>
-<p>每一台Server的位置都不同，我們可不能請使用者自動分流：</p>
-<p>請身分證字號最後一碼是奇數的，使用<code>xxx.xxx.xx.xxx</code> 位置、最後一碼是偶數的，則使用<code>yyy.yyy.yyy.yy</code>位置。</p>
-<p>這時候我們就需要透過<code>Web Server</code>扮演看門人，所有的Request都會經過它，由其判斷該將Request導向哪一台Server，通常會有幾種策略：</p>
+                    <h1>Intro</h1>
+<p><code>MLFlow Project</code> 是 <code>MLFlow</code> 四大工具之一 (<code>Tracking</code>, <code>Models</code>, <code>Models Registry</code>)</p>
+<p>對於 <code>Tracking</code> 有興趣的朋友，歡迎先回顧之前的文章: </p>
+<p><a href="https://minglunwu.github.io/notes/2020/20200527.html">不再被大量超參數及模型表現淹沒！使用MLFlow進行實驗管理</a></p>
+<p><code>MLFlow Tracking</code> 協定、讓其他資料使用者 or 工具 能夠執行。</p>
+<p>每個Project可以是：</p>
 <ul>
-<li>
-<p><strong>輪循(Round Robin):</strong></p>
-<p>假設共有三台Server(A,B,C)提供服務，每一個Request依照 A, B, C, A, B, C...的順序分配。</p>
+<li>資料夾</li>
+<li>Git Repository</li>
+</ul>
+<p>在資料夾中放置 <code>MLproject</code> 檔案來進行設定 : </p>
+<ul>
+<li>Name: Readable Name</li>
+<li>Entry Point: 此專案可以被執行的指令、參數說明</li>
+<li>Environment: 可以使用 <code>conda</code>, <code>docker</code>, <code>system</code></li>
+<li><code>conda</code>: 執行前會 activate 環境。<ul>
+<li>資料夾中的 <code>conda.yaml</code>   </li>
+<li><code>MLproject</code>中的<code>conda_env</code> entrypoint</li>
+</ul>
 </li>
-<li>
-<p><strong>最小負載:</strong> </p>
-<p>將當前Request導向目前負載量最小的Server</p>
-</li>
-<li>
-<p><strong>IP Hashtable:</strong> </p>
-<p>將發送Request的IP送入雜湊表中，決定該送往哪一台Server。特性是當同一個IP位置再次造訪時，能夠導向同一台Server。</p>
+<li><code>Docker</code> : 可以存放 non-python的dependency like Java<ul>
+<li>執行 mlflow project時，會自動建立新的 image，並且把當前資料夾複製到Docker中的 <code>/mlflow/projects/code</code>，並且自動將你寫在<code>MLproject</code>中的<code>entrypoint</code>當成是 Docker的 <code>entrypoint</code></li>
+</ul>
 </li>
 </ul>
-<p>這些策略相當繁多，在此不多做停留。</p>
-</li>
-<li>
-<p><strong>反向代理:</strong></p>
-<blockquote>
-<p>隱藏真正的Server位置</p>
-</blockquote>
-<p>儘管負載平衡機制會指派不同的Server處理Request，但對於客戶端來說，所有的Request都是同一台Server在處理(下圖中的<strong>Web Server</strong>)，不需要也不會知道背後真正處理的Server是哪一台。 換言之: <strong>真正的Server位置被隱藏了</strong>。</p>
-<p><img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://minglunwu.github.io/images/20210122/load_balance.png"></p>
-<p>不管今天是由圖中的 <code>Server1</code>, <code>Server2</code> 還是 <code>Server3</code>提供服務，對於使用者來說，所有的Request都是送往 <code>123.45.67.89</code> 這個位置，使用者無從得知真正提供服務的Server路徑為何。</p>
-</li>
-</ol>
-<hr>
+<p>如果沒有存放 <code>MLproject</code> 時， <code>MLflow Project</code> 會按照下列規則: </p>
+<ul>
+<li>資料夾名稱就是Project名稱</li>
+<li><code>conda.yml</code>紀錄 conda 環境，如果資料夾中沒有<code>conda.yml</code>，則Mlflow會自動建立一個空的conda環境只包含Python</li>
+<li>任何 <code>.py</code> 或是 <code>.sh</code>結尾的檔案都將成為 entry point.</li>
+</ul>
+<p>About <code>MLProject</code>, <code>yaml</code> format: </p>
+<div class="highlight"><pre><span></span><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">My Project</span>
+
+<span class="nt">conda_env</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_env.yaml</span> <span class="c1"># Conda 的 yaml檔案路徑</span>
+<span class="c1"># Can have a docker_env instead of a conda_env, e.g.</span>
+<span class="c1"># docker_env:</span>
+<span class="c1">#    image:  mlflow-docker-example # 從系統端找，若找不到會嘗試從docker-hub pull 下來</span>
+<span class="c1">#    volumes: [&quot;/local/path:/container/mount/path&quot;]  # Local Volume</span>
+<span class="c1">#    environment: [[&quot;NEW_ENV_VAR&quot;, &quot;new_var_value&quot;], &quot;VAR_TO_COPY_FROM_HOST_ENVIRONMENT&quot;] # 定義一個新環境變數，及取用一個既有的環境變數</span>
+
+
+<span class="nt">entry_points</span><span class="p">:</span>
+<span class="nt">main</span><span class="p">:</span>
+    <span class="nt">parameters</span><span class="p">:</span> <span class="c1"># 定義參數</span>
+    <span class="nt">data_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">path</span>
+    <span class="nt">regularization</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">type</span><span class="p">:</span> <span class="nv">float</span><span class="p p-Indicator">,</span><span class="nt"> default</span><span class="p">:</span> <span class="nv">0.1</span><span class="p p-Indicator">}</span>
+    <span class="nt">command</span><span class="p">:</span> <span class="s">&quot;python</span><span class="nv"> </span><span class="s">train.py</span><span class="nv"> </span><span class="s">-r</span><span class="nv"> </span><span class="s">{regularization}</span><span class="nv"> </span><span class="s">{data_file}&quot;</span> <span class="c1"># 所有定義在參數區塊中的變數，都可以透過Python string format送入</span>
+<span class="nt">validate</span><span class="p">:</span>
+    <span class="nt">parameters</span><span class="p">:</span>
+    <span class="nt">data_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">path</span>
+    <span class="nt">command</span><span class="p">:</span> <span class="s">&quot;python</span><span class="nv"> </span><span class="s">validate.py</span><span class="nv"> </span><span class="s">{data_file}&quot;</span>
+</pre></div>
+
+
+<h1>Specify Parameter</h1>
+<p>MLFlow 可以定義參數的初始值及資料型態</p>
+<div class="highlight"><pre><span></span><span class="nt">parameter_name</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">type</span><span class="p">:</span> <span class="nv">data_type</span><span class="p p-Indicator">,</span><span class="nt"> default</span><span class="p">:</span> <span class="nv">value</span><span class="p p-Indicator">}</span>  <span class="c1"># Short syntax</span>
+
+<span class="nt">parameter_name</span><span class="p">:</span>     <span class="c1"># Long syntax</span>
+<span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">data_type</span>
+<span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">value</span>
+</pre></div>
+
+
+<p>資料型態可以是 : </p>
+<ul>
+<li>string</li>
+<li>float</li>
+<li>path (local file)</li>
+<li>uri (for distributed system like spark)</li>
+</ul>
+<h1>Running Projects</h1>
+<p>可以使用下列任一方式使用: </p>
+<ul>
+<li>Command-Line Tool</li>
+<li>Python API `mlflow.projects.run()</li>
+</ul>
+<p><strong>也就是說如果我有一個Git Repo，並且本地端有安裝conda或是docker，那麼我連clone都不用，直接透過mlflow project即可直接執行</strong></p>
+<p>並且在執行過程中可以選擇: </p>
+<ul>
+<li>Project Version (哪一個git commit)</li>
+<li>Entry Point (執行哪一個Entry Point, Default to <code>main</code>)</li>
+<li>Parameters: Key-Value Parameters</li>
+<li>Deployment Mode: </li>
+</ul>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
     
                         <span class="blog-content__tag-list">
-                             <a href="#0">Flask</a>
+                             <a href="#0">MLFlow</a>
                         </span>
     
                     </p>
