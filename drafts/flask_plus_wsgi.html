@@ -110,7 +110,30 @@
             <div class="row blog-content">
                 <div class="col-full blog-content__main">
                     
-                    <h1>前言</h1>
+                    <ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#application-server">Application Server</a></li>
+<li><a href="#wsgi-server">WSGI Server</a></li>
+<li><a href="#wsgi-協定">WSGI 協定</a><ul>
+<li><a href="#1-http-request">1. HTTP Request</a></li>
+<li><a href="#2-parse-封裝environ">2. Parse, 封裝Environ</a></li>
+<li><a href="#3-調用app">3. 調用App</a></li>
+<li><a href="#4-邏輯處理">4. 邏輯處理</a></li>
+<li><a href="#5-回傳-http-status-header">5. 回傳 HTTP Status Header</a></li>
+<li><a href="#6-response-body">6. Response Body</a></li>
+<li><a href="#7-http-response">7. HTTP Response</a></li>
+</ul>
+</li>
+<li><a href="#替換-wsgi-server">替換 WSGI Server</a></li>
+<li><a href="#web-server">Web Server</a></li>
+<li><a href="#統整">統整</a></li>
+<li><a href="#如何設定-gunicorn">如何設定 <code>gunicorn</code></a></li>
+<li><a href="#安裝">安裝</a></li>
+<li><a href="#建立一個簡易的flask-app">建立一個簡易的Flask App</a></li>
+<li><a href="#以gunicorn作為wsgi-server">以gunicorn作為WSGI Server</a></li>
+<li><a href="#結語">結語</a></li>
+</ul>
+<h1>前言</h1>
 <p>從研究所開始接觸 <code>Flask</code> 也有兩三年的時間了。</p>
 <p>這個輕量級的框架的確很適合拿來「快速」建立網頁或是API，如果需要擴充功能，也有不少第三方工具可以支援: 例如透過 <code>Flask-login</code> 來處理會員登入/登出功能。</p>
 <p>不過 <code>Flask</code> 的負載量是個考驗，一個人在本地端測試通常都沒有問題，但要上線讓多人使用時，心中總是忐忑不安，研究所時用Flask做了一個平台，最害怕人家問我：</p>
