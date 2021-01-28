@@ -193,9 +193,25 @@
 <ul>
 <li>Project Version (哪一個git commit)</li>
 <li>Entry Point (執行哪一個Entry Point, Default to <code>main</code>)</li>
-<li>Parameters: Key-Value Parameters</li>
-<li>Deployment Mode: </li>
+<li>Parameters: Key-Value Parameters (Ex: -P alpha=0.5)</li>
+<li>Deployment Mode: K8S or other remote server.</li>
+<li>Environment: 也可以直接在<code>MLproject</code>中設定，或是使用<code>`--no-conda</code> flag 使用當前的環境。</li>
 </ul>
+<p>所以如果使用 <code>MLProject</code> 的話:</p>
+<ol>
+<li>Script都要用 argparse 來接受參數</li>
+<li><code>MLproject</code> 中的entrypoint接受參數並傳入檔案</li>
+<li>執行時，就能搭配 MLFlow 的 Tracker功能快速迭代運行！！</li>
+</ol>
+<p>可以同時啟動Multiple Runs</p>
+<h1>MLFlow Models</h1>
+<p>ML Model 的標準儲存格式，有許多不同的 <code>Flavor</code> :</p>
+<ul>
+<li><code>Python Function</code> Flavor ：描述如何將 model 當成 <code>Python</code> function 執行。</li>
+</ul>
+<blockquote>
+<p>將模型轉換為「常見的工具」可支援的模式。(例如直接把checkpoint打包成可供執行的Python Function)</p>
+</blockquote>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
