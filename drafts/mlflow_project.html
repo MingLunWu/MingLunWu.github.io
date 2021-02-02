@@ -204,6 +204,24 @@
 <li>執行時，就能搭配 MLFlow 的 Tracker功能快速迭代運行！！</li>
 </ol>
 <p>可以同時啟動Multiple Runs</p>
+<h2>MLFlow tracking server</h2>
+<blockquote>
+<p>MLFlow tracking 的資訊要存放在哪裡？</p>
+</blockquote>
+<p>原先是「專案執行的資料夾」 -&gt; 可以改成「本地「的一個位置</p>
+<p>:::bash
+  mlflow server \
+    --backend-store-uri /mnt/persistent-disk \
+    --default-artifact-root s3://my-mlflow-bucket/ \
+    --host 0.0.0.0</p>
+<p>Tracking Server 有兩個儲存元件：</p>
+<ol>
+<li>Backend Store (Experiment, run metadata)</li>
+<li>file store</li>
+<li>database-backed store</li>
+<li>Artiface Store (儲存大型Ckpt檔案)</li>
+<li>各項雲端服務</li>
+</ol>
 <h1>MLFlow Models</h1>
 <p>ML Model 的標準儲存格式，有許多不同的 <code>Flavor</code> :</p>
 <ul>
