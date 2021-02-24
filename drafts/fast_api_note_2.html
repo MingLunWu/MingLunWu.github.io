@@ -163,6 +163,12 @@
 <p>例如傳送了: <code>127.0.0.1:8080/users/test</code> Request， "test"是沒有辦法轉換成整數的，此時就會發生錯誤， <code>FastAPI</code>將會回傳錯誤訊息。</p>
 <div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;detail&quot;</span><span class="p">:[{</span><span class="nt">&quot;loc&quot;</span><span class="p">:[</span><span class="s2">&quot;path&quot;</span><span class="p">,</span><span class="s2">&quot;user_id&quot;</span><span class="p">],</span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;value is not a valid integer&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;type_error.integer&quot;</span><span class="p">}]}</span>
 </pre></div>
+
+
+<p><code>FastAPI</code>在驗證變數型態時，主要是透過<a href="https://pydantic-docs.helpmanual.io">Pydantic</a>來處理，根據其官方網站的介紹，這樣的好處在於: </p>
+<ul>
+<li>這些驗證的機制主要依靠「定義變數型態」來達成，所使用的變數型態其實都是Python內建的</li>
+</ul>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
