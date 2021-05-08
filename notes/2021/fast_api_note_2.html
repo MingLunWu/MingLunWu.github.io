@@ -286,8 +286,9 @@
 <blockquote>
 <p>非同步處理在閒置時，可以將注意力轉移到其他事情上</p>
 </blockquote>
-<p>非同步處理相當適合 Web Application的情境，在處理Request時，常需要跟DB或是其他API進行互動，等待的過程中會有許多「閒置」時間（與櫃檯人員大眼瞪小眼)，在電腦的世界裡雖然都只需幾毫秒的等待，但是當同時有許多Request時，省下來的時間就相當可觀了。</p>
+<p>非同步處理相當適合 Web Application的情境，在處理Request時，常需要跟DB或是其他API進行互動，等待的過程中會有許多「閒置」時間，在電腦的世界裡雖然都只需幾毫秒的等待，但是當同時有許多Request時，省下來的時間就相當可觀了。</p>
 <p>這也是 <code>FastAPI</code> 與 <code>Flask</code> 最大的差別，在 <code>Flask</code> 出現時，Python還沒有支援異步處理的功能， <code>Flask</code> 要上線時，通常會再加上WSGI (Web Service Gateway Interface) Server來增加服務的穩定性及速度，常見的 WSGI Server 是 <code>gunicorn</code>。</p>
+<p>而 <code>FastAPI</code> 採用的則是 ASGI Server (Asynchronize Service Gateway Interface) - <code>uvicorn</code>，在處理任務時透過 Asynchronize的概念來提高執行的效率。</p>
 <p>對於 WSGI Server 及 <code>gunicron</code> 有興趣的朋友，歡迎造訪我先前寫的另一篇文章:</p>
 <p><a href="https://minglunwu.github.io/notes/2021/flask_plus_wsgi.html">Flask 想上線？ 你還需要一些酷東西</a></p>
 <p>在試圖了解 Asynchronize的過程中，我常常會將其與 <code>Concurrency</code>, <code>Parallelism</code>搞混，相當推薦大家閱讀 FastAPI 官方對於 Async 的說明: </p>
