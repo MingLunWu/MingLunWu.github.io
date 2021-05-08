@@ -196,7 +196,7 @@
 </pre></div>
 
 
-<p><code>FastAPI</code> 在定義 API 時，透過 <code>@app.[方法](路徑)</code> 來決定，這點與 <code>Flask</code> 有點差異，但我自己覺得較直覺，常見的HTTP Request 方法包含: </p>
+<p><code>FastAPI</code> 在定義 API 時，透過 <code>@app.[方法](路徑)</code> 來決定，這點與 <code>Flask</code> 有點差異，但我自己覺得較直覺(也較符合Restful API的架構)，常見的HTTP Request 方法包含: </p>
 <table>
 <thead>
 <tr>
@@ -233,22 +233,31 @@
     from fastapi import FastAPI</p>
 <div class="highlight"><pre><span></span><span class="n">app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FastAPI</span><span class="p">()</span><span class="w"></span>
 
-<span class="nv">@app</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="ss">&quot;/&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="n">async</span><span class="w"> </span><span class="n">def</span><span class="w"> </span><span class="n">root</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
+<span class="nv">@app</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="ss">&quot;/hello_world&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">async</span><span class="w"> </span><span class="n">def</span><span class="w"> </span><span class="n">hello_world</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;message&quot;</span><span class="err">:</span><span class="w"> </span><span class="ss">&quot;Hello World&quot;</span><span class="err">}</span><span class="w"></span>
 </pre></div>
 
 
-<p>定義 API 路徑後，接下來必須設計一個Function，當<code>FastAPI</code> 收到 以 <code>GET</code> 方式收到的 <code>/</code> 請求時，將會執行這個Function.</p>
+<p>定義 API 路徑後，接下來必須設計一個Function，當<code>FastAPI</code> 收到 <code>GET</code> 形式的 <code>/hello_world</code> 請求時，將會執行這個Function.</p>
 <p>這個Function 可以是 <code>async function</code> 或是 普通的 Function.</p>
 <p>先暫停在這裏，何謂 Async Function (?)</p>
 <h2>Async Function</h2>
 <p>全名是 Asynchronize (非同步) Function，是在近期的Python中才出現的功能。</p>
-<p>概念上： 當程式在執行過程中，需要等待其他任務完成(例如讀取檔案、讀寫資料庫、呼叫別人的API，等待回應)時，可以先去做別的事情，等到其他任務完成，再回來繼續處理。</p>
-<p>相當適合 Web Application的情境，當收到Request後，常需要跟DB或是其他API進行互動，等待的過程中會有許多「閒置」時間，在電腦的世界裡雖然都只需幾毫秒的等待，但是當同時有許多Request時，省下來的時間就相當可觀了。</p>
+<p>概念上： <strong>執行任務的過程中，有些任務不需要「計算」，例如讀取檔案、讀寫資料庫、呼叫別人的API，等待回應)時，在等待這些任務完成時，電腦的計算力是閒置的，可以先去做別的事情，等到其他任務完成，再回來繼續處理。</strong></p>
+<p>相對於 Asynchronize (非同步)，較常見的稱為 Synchronize(同步)或稱為 Sequential (線性)，我們舉個真實世界的例子來說明兩者的差異，假設今天我們要到速食店點餐：</p>
+<div class="highlight"><pre><span></span><span class="o">+</span> <span class="nt">Sequential</span><span class="o">:</span> <span class="nt">我們看完菜單後向櫃檯人員點餐</span><span class="err">，</span><span class="nt">點餐後後台開始製作餐點</span><span class="err">，</span><span class="nt">這時候我們跟櫃檯人員大眼瞪小眼</span><span class="err">，</span><span class="nt">也不做任何事情</span><span class="err">，</span><span class="nt">靜靜地注視著彼此</span><span class="err">，</span><span class="nt">直到餐點製作完成</span><span class="err">，</span><span class="nt">櫃檯人員將餐點遞給你</span><span class="err">，</span><span class="nt">開始享用美味的餐點</span><span class="err">。</span>
+<span class="o">&lt;</span><span class="nt">img</span> <span class="nt">style</span><span class="o">=</span><span class="s2">&quot;display:block; margin-left:auto; margin-right:auto; width:50%;&quot;</span> <span class="nt">src</span><span class="o">=</span><span class="s2">&quot;https://memeprod.sgp1.digitaloceanspaces.com/user-wtf/1609854630254.jpg&quot;</span><span class="o">&gt;</span>
+
+<span class="o">+</span> <span class="nt">Asynchronize</span><span class="o">:</span> <span class="nt">我們看完菜單後向櫃檯人員點餐</span><span class="err">，</span><span class="nt">點餐後後台開始製作餐點</span><span class="err">，</span><span class="nt">我們拿到了一張號碼牌</span><span class="err">，</span><span class="nt">我們開始滑手機</span><span class="err">，</span><span class="nt">看看等等吃飽後要去哪裡吃甜點</span><span class="err">，</span><span class="nt">當叫號聲響起時</span><span class="err">，</span><span class="nt">發現是我們的餐點好了</span><span class="err">，</span><span class="nt">這時候把手機收起來</span><span class="err">，</span><span class="nt">前往領取餐點</span><span class="err">，</span><span class="nt">開始享用美味的餐點</span><span class="err">。</span>
+</pre></div>
+
+
+<p>非同步處理相當適合 Web Application的情境，在處理Request時，常需要跟DB或是其他API進行互動，等待的過程中會有許多「閒置」時間（與櫃檯人員大眼瞪小眼)，在電腦的世界裡雖然都只需幾毫秒的等待，但是當同時有許多Request時，省下來的時間就相當可觀了。</p>
 <p>這也是 <code>FastAPI</code> 與 <code>Flask</code> 最大的差別，在 <code>Flask</code> 出現時，Python還沒有支援異步處理的功能， <code>Flask</code> 要上線時，通常會再加上WSGI (Web Service Gateway Interface) Server來增加服務的穩定性及速度，常見的 WSGI Server 是 <code>gunicorn</code>。</p>
 <p>對於 WSGI Server 及 <code>gunicron</code> 有興趣的朋友，歡迎造訪我先前寫的另一篇文章:</p>
 <p><a href="https://minglunwu.github.io/notes/2021/flask_plus_wsgi.html">Flask 想上線？ 你還需要一些酷東西</a></p>
+<p>在試圖了解 Asynchronize的過程中，我常常會將其與 <code>Concurrency</code>, <code>Parallelism</code>搞混，相當推薦大家閱讀 FastAPI 官方對於 Async 的說明: <a href="https://fastapi.tiangolo.com/async/">連結在此</a>，雖然使用的非常多的 Emoji，但用很多現實生活的實例來說明。</p>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
