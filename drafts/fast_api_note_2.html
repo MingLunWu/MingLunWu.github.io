@@ -112,11 +112,12 @@
                     
                     <p>重溫舊夢： <a href="https://minglunwu.github.io/notes/2021/fast_api_note_1.html">Fast API 入門筆記(一)</a></p>
 <h1>Typing Hints</h1>
-<p>接續上一則筆記，我們繼續探討 Typing Hint 這個 <code>FastAPI</code> 特別著重的特點：</p>
-<p>在實作上，Typing Hint其實就是:</p>
+<p>接續上一則筆記，我們繼續探討 <code>Typing Hint</code> 這個 <code>FastAPI</code> 特別著重的特點：</p>
+<p>在實作上，Typing Hint其實意味著:</p>
 <blockquote>
 <p>在定義函式的參數時，連同型態一併定義</p>
 </blockquote>
+<p>看看下面這個例子：</p>
 <div class="highlight"><pre><span></span><span class="c1"># 沒有實作 typing hint</span>
 <span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/users/</span><span class="si">{user_id}</span><span class="s2">) </span>
 <span class="k">def</span> <span class="nf">read_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span> <span class="c1"># 只放變數名稱</span>
@@ -129,15 +130,43 @@
 </pre></div>
 
 
-<p>透過實作 <code>Typing Hint</code> ， <code>FastAPI</code>將能提供下列的功能：</p>
+<p>可以發現實作 <code>Typing Hint</code>後，在定義參數時會額外加上變數的型態 (<code>user_id</code> 後面會加上<code>int</code>)，加上這些型態有幾項好處:</p>
 <h3>1. Error Checks, Completion</h3>
 <blockquote>
 <p>撰寫程式時檢查變數格式、自動補齊</p>
 </blockquote>
-<p>這些功能嚴格來說並不是 <code>FastAPI</code> 提供，而是當你遵照 Python 的 Typing Hint時，就能搭配IDE的工具來協助開發，避免語法上的錯誤或是設計時的遺漏。</p>
+<p>這些功能並非 <code>FastAPI</code> 提供，而是當你遵照 Python 的<code>Typing Hint</code>時，就能搭配IDE的工具來協助開發，避免語法上的錯誤或是設計時的遺漏。</p>
 <p>舉例來說，撰寫Typing Hint後，就能透過VScode的Extension快速產生註解的Template，很好用：</p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20210120/auto_doc.png">
 (根據定義的變數型態，自動產生註解的模板，大部分資訊都自動產生，開發者只需要填寫部分區塊即可，且模板的樣式可以自由選擇。)</p>
+<p>在編寫程式時，儘管編譯器 <strong>「不知道」</strong> 這個函式的回傳內容是什麼，但是因為你已經事先定義這個回傳的「型態」，所以編譯器還是能夠提供當前這個型態可用的函式讓你使用.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">def</span> <span class="nf">get_current_date</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span> <span class="c1"># 此處定義了此函式的回傳結果是datetime</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">get_current_date_error</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">datetime</span><span class="p">:</span> <span class="c1"># 此處定義了此函式的回傳結果是datetime</span>
+    <span class="k">return</span> <span class="s2">&quot;2021-05-08&quot;</span> <span class="c1"># 此處編譯器會跳出提醒訊息 (回傳結果應該要是datetime，但你回傳了str，是不是想搞事？)</span>
+
+<span class="n">current_date</span> <span class="o">=</span> <span class="n">get_current_date</span><span class="p">()</span>
+</pre></div>
+</td></tr></table>
+
+<p>上面這段程式碼可以做到兩件事情： </p>
+<ol>
+<li>開發時的型態檢查: 
+    在定義 <code>get_current_date_error()</code>時，我們順帶定義了回傳格式必須是 <code>datetime</code>，但是在function內部return時卻回傳了 <code>str</code> 格式，這時候編譯器能夠偵測到這裡有壞味道，並且提醒你。</li>
+<li>函式智能感知(Intellisense):
+    開發時自動提供可用的函式或是物件，以上方程式碼為例， <code>current_date</code>在沒有執行時，編譯器只知道它是個「變數」，沒辦法提供什麼建議，但是實作 <code>Typing Hint</code>後，編譯器知道這個變數是從 <code>get_current_date()</code>來的，而此函式的回傳結果是 <code>datetime</code>格式，所以當我們鍵入 <code>current_date</code>時，編譯器就能提供 <code>datetime</code>型態可用的函式供我們選用。</li>
+</ol>
 <h3>2.Data Conversion</h3>
 <blockquote>
 <p>自動將Request所夾帶的參數轉換(cast)為指定的格式</p>
@@ -256,7 +285,7 @@
 <p>對於 WSGI Server 及 <code>gunicron</code> 有興趣的朋友，歡迎造訪我先前寫的另一篇文章:</p>
 <p><a href="https://minglunwu.github.io/notes/2021/flask_plus_wsgi.html">Flask 想上線？ 你還需要一些酷東西</a></p>
 <p>在試圖了解 Asynchronize的過程中，我常常會將其與 <code>Concurrency</code>, <code>Parallelism</code>搞混，相當推薦大家閱讀 FastAPI 官方對於 Async 的說明: </p>
-<p><a href="https://fastapi.tiangolo.com/async/">連結在此</a>，雖然使用的非常多的 Emoji，但用很多現實生活的實例來說明。</p>
+<p><a href="https://fastapi.tiangolo.com/async/">FastAPI - Concurrency and async / await</a>，雖然使用的非常多的 Emoji，但用很多現實生活的實例來說明。</p>
     
                     <p class="blog-content__tags">
                         <span>Post Tags</span>
