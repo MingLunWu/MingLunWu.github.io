@@ -117,12 +117,12 @@
 <blockquote>
 <p>在定義函式的參數時，連同型態一併定義</p>
 </blockquote>
-<div class="highlight"><pre><span></span><span class="c1"># Without typing hint</span>
+<div class="highlight"><pre><span></span><span class="c1"># 沒有實作 typing hint</span>
 <span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/users/</span><span class="si">{user_id}</span><span class="s2">) </span>
 <span class="k">def</span> <span class="nf">read_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span> <span class="c1"># 只放變數名稱</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">}</span>
 
-<span class="c1"># With typing hint</span>
+<span class="c1"># 實作 typing hint</span>
 <span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/users/</span><span class="si">{user_id}</span><span class="s2">) </span>
 <span class="k">def</span> <span class="nf">read_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span> <span class="c1"># 除了變數名稱，還設定變數的型態</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">}</span>
@@ -166,10 +166,7 @@
 
 
 <p>回傳 Json 格式的錯誤訊息，能夠進行處理及判斷，而不是如同 <code>Flask</code> 的 <strong>500 Internal Server Error</strong></p>
-<p><code>FastAPI</code>在驗證變數型態時，主要是透過<a href="https://pydantic-docs.helpmanual.io">Pydantic</a>來處理，根據其官方網站的介紹，這樣的好處在於: </p>
-<ul>
-<li>這些驗證的機制主要依靠「定義變數型態」來達成，所使用的變數型態其實都是Python內建的</li>
-</ul>
+<p><code>FastAPI</code>在驗證變數型態時，主要是透過<a href="https://pydantic-docs.helpmanual.io">Pydantic</a>來處理，所使用的變數型態都是Python原生的型態別，只需要在撰寫Function時加上變數型態即可。</p>
 <h1>實做步驟</h1>
 <h2>1. Import and Create Instance</h2>
 <p>使用 pip 安裝 fastapi 後，就可以直接Import，並且建立 <code>FastAPI</code> 的Instance</p>
@@ -177,7 +174,6 @@
 </span>
 <span class="hll"><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 </span>
-
 <span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="k">async</span> <span class="k">def</span> <span class="nf">root</span><span class="p">():</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello World&quot;</span><span class="p">}</span>
@@ -241,7 +237,7 @@
 
 <p>定義 API 路徑後，接下來必須設計一個Function，當<code>FastAPI</code> 收到 <code>GET</code> 形式的 <code>/hello_world</code> 請求時，將會執行這個Function.</p>
 <p>這個Function 可以是 <code>async function</code> 或是 普通的 Function.</p>
-<p>先暫停在這裏，何謂 Async Function (?)</p>
+<p>先暫停在這裏，何謂 Async Function?</p>
 <h2>Async Function</h2>
 <p>全名是 Asynchronize (非同步) Function，是在近期的Python中才出現的功能。</p>
 <p>概念上： <strong>執行任務的過程中，有些任務不需要「計算」，例如讀取檔案、讀寫資料庫、呼叫別人的API，等待回應)時，在等待這些任務完成時，電腦的計算力是閒置的，可以先去做別的事情，等到其他任務完成，再回來繼續處理。</strong></p>
