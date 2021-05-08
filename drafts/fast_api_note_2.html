@@ -195,7 +195,7 @@
 
 
 <p>回傳的格式是 Json 格式，意味著能夠判斷問題及預先處理，而不是如同 <code>Flask</code> 的 <strong>500 Internal Server Error</strong></p>
-<h1>實做步驟</h1>
+<h1>FastAPI 實作</h1>
 <h2>1. Import and Create Instance</h2>
 <p>使用 pip 安裝 fastapi 後，就可以直接Import，並且建立 <code>FastAPI</code> 的Instance</p>
 <div class="highlight"><pre><span></span><span class="hll"><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
@@ -253,13 +253,14 @@
 </tbody>
 </table>
 <h2>3. 定義 Function</h2>
-<p>:::python hl_lines="6"
-    from fastapi import FastAPI</p>
-<div class="highlight"><pre><span></span><span class="n">app</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FastAPI</span><span class="p">()</span><span class="w"></span>
+<div class="highlight"><pre><span></span>    <span class="p">:::</span><span class="n">python</span> <span class="n">hl_lines</span><span class="o">=</span><span class="s2">&quot;6&quot;</span>
+    <span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
 
-<span class="nv">@app</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="ss">&quot;/hello_world&quot;</span><span class="p">)</span><span class="w"></span>
-<span class="n">async</span><span class="w"> </span><span class="n">def</span><span class="w"> </span><span class="n">hello_world</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="err">{</span><span class="ss">&quot;message&quot;</span><span class="err">:</span><span class="w"> </span><span class="ss">&quot;Hello World&quot;</span><span class="err">}</span><span class="w"></span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+
+    <span class="nd">@app.get</span><span class="p">(</span><span class="s2">&quot;/hello_world&quot;</span><span class="p">)</span>
+    <span class="n">async</span> <span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello World&quot;</span><span class="p">}</span>
 </pre></div>
 
 
