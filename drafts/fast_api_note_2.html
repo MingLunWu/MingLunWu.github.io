@@ -156,7 +156,8 @@
 <ol>
 <li>
 <p><strong>開發時的型態檢查</strong>: </p>
-<p>在定義 <code>get_current_date_error()</code>時，我們順帶定義了回傳格式必須是 <code>datetime</code>，但是在function內部return時卻回傳了 <code>str</code> 格式，這時候編譯器能夠偵測到這裡有壞味道，並且提醒你。</p>
+<p>在定義 <code>get_current_date_error()</code>時，我們順帶定義了回傳格式必須是 <code>datetime</code>，但是在function內部return時卻回傳了 <code>str</code> 格式，這時候編譯器能夠偵測到這裡有壞味道，並且提醒你。
+<img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20210120/type_detect.png"></p>
 </li>
 <li>
 <p><strong>函式智能感知(Intellisense)</strong>:</p>
