@@ -130,7 +130,7 @@
 </pre></div>
 
 
-<p>可以發現實作 <code>Typing Hint</code>後，在定義參數時會額外加上變數的型態 (<code>user_id</code> 後面會加上<code>int</code>)，加上這些型態有幾項好處:</p>
+<p>實作 <code>Typing Hint</code>後，在定義參數時需額外加上變數的型態 (<code>user_id</code> 後面會加上<code>int</code>)，加上這些型態有幾項好處:</p>
 <h3>1. Error Checks, Completion</h3>
 <blockquote>
 <p>撰寫程式時檢查變數格式、自動補齊</p>
@@ -253,14 +253,13 @@
 </tbody>
 </table>
 <h2>3. 定義 Function</h2>
-<div class="highlight"><pre><span></span>    <span class="p">:::</span><span class="n">python</span> <span class="n">hl_lines</span><span class="o">=</span><span class="s2">&quot;6&quot;</span>
-    <span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
 
-    <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
 
-    <span class="nd">@app.get</span><span class="p">(</span><span class="s2">&quot;/hello_world&quot;</span><span class="p">)</span>
-    <span class="n">async</span> <span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello World&quot;</span><span class="p">}</span>
+<span class="nd">@app.get</span><span class="p">(</span><span class="s2">&quot;/hello_world&quot;</span><span class="p">)</span>
+<span class="n">async</span> <span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello World&quot;</span><span class="p">}</span>
 </pre></div>
 
 
