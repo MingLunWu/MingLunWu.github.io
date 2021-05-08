@@ -135,7 +135,8 @@
 <blockquote>
 <p>撰寫程式時檢查變數格式、自動補齊</p>
 </blockquote>
-<p>這些功能並非 <code>FastAPI</code> 提供，而是當你遵照 Python 的<code>Typing Hint</code>時，就能搭配IDE的工具來協助開發，避免語法上的錯誤或是設計時的遺漏。</p>
+<p>這些功能並非 <code>FastAPI</code> 提供，在驗證變數型態時，主要是透過<a href="https://pydantic-docs.helpmanual.io">Pydantic</a>來處理，所使用的變數型態都是Python原生的型態別，只需要在撰寫Function時加上變數型態即可。</p>
+<p>當你遵照 Python 的<code>Typing Hint</code>時，就能搭配IDE的工具來協助開發，避免語法上的錯誤或是設計時的遺漏。</p>
 <p>舉例來說，撰寫Typing Hint後，就能透過VScode的Extension快速產生註解的Template，很好用：</p>
 <p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20210120/auto_doc.png">
 (根據定義的變數型態，自動產生註解的模板，大部分資訊都自動產生，開發者只需要填寫部分區塊即可，且模板的樣式可以自由選擇。)</p>
@@ -191,8 +192,7 @@
 </pre></div>
 
 
-<p>回傳 Json 格式的錯誤訊息，能夠進行處理及判斷，而不是如同 <code>Flask</code> 的 <strong>500 Internal Server Error</strong></p>
-<p><code>FastAPI</code>在驗證變數型態時，主要是透過<a href="https://pydantic-docs.helpmanual.io">Pydantic</a>來處理，所使用的變數型態都是Python原生的型態別，只需要在撰寫Function時加上變數型態即可。</p>
+<p>回傳的格式是 Json 格式，意味著能夠判斷問題及預先處理，而不是如同 <code>Flask</code> 的 <strong>500 Internal Server Error</strong></p>
 <h1>實做步驟</h1>
 <h2>1. Import and Create Instance</h2>
 <p>使用 pip 安裝 fastapi 後，就可以直接Import，並且建立 <code>FastAPI</code> 的Instance</p>
