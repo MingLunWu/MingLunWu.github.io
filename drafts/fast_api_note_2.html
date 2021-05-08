@@ -242,13 +242,15 @@
 <p>全名是 Asynchronize (非同步) Function，是在近期的Python中才出現的功能。</p>
 <p>概念上： <strong>執行任務的過程中，有些任務不需要「計算」，例如讀取檔案、讀寫資料庫、呼叫別人的API，等待回應)時，在等待這些任務完成時，電腦的計算力是閒置的，可以先去做別的事情，等到其他任務完成，再回來繼續處理。</strong></p>
 <p>相對於 Asynchronize (非同步)，較常見的稱為 Synchronize(同步)或稱為 Sequential (線性)，我們舉個真實世界的例子來說明兩者的差異，假設今天我們要到速食店點餐：</p>
-<div class="highlight"><pre><span></span><span class="o">+</span> <span class="nt">Sequential</span><span class="o">:</span> <span class="nt">我們看完菜單後向櫃檯人員點餐</span><span class="err">，</span><span class="nt">點餐後後台開始製作餐點</span><span class="err">，</span><span class="nt">這時候我們跟櫃檯人員大眼瞪小眼</span><span class="err">，</span><span class="nt">也不做任何事情</span><span class="err">，</span><span class="nt">靜靜地注視著彼此</span><span class="err">，</span><span class="nt">直到餐點製作完成</span><span class="err">，</span><span class="nt">櫃檯人員將餐點遞給你</span><span class="err">，</span><span class="nt">開始享用美味的餐點</span><span class="err">。</span>
-<span class="o">&lt;</span><span class="nt">img</span> <span class="nt">style</span><span class="o">=</span><span class="s2">&quot;display:block; margin-left:auto; margin-right:auto; width:50%;&quot;</span> <span class="nt">src</span><span class="o">=</span><span class="s2">&quot;https://memeprod.sgp1.digitaloceanspaces.com/user-wtf/1609854630254.jpg&quot;</span><span class="o">&gt;</span>
-
-<span class="o">+</span> <span class="nt">Asynchronize</span><span class="o">:</span> <span class="nt">我們看完菜單後向櫃檯人員點餐</span><span class="err">，</span><span class="nt">點餐後後台開始製作餐點</span><span class="err">，</span><span class="nt">我們拿到了一張號碼牌</span><span class="err">，</span><span class="nt">我們開始滑手機</span><span class="err">，</span><span class="nt">看看等等吃飽後要去哪裡吃甜點</span><span class="err">，</span><span class="nt">當叫號聲響起時</span><span class="err">，</span><span class="nt">發現是我們的餐點好了</span><span class="err">，</span><span class="nt">這時候把手機收起來</span><span class="err">，</span><span class="nt">前往領取餐點</span><span class="err">，</span><span class="nt">開始享用美味的餐點</span><span class="err">。</span>
-</pre></div>
-
-
+<ul>
+<li>
+<p>Sequential: 我們看完菜單後向櫃檯人員點餐，點餐後後台開始製作餐點，這時候我們跟櫃檯人員大眼瞪小眼，也不做任何事情，靜靜地注視著彼此，直到餐點製作完成，櫃檯人員將餐點遞給你，開始享用美味的餐點。
+<img style="display:block; margin-left:auto; margin-right:auto; width:50%;" src="https://memeprod.sgp1.digitaloceanspaces.com/user-wtf/1609854630254.jpg"></p>
+</li>
+<li>
+<p>Asynchronize: 我們看完菜單後向櫃檯人員點餐，點餐後後台開始製作餐點，我們拿到了一張號碼牌，我們開始滑手機，看看等等吃飽後要去哪裡吃甜點，當叫號聲響起時，發現是我們的餐點好了，這時候把手機收起來，前往領取餐點，開始享用美味的餐點。</p>
+</li>
+</ul>
 <p>非同步處理相當適合 Web Application的情境，在處理Request時，常需要跟DB或是其他API進行互動，等待的過程中會有許多「閒置」時間（與櫃檯人員大眼瞪小眼)，在電腦的世界裡雖然都只需幾毫秒的等待，但是當同時有許多Request時，省下來的時間就相當可觀了。</p>
 <p>這也是 <code>FastAPI</code> 與 <code>Flask</code> 最大的差別，在 <code>Flask</code> 出現時，Python還沒有支援異步處理的功能， <code>Flask</code> 要上線時，通常會再加上WSGI (Web Service Gateway Interface) Server來增加服務的穩定性及速度，常見的 WSGI Server 是 <code>gunicorn</code>。</p>
 <p>對於 WSGI Server 及 <code>gunicron</code> 有興趣的朋友，歡迎造訪我先前寫的另一篇文章:</p>
