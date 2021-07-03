@@ -35,6 +35,7 @@ jobs:
         
     - name: Create Output Folder
       run: |
+        ls ./
         pelican content -t Hola -o output -s publishconf.py
     
     - name: List Output Folder 
