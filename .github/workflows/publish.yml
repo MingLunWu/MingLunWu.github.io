@@ -36,6 +36,7 @@ jobs:
     - name: Create Output Folder
       run: |
         ls ./
+        cat personal-blog-278509-1601b8241698.json
         pelican content -t Hola -o output -s publishconf.py
     
     - name: List Output Folder 
