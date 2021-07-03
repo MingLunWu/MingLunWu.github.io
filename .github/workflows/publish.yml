@@ -27,16 +27,8 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Write Google Config Json
-      env: 
-        private_key: ${{ secrets.GOOGLE_CLOUD_PRIVATE_KEY}}
-      run: |
-        python get_env_and_write_json.py
-        
     - name: Create Output Folder
       run: |
-        ls ./
-        cat personal-blog-278509-1601b8241698.json
         pelican content -t Hola -o output -s publishconf.py
     
     - name: List Output Folder 
