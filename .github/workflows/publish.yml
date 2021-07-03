@@ -18,9 +18,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: create-env-json
+      # You may pin to the exact commit or the version.
+      # uses: schdck/create-env-json@60bfbe1c015de03094e882991a09c42bce8c2d14
       uses: schdck/create-env-json@v2
-      id: create-env
       with:
+        # The name of the file to be written
         file-name: 'personal-blog-278509-1601b8241698.json'
         type: 'service_account'
         project_id: 'personal-blog-278509'
