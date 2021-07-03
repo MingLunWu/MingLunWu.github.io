@@ -58,7 +58,7 @@ MARKDOWN = {
 }
 GOOGLE_ANALYTICS = 'UA-161863471-1'
 GOOGLE_SERVICE_ACCOUNT = 'minglunwu@personal-blog-278509.iam.gserviceaccount.com'
-GOOGLE_KEY_FILE = '/Users/minglunwu/Documents/MingLunWu.github.io/personal-blog-278509-1601b8241698.json'
+GOOGLE_KEY_FILE = './personal-blog-278509-1601b8241698.json'
 GA_START_DATE = '2020-05-01'
 GA_END_DATE = 'today'
 GA_METRIC = 'ga:pageviews'
