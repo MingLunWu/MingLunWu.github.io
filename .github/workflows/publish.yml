@@ -17,7 +17,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: schdck/create-env-json@v1
+    - name: create-env-json
+      uses: schdck/create-env-json@v2
       id: create-env
       with:
         file-name: 'personal-blog-278509-1601b8241698.json'
