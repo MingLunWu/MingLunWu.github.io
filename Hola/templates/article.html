@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block head %}
+    {{ super() }}
+    <title>{{ article.title }}</title>
+    <meta property="og:title" content="{{article.title}}">
+    <meta name="description" content="{{article.summary}}">
+    <meta property="og:description" content="{{article.summary}}">
+    <meta name="author" content="{{article.author}}">
+    <meta property="og:image" content="{{article.top_image}}">
+    
+    <link rel="image_src" type="image/jpeg" href="{{article.top_image}}" />
+    <style>
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+{% endblock head%}
+<body>
+    {% block content %}
+        {{ super() }}
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url({{article.top_image}})">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                {% for tag in article.tags %}
+                                    <a href="#0">{{tag}}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                {{article.title}}
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">{{article.date|strftime('%Y-%b-%d (%a)')}}</li>
+                            <li class="author">
+                                By
+                                <span>{{article.author}}</span>
+                            </li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    
+                    {{article.content}}
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                            {% for tag in article.tags %}
+                             <a href="#0">{{tag}}</a>
+                            {% endfor %}
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+                            {# get prev- and next-article for pagination #}
+                            {% set ns = namespace(found=false, prev=None, next=None) %}
+                            {% for a in articles %}
+
+                                {# 假設文章標題不會重複, unique #}
+                                {% if a.title == article.title %}
+                                    {% set ns.found = true %}
+                                    {% set ns.prev = loop.previtem %}
+                                    {% set ns.next = loop.nextitem %}
+                                {% endif %}
+
+                            {% endfor %}
+                            {% set prev_article = ns.prev %}
+                            {% set next_article = ns.next %}
+                            {% if prev_article %}
+                            <div class="blog-content__prev">
+                                <a href="{{HOMEPAGE_URL}}/{{ prev_article.url }}" rel="prev">
+                                    <span>Previous Post</span>
+                                    {{ prev_article.title }}
+                                </a>
+                            </div>
+                            {% endif %}
+                            {% if next_article %}
+                            <div class="blog-content__next">
+                                <a href="{{HOMEPAGE_URL}}/{{ next_article.url }}" rel="next">
+                                    <span>Next Post</span>
+                                    {{ next_article.title }}
+                                </a>
+                            </div>
+                            {% endif %}
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="{{HOMEPAGE_URL}}/archives.html" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
+    {% endblock content %}
+    {% block footer %}
+        {{ super() }}
+    {% endblock footer%}
+</body>
