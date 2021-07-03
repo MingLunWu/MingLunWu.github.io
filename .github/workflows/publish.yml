@@ -4,8 +4,8 @@
 name: publish
 
 on: 
-  - push
-  - schedule :
+  push
+  schedule :
     - cron : "0 17 * * *"
 
 jobs:
