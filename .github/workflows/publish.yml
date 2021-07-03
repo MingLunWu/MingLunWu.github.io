@@ -4,7 +4,9 @@
 name: publish
 
 on: 
-  push
+  push: 
+    branches: 
+      - draft
   schedule :
     - cron : "0 17 * * *"
 
