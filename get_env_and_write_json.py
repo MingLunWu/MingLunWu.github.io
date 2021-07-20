@@ -1,6 +1,6 @@
 import os
 import json
-private_key = os.environ['private_key']
+private_key = os.environ['GOOGLE_CLOUD_PRIVATE_KEY']
 
 data = {
   "type": "service_account",
