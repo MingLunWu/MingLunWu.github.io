@@ -32,6 +32,8 @@ jobs:
         pelican content -t Hola -o output -s publishconf.py
     
     - name: Create Google Credential
+      env:
+        GOOGLE_CLOUD_PRIVATE_KEY: ${{ secrets.GOOGLE_CLOUD_PRIVATE_KEY }}
       run: |
         python get_env_and_write_json.py
     
