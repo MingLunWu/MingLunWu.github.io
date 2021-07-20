@@ -26,16 +26,16 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
-    - name: Create Output Folder
-      run: |
-        pelican content -t Hola -o output -s publishconf.py
     
     - name: Create Google Credential
       env:
         GOOGLE_CLOUD_PRIVATE_KEY: ${{ secrets.GOOGLE_CLOUD_PRIVATE_KEY }}
       run: |
         python get_env_and_write_json.py
+      
+    - name: Create Output Folder
+      run: |
+        pelican content -t Hola -o output -s publishconf.py
     
     - name: List Output Folder 
       run: |

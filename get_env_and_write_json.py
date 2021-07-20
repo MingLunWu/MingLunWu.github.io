@@ -15,5 +15,5 @@ data = {
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/minglunwu%40personal-blog-278509.iam.gserviceaccount.com"
 }
 
-with open('./output/personal-blog-278509-1601b8241698.json', 'w') as f:
+with open('./personal-blog-278509-1601b8241698.json', 'w') as f:
     json.dump(data, f, ensure_ascii=False, indent=4)
