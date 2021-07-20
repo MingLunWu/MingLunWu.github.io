@@ -31,6 +31,10 @@ jobs:
       run: |
         pelican content -t Hola -o output -s publishconf.py
     
+    - name: Create Google Credential
+      run: |
+        python get_env_and_write_json.py
+    
     - name: List Output Folder 
       run: |
         ls output/
