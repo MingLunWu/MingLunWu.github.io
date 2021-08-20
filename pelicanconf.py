@@ -59,4 +59,7 @@ GA_END_DATE = "today"
 
 GOOGLE_ANALYTICS = 'UA-161863471-1'
 
+DISQUS_SITENAME = 'minglunwu'
+
+
 

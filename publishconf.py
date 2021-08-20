@@ -80,7 +80,8 @@ EXTENDED_SITEMAP_PLUGIN = {
     }
 }
 
-
+# DISQUS
+DISQUS_SITENAME = 'minglunwu'
 
 """ from __future__ import unicode_literals
 
