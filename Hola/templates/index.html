@@ -726,7 +726,7 @@
                             <div class="blog-date">
                                 <a href="#">{{article.date|strftime('%Y-%b-%d (%a)')}}</a>
                             </div>  
-                            <img src="{{ article.top_image }}">
+                            <a href="{{HOMEPAGE_URL}}/{{article.url}}"><img src="{{ article.top_image }}"></a>
                             <h2 class="h01"><a href="{{HOMEPAGE_URL}}/{{article.url}}">{{article.title}}</a></h2>
                             <p>
                                 {{article.summary}}
