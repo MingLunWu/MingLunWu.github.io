@@ -45,7 +45,8 @@ RELATIVE_URLS = True
 
 
 STATIC_PATHS = ["images", "extra"]
-HOMEPAGE_URL = "https://minglunwu.github.io"
+# HOMEPAGE_URL = "https://minglunwu.github.io"
+HOMEPAGE_URL = "https://minglunwu.com"
 STATIC_FOLDER = HOMEPAGE_URL + "/theme"
 
 EXTRA_PATH_METADATA = {
