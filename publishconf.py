@@ -44,9 +44,13 @@ DEFAULT_PAGINATION = 10
 RELATIVE_URLS = True
 
 
-STATIC_PATHS = ["images"]
+STATIC_PATHS = ["images", "extra"]
 HOMEPAGE_URL = "https://minglunwu.github.io"
 STATIC_FOLDER = HOMEPAGE_URL + "/theme"
+
+EXTRA_PATH_METADATA = {
+    "extra/CNAME": {"path": "CNAME"}
+}
 
 MARKDOWN = {
     'extension_configs': {
