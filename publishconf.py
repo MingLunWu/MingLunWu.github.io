@@ -45,7 +45,7 @@ RELATIVE_URLS = True
 
 
 STATIC_PATHS = ["images"]
-HOMEPAGE_URL = "https://minglunwu.github.io"
+HOMEPAGE_URL = "https://minglunwu.com"
 STATIC_FOLDER = HOMEPAGE_URL + "/theme"
 
 MARKDOWN = {
