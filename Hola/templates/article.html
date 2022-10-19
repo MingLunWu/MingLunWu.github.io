@@ -115,22 +115,13 @@
             </div> <!-- end blog-content -->
     
         </article>
-        <!-- # Due to ad, temp remove it
-        {% if DISQUS_SITENAME %}
-        <div id="disqus_thread" style="width: 80%; left:10%; position:relative"></div>
-        <script type="text/javascript">
-            var disqus_shortname = '{{ DISQUS_SITENAME }}'; 
-            var disqus_title = '{{ article.title }}';
-
-            (function() {
-                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
+        <script src="https://utteranc.es/client.js"
+                repo="MingLunWu/MingLunWu.github.io"
+                issue-term="pathname"
+                theme="github-dark-orange"
+                crossorigin="anonymous"
+                async>
         </script>
-        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-        {% endif %}
-        -->
     {% endblock content %}
     {% block footer %}
         {{ super() }}
