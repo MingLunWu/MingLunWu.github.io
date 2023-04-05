@@ -73,7 +73,7 @@
                     </p>
                     <div class="blog-cat">
                             {% for tag in article.tags %}
-                            <a href="blog.html">{{tag}}</a>
+                            <a href="{{HOMEPAGE_URL}}/{{tag.url}}">{{tag}}</a>
                             {% endfor %}
                     </div>
                 </article>
