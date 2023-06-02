@@ -3,7 +3,7 @@ cachetools==4.1.0
 certifi==2022.12.7
 cffi==1.14.0
 chardet==3.0.4
-cryptography==39.0.1
+cryptography==41.0.0
 docutils==0.16
 feedgenerator==1.9.1
 ghp-import==0.5.5
