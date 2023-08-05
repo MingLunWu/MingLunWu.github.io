@@ -62,7 +62,8 @@ MARKDOWN = {
     },
     'output_format': 'html5',
 }
-GOOGLE_ANALYTICS = 'UA-161863471-1'
+# GOOGLE_ANALYTICS = 'UA-161863471-1'  # General Analytics
+GOOGLE_ANALYTICS = "G-NC508K3RBY"
 GOOGLE_SERVICE_ACCOUNT = 'minglunwu@personal-blog-278509.iam.gserviceaccount.com'
 GOOGLE_KEY_FILE = './personal-blog-278509-1601b8241698.json'
 GA_START_DATE = '2020-05-01'
