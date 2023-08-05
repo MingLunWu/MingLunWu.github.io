@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+        <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <!--
+    <meta name="description" content="">
+    <meta name="author" content="">
+    -->
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/base.css">
+    <!--<link rel="stylesheet" href="https://minglunwu.com/theme/css/vendor.css">-->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/main.css">
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/styles.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="https://minglunwu.com/theme/js/modernizr.js"></script>
+    <script src="https://minglunwu.com/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+
+    <title>告別惱人的Python Import</title>
+    <meta property="og:title" content="告別惱人的Python Import">
+    <meta name="description" content="<p>開發稍有規模的Python專案時，常會在 import 自定義的模組時遇到狀況，本篇筆記整理使用 absolute import 及 relative import的時機。</p>">
+    <meta property="og:description" content="<p>開發稍有規模的Python專案時，常會在 import 自定義的模組時遇到狀況，本篇筆記整理使用 absolute import 及 relative import的時機。</p>">
+    <meta name="author" content="MingLun Allen Wu">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1617952739858-28043cecdae3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80">
+    
+    <link rel="image_src" type="image/jpeg" href="https://images.unsplash.com/photo-1617952739858-28043cecdae3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" />
+    <style>
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body id="top">
+            <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+        <div class="header-logo">
+            <a class="site-logo" href="https://minglunwu.com"><img src="https://minglunwu.com/theme/images/logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
+
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a href="https://minglunwu.com/#home" title="home">Home</a></li>
+                <li><a href="https://minglunwu.com/#about" title="about">About</a></li>
+                <li><a href="https://minglunwu.com/#blog" title="blog">Blogs</a></li>
+                <li><a href="https://minglunwu.com/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1617952739858-28043cecdae3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80)">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                    <a href="#0">Python</a>
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                告別惱人的Python Import
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">2021-Aug-18 (Wed)</li>
+                            <li class="author">
+                                By
+                                <span>MingLun Allen Wu</span>
+                            </li>
+                            <li> views</li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    
+                    <h1>TL;DR</h1>
+<p>開發稍有規模的Python專案時，常會在 import 自定義的模組時遇到狀況，本篇筆記整理使用 absolute import 及 relative import的時機。</p>
+<h1>Module VS Package</h1>
+<p>首先我們先定義這兩個名詞 : </p>
+<h2>Module</h2>
+<p><code>Module</code> 指的是任何定義在 <code>*.py</code> 中的 Function</p>
+<div class="highlight"><pre><span></span><span class="c1"># module_a.py</span>
+<span class="k">def</span> <span class="nf">function_a</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;This is a example function!&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>寫在 <code>.py</code> 檔中的 Function 可以被其他Python呼叫:</p>
+<div class="highlight"><pre><span></span><span class="c1"># main.py</span>
+<span class="kn">from</span> <span class="nn">module_a</span> <span class="kn">import</span> <span class="n">function_a</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">function_a</span><span class="p">()</span>
+</pre></div>
+
+
+<h2>Package</h2>
+<p><code>Package</code> 則是將<strong>一群 <code>Module</code> 的集合</strong>，使用特別的方法將數個 <code>Module</code> 封裝起來: </p>
+<ul>
+<li>將一至多個 <code>Module</code> 放入相同的資料夾.</li>
+<li>在資料夾中加入一個空白的 <code>__init__.py</code></li>
+</ul>
+<p>假設我們想將三個 <code>Module</code> 封裝成一個 <code>Package</code>:</p>
+<ol>
+<li>module_a.py</li>
+<li>module_b.py</li>
+<li>module_c.py</li>
+</ol>
+<p>根據上面兩個原則，我們需要調整為以下結構:</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:30%;" src="https://minglunwu.github.io/images/20210818/package.png"></p>
+<p>當上述條件皆滿足，這個資料夾就會被視為一個 <code>Package</code>，可以被執行檔載入 : </p>
+<div class="highlight"><pre><span></span><span class="c1"># main.py</span>
+<span class="kn">from</span> <span class="nn">my_package.module_a</span> <span class="kn">import</span> <span class="n">xxx</span>
+</pre></div>
+
+
+<hr>
+<h1>Absolute Import VS Relative Import</h1>
+<p>Python在 Import 檔案時有兩種不同的方式：</p>
+<h2>Absolute Import</h2>
+<p>上述的兩個例子</p>
+<div class="highlight"><pre><span></span>    <span class="c1"># main.py</span>
+    <span class="kn">from</span> <span class="nn">module_a</span> <span class="kn">import</span> <span class="n">function_a</span> <span class="c1"># 例子(1)</span>
+    <span class="kn">from</span> <span class="nn">my_package.module_a</span> <span class="kn">import</span> <span class="n">function_a</span>  <span class="c1"># 例子(2)</span>
+</pre></div>
+
+
+<p>其實都是屬於 <code>Absolute Import</code>，所謂的 <code>Absolute Import</code> 指的是</p>
+<blockquote>
+<p>從<code>系統路徑</code>中嘗試讀取 <code>Package</code> 或 <code>Module</code></p>
+</blockquote>
+<p><code>系統路徑</code>是一連串的路徑，在Python執行下列指令，會得到一包含許多路徑的 List.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">)</span> <span class="c1"># 印出系統路徑</span>
+</pre></div>
+
+
+<p>其中值得注意的是: <strong>在執行時，當下的路徑會被自動加入sys.path中</strong></p>
+<p>在下列情境中:</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:30%;" src="https://minglunwu.github.io/images/20210818/only_module.png"></p>
+<p>如果執行 <code>main.py</code> 是可以運行的:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">module_a</span> <span class="kn">import</span> <span class="n">function_a</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">function_a</span><span class="p">()</span>
+</pre></div>
+
+
+<p>當 <code>main.py</code> 被執行時，會自動將 <code>main.py</code> 當前的資料夾路徑插入 <code>sys.path</code>(系統路徑)中的第一個位置。 </p>
+<p>Import <code>Module</code> 或 <code>Package</code> 時會依序檢查 <code>sys.path</code> 的路徑，此時排在 <code>sys.path</code>首位的路徑就是 <code>main.py</code> 當前的位置(也正是 <code>module_a.py</code> 所在的位置)，所以可以正確 import.</p>
+<p>然而 <code>Absolute Import</code> 有一個限制 : <strong>名稱必須要是Unique</strong></p>
+<p>來個極端的例子，假設現在的 <code>sys.path</code> 長這樣:</p>
+<p>["/home/minglun/", "/home/minglun/project"]</p>
+<p>如果我們執行下列程式碼:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">module_a</span> <span class="kn">import</span> <span class="n">function_a</span>
+</pre></div>
+
+
+<p>結果在 <code>/home/minglun</code> 及 <code>/home/minglun/project</code> 兩個位置中都有一個 <code>module_a.py</code>，那Python怎麼知道要使用哪一個檔案呢？ </p>
+<p>它無從得知，此時就會發生錯誤！</p>
+<p>此時我們就需要 <code>Relative Import</code></p>
+<h2>Relative Import</h2>
+<blockquote>
+<p>從檔案當前位置為基準，尋找對應的檔案</p>
+</blockquote>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:30%;" src="https://minglunwu.github.io/images/20210818/full_module.png"></p>
+<p>相同 <code>Package</code> 中的 <code>module</code> 如果需要互相引用，例如 <code>module_a.py</code> 要引用 <code>module_b.py</code></p>
+<div class="highlight"><pre><span></span><span class="c1"># module_a.py</span>
+<span class="kn">from</span> <span class="nn">.module_b</span> <span class="kn">import</span> <span class="n">function_b</span> <span class="c1"># 使用相對路徑指定當前的module_b.py</span>
+</pre></div>
+
+
+<p>同一個 <code>Package</code> 中的 <code>Module</code> 如果需要互相引用，使用 Relative Import 可以避免路徑混淆。</p>
+<h2>幾個重要原則</h2>
+<ul>
+<li>避免在<code>Module</code>中放置定義以外的東西: <code>Module</code>是用來被Import後執行的，執行的程式碼最好放在外部(上述案例中的 <code>main.py</code>)，否則容易發生執行上的混亂。 </li>
+<li>同一個 <code>Package</code> 中的 <code>Module</code> 互相引用 : 使用 <code>Relative Import</code></li>
+<li>不同 <code>Package</code>中的 <code>Module</code> 互相引用 : 使用 <code>Absolute Import</code></li>
+<li>執行檔(<code>main.py</code>)引用模組: 使用 <code>Absolute Import</code></li>
+</ul>
+<blockquote>
+<p>只有同一個<code>Package</code>中的 <code>Module</code> 要互相引用，才用 <code>Relative Import</code>，否則都用 <code>Absolute Import</code></p>
+</blockquote>
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                             <a href="#0">Python</a>
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="blog-content__prev">
+                                <a href="https://minglunwu.com/notes/2021/ansible_note.html" rel="prev">
+                                    <span>Previous Post</span>
+                                    Ansible 入門筆記(ㄧ) - 核心概念及架構
+                                </a>
+                            </div>
+                            <div class="blog-content__next">
+                                <a href="https://minglunwu.com/notes/2021/fast_api_note_2.html" rel="next">
+                                    <span>Next Post</span>
+                                    Fast API 入門筆記 (二) - Typing Hint & Async
+                                </a>
+                            </div>
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="https://minglunwu.com/archives.html" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
+        <script src="https://utteranc.es/client.js"
+                repo="MingLunWu/MingLunWu.github.io"
+                issue-term="pathname"
+                theme="github-dark-orange"
+                crossorigin="anonymous"
+                async>
+        </script>
+        <!-- Comment Box 留言系統 - 需要調整位置 -->
+        <!-- <div class="commentbox"></div>
+        <script src="https://unpkg.com/commentbox.io/dist/commentBox.min.js"></script>
+        <script>commentBox('5640802722119680-proj')</script> -->
+            <!-- footer
+    ================================================== -->
+    <footer>
+        <div class="row">
+            <div class="col-full">
+
+                <div class="footer-logo">
+                    <a class="footer-site-logo" href="#0"><img src="https://minglunwu.com/theme/images/logo.png" alt="Homepage"></a>
+                </div>
+                <ul class="footer-social">
+                    <li>
+                        <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                    </li>
+                    <li>
+                        <a href="https://minglun-wu.medium.com" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/%E6%98%8E%E5%80%AB-%E5%90%B3-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/fade_relish/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                    </li>
+                </ul>
+                    
+            </div>
+        </div>
+
+        <div class="row footer-bottom">
+
+            <div class="col-twelve">
+                <div class="copyright">
+                    <span>© Copyright MingLunWu 2021</span> 
+                    <span>Design by <a href="https://www.styleshout.com/">styleshout</a></span>	
+                </div>
+
+                <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- end footer-bottom -->
+
+    </footer> <!-- end footer -->
+    <!-- Java Script
+        ================================================== -->
+        <script src="https://minglunwu.com/theme/js/jquery-3.2.1.min.js"></script>
+        <script src="https://minglunwu.com/theme/js/plugins.js"></script>
+        <script src="https://minglunwu.com/theme/js/main.js"></script>
+
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161863471-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-161863471-1');
+    </script>
+    
+</body>

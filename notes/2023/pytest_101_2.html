@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+        <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <!--
+    <meta name="description" content="">
+    <meta name="author" content="">
+    -->
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/base.css">
+    <!--<link rel="stylesheet" href="https://minglunwu.com/theme/css/vendor.css">-->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/main.css">
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/styles.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="https://minglunwu.com/theme/js/modernizr.js"></script>
+    <script src="https://minglunwu.com/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+
+    <title>Pytest 101 - 給 Python 開發者的測試入門 (2) - Mock 基礎介紹</title>
+    <meta property="og:title" content="Pytest 101 - 給 Python 開發者的測試入門 (2) - Mock 基礎介紹">
+    <meta name="description" content="<p>本篇筆記將會介紹 <code>Mock</code> 的使用情境以及如何使用 Python 原生的 <code>unittest</code> 套件來建立 <code>Mock</code> 物件。</p>">
+    <meta property="og:description" content="<p>本篇筆記將會介紹 <code>Mock</code> 的使用情境以及如何使用 Python 原生的 <code>unittest</code> 套件來建立 <code>Mock</code> 物件。</p>">
+    <meta name="author" content="MingLun Allen Wu">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1581472723648-909f4851d4ae?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80">
+    
+    <link rel="image_src" type="image/jpeg" href="https://images.unsplash.com/photo-1581472723648-909f4851d4ae?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" />
+    <style>
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body id="top">
+            <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+        <div class="header-logo">
+            <a class="site-logo" href="https://minglunwu.com"><img src="https://minglunwu.com/theme/images/logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
+
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a href="https://minglunwu.com/#home" title="home">Home</a></li>
+                <li><a href="https://minglunwu.com/#about" title="about">About</a></li>
+                <li><a href="https://minglunwu.com/#blog" title="blog">Blogs</a></li>
+                <li><a href="https://minglunwu.com/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1581472723648-909f4851d4ae?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80)">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                    <a href="#0">Python</a>
+                                    <a href="#0">Test</a>
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                Pytest 101 - 給 Python 開發者的測試入門 (2) - Mock 基礎介紹
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">2023-Mar-12 (Sun)</li>
+                            <li class="author">
+                                By
+                                <span>MingLun Allen Wu</span>
+                            </li>
+                            <li> views</li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    
+                    <h2>前情提要</h2>
+<p><a href="https://www.minglunwu.com/notes/2022/pytest_101.html">Pytest 101 - 給 Python 開發者的測試入門</a></p>
+<h2>TL;DR</h2>
+<p>在撰寫測試時，使用 <code>Mock</code> 來維持測試環境的一致性，能夠有效提升測試的品質、降低測試的複雜度。</p>
+<p>本篇筆記將會介紹 <code>Mock</code> 的使用情境以及如何使用 Python 原生的 <code>unittest</code> 套件來建立 <code>Mock</code> 物件。</p>
+<p>本篇筆記所使用的範例，可以在 <a href="https://github.com/MingLunWu/pytest_101">Github - pytest_101</a> 中找到。</p>
+<h2>為什麼需要 Mock ?</h2>
+<p>在前一篇文章 : <a href="https://www.minglunwu.com/notes/2022/pytest_101.html">Pytest 101 - 給 Python 開發者的測試入門</a> 中，我們了解到要寫出高品質的程式碼，測試案例是不可或缺的。</p>
+<p>在撰寫測試時，<strong>如何維持「測試環境」的「一致性」是一件非常重要的課題</strong>。</p>
+<p>什麼是「測試環境的一致性」呢? </p>
+<p>為了要測試程式碼的邏輯，我們希望每次執行測試時，都是以「相同的環境配置」來進行測試。</p>
+<blockquote>
+<p>換句話說，我們不希望每次執行測試時，得到的行為會不一樣。</p>
+</blockquote>
+<p>讓我們實際舉個例子 ! 我們寫了一個 <code>get_current_month()</code> 來取得現在的月份 : </p>
+<div class="highlight"><pre><span></span><span class="c1"># src/module_mock.py</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="k">def</span> <span class="nf">get_current_month</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;回傳當下的月份</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        Exception: 當月份發生錯誤時，回傳 Exception</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: 執行當下的月份</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+    <span class="n">month</span> <span class="o">=</span> <span class="n">today</span><span class="o">.</span><span class="n">month</span>
+    <span class="k">if</span> <span class="n">month</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Wrong month&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">today</span><span class="o">.</span><span class="n">month</span>
+</pre></div>
+
+
+<p>接著我們寫一個簡單的測試函式，在這篇文章撰寫的當下 (<code>2023/03/12</code>)，我預期 <code>get_current_month()</code> 回傳的月份是 <code>3</code>，所以我在測試程式碼中寫入 <code>assert month == 3</code> ：</p>
+<div class="highlight"><pre><span></span><span class="c1"># tests/test_module_mock.py</span>
+<span class="kn">from</span> <span class="nn">src.module_mock</span> <span class="kn">import</span> <span class="n">get_current_month</span>
+
+<span class="k">def</span> <span class="nf">test_get_current_month</span><span class="p">():</span>
+    <span class="n">month</span> <span class="o">=</span> <span class="n">get_current_month</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">month</span> <span class="o">==</span> <span class="mi">3</span>
+</pre></div>
+
+
+<p>問題來了！如果一個月後(<code>2023/04/12</code>)，我再次進行測試，這時候測試案例會發生什麼事情？</p>
+<p>測試<strong>並不會通過</strong>，因為這時候 <code>get_current_month()</code> 應該會回傳 <code>4</code>。</p>
+<p>原因是 : </p>
+<blockquote>
+<p>測試當下 <code>datetime.now()</code> 的結果會變動，導致每一次的測試環境都不相同</p>
+</blockquote>
+<p>這種因為外部元件的數值發生變化導致測試難以執行，我們稱為與外部元件有<strong>依賴關係</strong> (Dependencies)</p>
+<p>讓我們再來看看剛剛的 <code>get_current_month()</code> : </p>
+<div class="highlight"><pre><span></span><span class="c1"># src/module_mock.py</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="k">def</span> <span class="nf">get_current_month</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>              <span class="c1"># 每次執行都會變動，有依賴關係</span>
+
+    <span class="n">month</span> <span class="o">=</span> <span class="n">today</span><span class="o">.</span><span class="n">month</span>                 <span class="c1"># 需要測試的邏輯</span>
+    <span class="k">if</span> <span class="n">month</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>                       <span class="c1"># 需要測試的邏輯</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Wrong month&quot;</span><span class="p">)</span>  <span class="c1"># 需要測試的邏輯</span>
+
+    <span class="k">return</span> <span class="n">today</span><span class="o">.</span><span class="n">month</span>
+</pre></div>
+
+
+<p>從註解中可以發現，其實真正需要測試的邏輯應該是從第 6 行 (<code>month = today.month</code>) 開始，為了要讓「每次測試的環境都保持一致」，有沒有什麼辦法可以讓 <code>today = datetime.now()</code> 的結果在「<strong>測試的當下</strong>」被「<strong>替換成固定的數值</strong>」呢?</p>
+<p>為了要消除這種依賴關係，這時候我們就需要 <code>Mock</code> 出場！</p>
+<h2>什麼是 Mock ?</h2>
+<p>以白話文來說，<code>Mock</code> 就是 : </p>
+<blockquote>
+<p>在測試的當下，將被測試的「部分程式碼」替換成「另外一種內容」</p>
+</blockquote>
+<p>以上述的 <code>get_current_month()</code> 來說，因為其中包含 <code>today = datetime.now()</code>，導致在不同時間點執行測試時，會得到完全不同的 <code>today</code>，而 <code>today</code> 的不固定，會使得後續的測試很難設定測試成功或失敗的條件。</p>
+<p>這時候，我們可以透過 <code>Mock</code> 在執行測試時，將 <code>datetime.now()</code> 的回傳值從「當下的時間點」替換成「固定的數值」。</p>
+<p>讓我們透過幾個例子說明：</p>
+<h2>案例 1 - 透過 Mock 來替換掉特定物件</h2>
+<p>在剛剛的例子中，我們希望在測試時，可以透過 <code>Mock</code> 來替換掉 <code>datetime.now()</code> 的回傳值，讓每次測試的結果都相同。</p>
+<p>我們可以透過 <code>unittest.mock</code> 中的 <code>patch</code> 來達到此目的:</p>
+<div class="highlight"><pre><span></span><span class="c1"># tests/test_module_mock.py</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
+<span class="kn">from</span> <span class="nn">src.module_mock</span> <span class="kn">import</span> <span class="n">get_current_month</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">def</span> <span class="nf">test_get_current_month</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">&quot;src.module_mock.datetime&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_datetime</span><span class="p">:</span> 
+        <span class="n">mock_datetime</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">month</span> <span class="o">=</span> <span class="n">get_current_month</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">month</span> <span class="o">==</span> <span class="mi">3</span>
+</pre></div>
+
+
+<p>使用 <code>patch</code> 建立一個 Context Manager，目的是要取代掉原始程式碼中的 <code>datetime.now()</code>。</p>
+<p>特別注意的是 : 在 <code>patch</code> 中要放置的是<strong>被替換的物件路徑</strong>，儘管 <code>datetime</code> 套件是 Python 的原生套件，但是因為在測試環境中，<code>datetime.now()</code> 是存放在 <code>src/module_mock.py</code> 中，所以在建立 <code>patch</code> 物件時，要使用 <code>with patch("src.module_mock.datetime")</code>，這在初次接觸 <code>Mock</code> 時很容易混淆，建議大家可以實際試試看。 </p>
+<p>執行測試的當下，<code>src/module_mock</code> 中的 <code>datetime</code> 將會被替換為 <code>mock_datetime</code> 物件，此時我們可以自由設定 <code>mock_datetime</code> 的值。以上述的範例來說，我們將 <code>mock_datetime</code> 的 <code>now()</code> 的回傳值 (<code>return_value</code>) 設定為 <code>datetime(2023,9,1,0,0,0)</code>。</p>
+<p>所以在執行測試的當下，當測試框架進入到 <code>src/module_mock.py</code> 中取用 <code>datetime</code> 物件時，會自動將其替換為 <code>mock_datetime</code> 這個 <code>Mock</code> 物件。並在 <code>get_current_month()</code> 呼叫 <code>datetime.now()</code> 時，將回傳值替換為我們在測試中設定的值 <code>datetime(2023,3,1,0,0,0)</code>。</p>
+<p>這樣一來，我們就可以確保不管在任何時間點進行測試，<code>datetime.now()</code> 都可以維持相同的值。這意味著，測試本身跟 <code>datetime.now()</code> 不會有任何相依關係，我們可以專注的測試程式邏輯有無錯誤! </p>
+<div class="highlight"><pre><span></span><span class="c1"># tests/test_module_mock.py</span>
+<span class="kn">from</span> <span class="nn">unittest.mock</span> <span class="kn">import</span> <span class="n">patch</span>
+<span class="kn">from</span> <span class="nn">src.module_mock</span> <span class="kn">import</span> <span class="n">get_current_month</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">def</span> <span class="nf">test_get_current_month</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">&quot;src.module_mock.datetime&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_datetime</span><span class="p">:</span> 
+        <span class="c1"># 執行測試時將 datetime.now 的 return value 設定為固定的值</span>
+        <span class="n">mock_datetime</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">month</span> <span class="o">=</span> <span class="n">get_current_month</span><span class="p">()</span>
+        <span class="c1"># 因為 datetime.now() 的值被固定下來了，這邊可以設定固定的條件值</span>
+        <span class="c1"># 如果 Assertion 發生錯誤，就代表程式的邏輯發生問題了! 跟 datetime.now() 無關!</span>
+        <span class="k">assert</span> <span class="n">month</span> <span class="o">==</span> <span class="mi">3</span>
+</pre></div>
+
+
+<h2>案例 2 - 透過 Mock 跳過 / 替換特定函數</h2>
+<p>讓我們來看看另外一個例子，我們建立了一個函式 <code>sleep_for_a_while()</code>，在這個函式中會使用 <code>time.sleep()</code> 暫停幾秒，然後回傳傳入的參數 :</p>
+<div class="highlight"><pre><span></span><span class="c1"># src/module_mock.py</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">sleep_for_a_while</span><span class="p">(</span><span class="n">seconds</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;模擬一個需要執行有點久的函數</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        seconds (int): Pending 時間</span>
+
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: 回傳 Pending 秒數</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ready for sleeping!&quot;</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">seconds</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">seconds</span>
+</pre></div>
+
+
+<p>接著我們同樣建立了一個測試案例 :</p>
+<div class="highlight"><pre><span></span><span class="c1"># tests/test_module_mock.py</span>
+<span class="kn">from</span> <span class="nn">src.module_mock</span> <span class="kn">import</span> <span class="n">sleep_for_a_while</span>
+
+<span class="k">def</span> <span class="nf">test_sleep_for_a_while</span><span class="p">():</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">sleep_for_a_while</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">==</span><span class="mi">20</span>
+</pre></div>
+
+
+<p>如果我們試著執行這個測試案例，會發生什麼事情呢？</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20230309/long_sleep.png"></p>
+<p>可以發現執行測試花費了 20 秒的時間，因為在程式碼中有 <code>time.sleep(20)</code>，每次測試就會因為這行程式碼被卡 20 秒！</p>
+<p>假如今天在程式碼中有許多地方都需要等待，那麼執行一次測試的時間就會重複疊加。</p>
+<p>以上述例子 (<code>sleep_for_a_while()</code>) 來說，我們真正想要測試的是函式的 Input 和 Output 是否相同，實際上 <code>time.sleep()</code> 這一行沒有任何意義，所以我們希望在測試過程中暫時讓它消失！</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">src.module_mock</span> <span class="kn">import</span> <span class="n">sleep_for_a_while</span>
+
+<span class="k">def</span> <span class="nf">test_sleep_for_a_while</span><span class="p">():</span> <span class="c1"># 錯誤用法，這一個測試案例將需要花費 20 秒時間等待</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">sleep_for_a_while</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">==</span><span class="mi">20</span>
+
+<span class="k">def</span> <span class="nf">test_sleep_for_a_while_mock</span><span class="p">():</span> <span class="c1"># 用法 1 </span>
+    <span class="c1"># 使用 patch 將 time.sleep() 函數替換為 None 物件</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">&quot;src.module_mock.time.sleep&quot;</span><span class="p">):</span> 
+        <span class="n">response</span> <span class="o">=</span> <span class="n">sleep_for_a_while</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="o">==</span><span class="mi">20</span>
+
+<span class="k">def</span> <span class="nf">test_sleep_for_a_while_replace</span><span class="p">():</span> <span class="c1"># 用法 2</span>
+    <span class="c1"># 使用 patch 將 time.sleep() 函數替換為 time.sleep(2)</span>
+    <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">&quot;src.module_mock.time.sleep&quot;</span><span class="p">,</span> <span class="n">new_callable</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">sleep_for_a_while</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">response</span><span class="o">==</span><span class="mi">20</span>
+</pre></div>
+
+
+<p>在上述案例中，我們說明了 <code>Mock</code> 的另外兩種用法 : </p>
+<p>第一種用法是 <code>test_sleep_for_a_while_mock()</code>，在使用 <code>patch</code> 時，不多做另外的設定，此時在執行測試的當下，<code>unittest</code> 會將 <code>time.sleep()</code> 這個函式替換為 <code>None</code>，所以在執行測試時，會得到「將 <code>time.sleep()</code> 直接跳過」的效果。</p>
+<p>而第二種用法 <code>test_sleep_for_a_while_replace()</code>，則是在使用 <code>patch</code> 時，透過 <code>new_callable</code> 參數將被 <code>patch</code> 的物件 (<code>src.module_mock</code> 中的 <code>time.sleep()</code>) 替換為新的 Callable Object (<code>time.sleep(2)</code>)。</p>
+<p>也就是說，在執行測試時，當執行到 <code>src_module_mock</code> 中的 <code>time.sleep()</code> 時，不管參數是多少，一律都會被替換為新的 Callable Object (<code>time.sleep(2)</code>)。</p>
+<p>讓我們看看這兩種用法的執行結果 : </p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20230309/pytest_102_2.jpg"></p>
+<p>可以發現總執行時間為 2.11 秒，其中有 2 秒是 <code>test_sleep_for_a_while_replace()</code> 將 <code>time.sleep(20)</code> 替換為 <code>time.sleep(2)</code>，所以等待了 2 秒。另外一個 <code>test_sleep_for_a_while_mock()</code> 則是替換為 <code>None</code> 物件，直接跳過。 兩個測試案例加總起來總共執行 2.11 秒，相當合理。</p>
+<h2>總結</h2>
+<p>在今天的文章中，我們透過介紹了使用 Pytest 撰寫測試時，一個很重要的概念 <code>Mock</code> !</p>
+<p>透過 <code>Mock</code> 可以將測試時會變動的因素替換成「固定」的值，如此一來就能「測試程式本身的邏輯」是否正確。</p>
+<p>具體的操作則是使用 <code>patch</code> 語法來將特定的物件或函數替換為「測試者設定的值」或是 <code>None</code> 值。</p>
+<p>在下期的文章中，我們會繼續介紹更多 <code>Mock</code> 的相關語法。</p>
+<p>感謝你的收看! 我們下次見~</p>
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                             <a href="#0">Python</a>
+                             <a href="#0">Test</a>
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="blog-content__prev">
+                                <a href="https://minglunwu.com/notes/2023/vscode_python_extension.html" rel="prev">
+                                    <span>Previous Post</span>
+                                    如何透過 VSCode 的 Python Extension 進行 Debug ?
+                                </a>
+                            </div>
+                            <div class="blog-content__next">
+                                <a href="https://minglunwu.com/notes/2022/cka_exam_sharing.html" rel="next">
+                                    <span>Next Post</span>
+                                    2022 CKA 考試經驗分享
+                                </a>
+                            </div>
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="https://minglunwu.com/archives.html" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
+        <script src="https://utteranc.es/client.js"
+                repo="MingLunWu/MingLunWu.github.io"
+                issue-term="pathname"
+                theme="github-dark-orange"
+                crossorigin="anonymous"
+                async>
+        </script>
+        <!-- Comment Box 留言系統 - 需要調整位置 -->
+        <!-- <div class="commentbox"></div>
+        <script src="https://unpkg.com/commentbox.io/dist/commentBox.min.js"></script>
+        <script>commentBox('5640802722119680-proj')</script> -->
+            <!-- footer
+    ================================================== -->
+    <footer>
+        <div class="row">
+            <div class="col-full">
+
+                <div class="footer-logo">
+                    <a class="footer-site-logo" href="#0"><img src="https://minglunwu.com/theme/images/logo.png" alt="Homepage"></a>
+                </div>
+                <ul class="footer-social">
+                    <li>
+                        <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                    </li>
+                    <li>
+                        <a href="https://minglun-wu.medium.com" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/%E6%98%8E%E5%80%AB-%E5%90%B3-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/fade_relish/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                    </li>
+                </ul>
+                    
+            </div>
+        </div>
+
+        <div class="row footer-bottom">
+
+            <div class="col-twelve">
+                <div class="copyright">
+                    <span>© Copyright MingLunWu 2021</span> 
+                    <span>Design by <a href="https://www.styleshout.com/">styleshout</a></span>	
+                </div>
+
+                <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- end footer-bottom -->
+
+    </footer> <!-- end footer -->
+    <!-- Java Script
+        ================================================== -->
+        <script src="https://minglunwu.com/theme/js/jquery-3.2.1.min.js"></script>
+        <script src="https://minglunwu.com/theme/js/plugins.js"></script>
+        <script src="https://minglunwu.com/theme/js/main.js"></script>
+
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161863471-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-161863471-1');
+    </script>
+    
+</body>

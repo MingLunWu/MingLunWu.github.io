@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+        <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <!--
+    <meta name="description" content="">
+    <meta name="author" content="">
+    -->
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/base.css">
+    <!--<link rel="stylesheet" href="https://minglunwu.com/theme/css/vendor.css">-->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/main.css">
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/styles.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="https://minglunwu.com/theme/js/modernizr.js"></script>
+    <script src="https://minglunwu.com/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+
+    <title>MLFlow Project 筆記</title>
+    <meta property="og:title" content="MLFlow Project 筆記">
+    <meta name="description" content="<p>待補</p>">
+    <meta property="og:description" content="<p>待補</p>">
+    <meta name="author" content="MingLun Allen Wu">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1484669970465-b0c50d7f6964?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2089&q=80">
+    
+    <link rel="image_src" type="image/jpeg" href="https://images.unsplash.com/photo-1484669970465-b0c50d7f6964?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2089&q=80" />
+    <style>
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body id="top">
+            <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+        <div class="header-logo">
+            <a class="site-logo" href="https://minglunwu.com"><img src="https://minglunwu.com/theme/images/logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
+
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a href="https://minglunwu.com/#home" title="home">Home</a></li>
+                <li><a href="https://minglunwu.com/#about" title="about">About</a></li>
+                <li><a href="https://minglunwu.com/#blog" title="blog">Blogs</a></li>
+                <li><a href="https://minglunwu.com/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1484669970465-b0c50d7f6964?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=2089&q=80)">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                    <a href="#0">MLFlow</a>
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                MLFlow Project 筆記
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">2021-Jan-26 (Tue)</li>
+                            <li class="author">
+                                By
+                                <span>MingLun Allen Wu</span>
+                            </li>
+                            <li> views</li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    
+                    <h1>Intro</h1>
+<p><code>MLFlow Project</code> 是 <code>MLFlow</code> 四大工具之一 (<code>Tracking</code>, <code>Models</code>, <code>Models Registry</code>)</p>
+<p>對於 <code>Tracking</code> 有興趣的朋友，歡迎先回顧之前的文章: </p>
+<p><a href="https://minglunwu.github.io/notes/2020/20200527.html">不再被大量超參數及模型表現淹沒！使用MLFlow進行實驗管理</a></p>
+<p><code>MLFlow Tracking</code> 協定、讓其他資料使用者 or 工具 能夠執行。</p>
+<p>每個Project可以是：</p>
+<ul>
+<li>資料夾</li>
+<li>Git Repository</li>
+</ul>
+<p>在資料夾中放置 <code>MLproject</code> 檔案來進行設定 : </p>
+<ul>
+<li>Name: Readable Name</li>
+<li>Entry Point: 此專案可以被執行的指令、參數說明</li>
+<li>Environment: 可以使用 <code>conda</code>, <code>docker</code>, <code>system</code></li>
+<li><code>conda</code>: 執行前會 activate 環境。<ul>
+<li>資料夾中的 <code>conda.yaml</code>   </li>
+<li><code>MLproject</code>中的<code>conda_env</code> entrypoint</li>
+</ul>
+</li>
+<li><code>Docker</code> : 可以存放 non-python的dependency like Java<ul>
+<li>執行 mlflow project時，會自動建立新的 image，並且把當前資料夾複製到Docker中的 <code>/mlflow/projects/code</code>，並且自動將你寫在<code>MLproject</code>中的<code>entrypoint</code>當成是 Docker的 <code>entrypoint</code></li>
+</ul>
+</li>
+</ul>
+<p>如果沒有存放 <code>MLproject</code> 時， <code>MLflow Project</code> 會按照下列規則: </p>
+<ul>
+<li>資料夾名稱就是Project名稱</li>
+<li><code>conda.yml</code>紀錄 conda 環境，如果資料夾中沒有<code>conda.yml</code>，則Mlflow會自動建立一個空的conda環境只包含Python</li>
+<li>任何 <code>.py</code> 或是 <code>.sh</code>結尾的檔案都將成為 entry point.</li>
+</ul>
+<p>About <code>MLProject</code>, <code>yaml</code> format: </p>
+<div class="highlight"><pre><span></span><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">My Project</span>
+
+<span class="nt">conda_env</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_env.yaml</span> <span class="c1"># Conda 的 yaml檔案路徑</span>
+<span class="c1"># Can have a docker_env instead of a conda_env, e.g.</span>
+<span class="c1"># docker_env:</span>
+<span class="c1">#    image:  mlflow-docker-example # 從系統端找，若找不到會嘗試從docker-hub pull 下來</span>
+<span class="c1">#    volumes: [&quot;/local/path:/container/mount/path&quot;]  # Local Volume</span>
+<span class="c1">#    environment: [[&quot;NEW_ENV_VAR&quot;, &quot;new_var_value&quot;], &quot;VAR_TO_COPY_FROM_HOST_ENVIRONMENT&quot;] # 定義一個新環境變數，及取用一個既有的環境變數</span>
+
+
+<span class="nt">entry_points</span><span class="p">:</span>
+<span class="nt">main</span><span class="p">:</span>
+    <span class="nt">parameters</span><span class="p">:</span> <span class="c1"># 定義參數</span>
+    <span class="nt">data_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">path</span>
+    <span class="nt">regularization</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">type</span><span class="p">:</span> <span class="nv">float</span><span class="p p-Indicator">,</span><span class="nt"> default</span><span class="p">:</span> <span class="nv">0.1</span><span class="p p-Indicator">}</span>
+    <span class="nt">command</span><span class="p">:</span> <span class="s">&quot;python</span><span class="nv"> </span><span class="s">train.py</span><span class="nv"> </span><span class="s">-r</span><span class="nv"> </span><span class="s">{regularization}</span><span class="nv"> </span><span class="s">{data_file}&quot;</span> <span class="c1"># 所有定義在參數區塊中的變數，都可以透過Python string format送入</span>
+<span class="nt">validate</span><span class="p">:</span>
+    <span class="nt">parameters</span><span class="p">:</span>
+    <span class="nt">data_file</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">path</span>
+    <span class="nt">command</span><span class="p">:</span> <span class="s">&quot;python</span><span class="nv"> </span><span class="s">validate.py</span><span class="nv"> </span><span class="s">{data_file}&quot;</span>
+</pre></div>
+
+
+<h1>Specify Parameter</h1>
+<p>MLFlow 可以定義參數的初始值及資料型態</p>
+<div class="highlight"><pre><span></span><span class="nt">parameter_name</span><span class="p">:</span> <span class="p p-Indicator">{</span><span class="nt">type</span><span class="p">:</span> <span class="nv">data_type</span><span class="p p-Indicator">,</span><span class="nt"> default</span><span class="p">:</span> <span class="nv">value</span><span class="p p-Indicator">}</span>  <span class="c1"># Short syntax</span>
+
+<span class="nt">parameter_name</span><span class="p">:</span>     <span class="c1"># Long syntax</span>
+<span class="nt">type</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">data_type</span>
+<span class="nt">default</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">value</span>
+</pre></div>
+
+
+<p>資料型態可以是 : </p>
+<ul>
+<li>string</li>
+<li>float</li>
+<li>path (local file)</li>
+<li>uri (for distributed system like spark)</li>
+</ul>
+<h1>Running Projects</h1>
+<p>可以使用下列任一方式使用: </p>
+<ul>
+<li>Command-Line Tool</li>
+<li>Python API `mlflow.projects.run()</li>
+</ul>
+<p><strong>也就是說如果我有一個Git Repo，並且本地端有安裝conda或是docker，那麼我連clone都不用，直接透過mlflow project即可直接執行</strong></p>
+<p>並且在執行過程中可以選擇: </p>
+<ul>
+<li>Project Version (哪一個git commit)</li>
+<li>Entry Point (執行哪一個Entry Point, Default to <code>main</code>)</li>
+<li>Parameters: Key-Value Parameters (Ex: -P alpha=0.5)</li>
+<li>Deployment Mode: K8S or other remote server.</li>
+<li>Environment: 也可以直接在<code>MLproject</code>中設定，或是使用<code>`--no-conda</code> flag 使用當前的環境。</li>
+</ul>
+<p>所以如果使用 <code>MLProject</code> 的話:</p>
+<ol>
+<li>Script都要用 argparse 來接受參數</li>
+<li><code>MLproject</code> 中的entrypoint接受參數並傳入檔案</li>
+<li>執行時，就能搭配 MLFlow 的 Tracker功能快速迭代運行！！</li>
+</ol>
+<p>可以同時啟動Multiple Runs</p>
+<h2>MLFlow tracking server</h2>
+<blockquote>
+<p>MLFlow tracking 的資訊要存放在哪裡？</p>
+</blockquote>
+<p>原先是「專案執行的資料夾」 -&gt; 可以改成「本地「的一個位置</p>
+<p>:::bash
+  mlflow server \
+    --backend-store-uri /mnt/persistent-disk \
+    --default-artifact-root s3://my-mlflow-bucket/ \
+    --host 0.0.0.0</p>
+<p>Tracking Server 有兩個儲存元件：</p>
+<ol>
+<li>Backend Store (Experiment, run metadata)</li>
+<li>file store</li>
+<li>database-backed store</li>
+<li>Artiface Store (儲存大型Ckpt檔案)</li>
+<li>各項雲端服務</li>
+</ol>
+<h1>MLFlow Models</h1>
+<p>ML Model 的標準儲存格式，有許多不同的 <code>Flavor</code> :</p>
+<ul>
+<li><code>Python Function</code> Flavor ：描述如何將 model 當成 <code>Python</code> function 執行。</li>
+</ul>
+<blockquote>
+<p>將模型轉換為「常見的工具」可支援的模式。(例如直接把checkpoint打包成可供執行的Python Function)</p>
+</blockquote>
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                             <a href="#0">MLFlow</a>
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="https://minglunwu.com/archives.html" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
+        <script src="https://utteranc.es/client.js"
+                repo="MingLunWu/MingLunWu.github.io"
+                issue-term="pathname"
+                theme="github-dark-orange"
+                crossorigin="anonymous"
+                async>
+        </script>
+        <!-- Comment Box 留言系統 - 需要調整位置 -->
+        <!-- <div class="commentbox"></div>
+        <script src="https://unpkg.com/commentbox.io/dist/commentBox.min.js"></script>
+        <script>commentBox('5640802722119680-proj')</script> -->
+            <!-- footer
+    ================================================== -->
+    <footer>
+        <div class="row">
+            <div class="col-full">
+
+                <div class="footer-logo">
+                    <a class="footer-site-logo" href="#0"><img src="https://minglunwu.com/theme/images/logo.png" alt="Homepage"></a>
+                </div>
+                <ul class="footer-social">
+                    <li>
+                        <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                    </li>
+                    <li>
+                        <a href="https://minglun-wu.medium.com" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/%E6%98%8E%E5%80%AB-%E5%90%B3-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/fade_relish/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                    </li>
+                </ul>
+                    
+            </div>
+        </div>
+
+        <div class="row footer-bottom">
+
+            <div class="col-twelve">
+                <div class="copyright">
+                    <span>© Copyright MingLunWu 2021</span> 
+                    <span>Design by <a href="https://www.styleshout.com/">styleshout</a></span>	
+                </div>
+
+                <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- end footer-bottom -->
+
+    </footer> <!-- end footer -->
+    <!-- Java Script
+        ================================================== -->
+        <script src="https://minglunwu.com/theme/js/jquery-3.2.1.min.js"></script>
+        <script src="https://minglunwu.com/theme/js/plugins.js"></script>
+        <script src="https://minglunwu.com/theme/js/main.js"></script>
+
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161863471-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-161863471-1');
+    </script>
+    
+</body>

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+        <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <!--
+    <meta name="description" content="">
+    <meta name="author" content="">
+    -->
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/base.css">
+    <!--<link rel="stylesheet" href="https://minglunwu.com/theme/css/vendor.css">-->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/main.css">
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/styles.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="https://minglunwu.com/theme/js/modernizr.js"></script>
+    <script src="https://minglunwu.com/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+
+    <title>安裝 Miniconda 以及 Pytorch</title>
+    <meta property="og:title" content="安裝 Miniconda 以及 Pytorch">
+    <meta name="description" content="<p>因為工作需要在GPU Server上安裝Pytorch，從頭紀錄需要的指令</p>">
+    <meta property="og:description" content="<p>因為工作需要在GPU Server上安裝Pytorch，從頭紀錄需要的指令</p>">
+    <meta name="author" content="MingLun Allen Wu">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1502951682449-e5b93545d46e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1566&q=80">
+    
+    <link rel="image_src" type="image/jpeg" href="https://images.unsplash.com/photo-1502951682449-e5b93545d46e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1566&q=80" />
+    <style>
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body id="top">
+            <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+        <div class="header-logo">
+            <a class="site-logo" href="https://minglunwu.com"><img src="https://minglunwu.com/theme/images/logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
+
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a href="https://minglunwu.com/#home" title="home">Home</a></li>
+                <li><a href="https://minglunwu.com/#about" title="about">About</a></li>
+                <li><a href="https://minglunwu.com/#blog" title="blog">Blogs</a></li>
+                <li><a href="https://minglunwu.com/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1502951682449-e5b93545d46e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1566&q=80)">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                    <a href="#0">Pytorch</a>
+                                    <a href="#0">conda</a>
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                安裝 Miniconda 以及 Pytorch
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">2020-Mar-18 (Wed)</li>
+                            <li class="author">
+                                By
+                                <span>MingLun Allen Wu</span>
+                            </li>
+                            <li> views</li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    
+                    <h1>前言</h1>
+<p>因為工作需要在GPU Server上安裝Pytorch，從頭紀錄需要的指令:
+<!--more--></p>
+<h2>確認OS</h2>
+<div class="highlight"><pre><span></span>cat /etc/os-release
+</pre></div>
+
+
+<p>會將當前機器的OS資訊顯示出來。</p>
+<h2>確認位元組</h2>
+<div class="highlight"><pre><span></span>uname -a
+</pre></div>
+
+
+<p>如果顯示 x86_64 代表是 64位元組，若為i386相關則為32位元組。</p>
+<h2>Check CUDA</h2>
+<div class="highlight"><pre><span></span>nvcc --version
+</pre></div>
+
+
+<h2>安裝Miniconda</h2>
+<p><code>Miniconda</code>與 <code>Anaconda</code>皆為 <code>Conda</code> 體系，<code>Anaconda</code>除了包含<code>Conda</code>, <code>Python</code>外，還有許多額外的Package, 而 <code>Miniconda</code>則是只有<code>Conda</code>以及<code>Python</code>而已。</p>
+<ol>
+<li>至<a href="https://docs.conda.io/en/latest/miniconda.html#linux-installers">Anaconda官網</a>取得對應的安裝檔<strong>連結</strong>。</li>
+<li>在Server端透過<code>wget</code>指令下載連結檔案。</li>
+<li>bash 執行下載好的檔案。</li>
+</ol>
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                             <a href="#0">Pytorch</a>
+                             <a href="#0">conda</a>
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="blog-content__prev">
+                                <a href="https://minglunwu.com/notes/2020/20200324.html" rel="prev">
+                                    <span>Previous Post</span>
+                                    從零開始 - Pytorch 入門懶人包
+                                </a>
+                            </div>
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="https://minglunwu.com/archives.html" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
+        <script src="https://utteranc.es/client.js"
+                repo="MingLunWu/MingLunWu.github.io"
+                issue-term="pathname"
+                theme="github-dark-orange"
+                crossorigin="anonymous"
+                async>
+        </script>
+        <!-- Comment Box 留言系統 - 需要調整位置 -->
+        <!-- <div class="commentbox"></div>
+        <script src="https://unpkg.com/commentbox.io/dist/commentBox.min.js"></script>
+        <script>commentBox('5640802722119680-proj')</script> -->
+            <!-- footer
+    ================================================== -->
+    <footer>
+        <div class="row">
+            <div class="col-full">
+
+                <div class="footer-logo">
+                    <a class="footer-site-logo" href="#0"><img src="https://minglunwu.com/theme/images/logo.png" alt="Homepage"></a>
+                </div>
+                <ul class="footer-social">
+                    <li>
+                        <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                    </li>
+                    <li>
+                        <a href="https://minglun-wu.medium.com" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/%E6%98%8E%E5%80%AB-%E5%90%B3-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/fade_relish/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                    </li>
+                </ul>
+                    
+            </div>
+        </div>
+
+        <div class="row footer-bottom">
+
+            <div class="col-twelve">
+                <div class="copyright">
+                    <span>© Copyright MingLunWu 2021</span> 
+                    <span>Design by <a href="https://www.styleshout.com/">styleshout</a></span>	
+                </div>
+
+                <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- end footer-bottom -->
+
+    </footer> <!-- end footer -->
+    <!-- Java Script
+        ================================================== -->
+        <script src="https://minglunwu.com/theme/js/jquery-3.2.1.min.js"></script>
+        <script src="https://minglunwu.com/theme/js/plugins.js"></script>
+        <script src="https://minglunwu.com/theme/js/main.js"></script>
+
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161863471-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-161863471-1');
+    </script>
+    
+</body>

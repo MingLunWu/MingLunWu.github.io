@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+        <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <!--
+    <meta name="description" content="">
+    <meta name="author" content="">
+    -->
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/base.css">
+    <!--<link rel="stylesheet" href="https://minglunwu.com/theme/css/vendor.css">-->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/main.css">
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/styles.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="https://minglunwu.com/theme/js/modernizr.js"></script>
+    <script src="https://minglunwu.com/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+
+    <title>NLP深度學習不能不用的套件 - Transformers</title>
+    <meta property="og:title" content="NLP深度學習不能不用的套件 - Transformers">
+    <meta name="description" content="<p>透過Transformers套件使用多種Pre-trained Language Model，並且實作Text Feature Extraction.</p>">
+    <meta property="og:description" content="<p>透過Transformers套件使用多種Pre-trained Language Model，並且實作Text Feature Extraction.</p>">
+    <meta name="author" content="MingLun Allen Wu">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1554631995-6c22c6e729fe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=733&q=80">
+    
+    <link rel="image_src" type="image/jpeg" href="https://images.unsplash.com/photo-1554631995-6c22c6e729fe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=733&q=80" />
+    <style>
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body id="top">
+            <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+        <div class="header-logo">
+            <a class="site-logo" href="https://minglunwu.com"><img src="https://minglunwu.com/theme/images/logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
+
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a href="https://minglunwu.com/#home" title="home">Home</a></li>
+                <li><a href="https://minglunwu.com/#about" title="about">About</a></li>
+                <li><a href="https://minglunwu.com/#blog" title="blog">Blogs</a></li>
+                <li><a href="https://minglunwu.com/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1554631995-6c22c6e729fe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=733&q=80)">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                    <a href="#0">transformers</a>
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                NLP深度學習不能不用的套件 - Transformers
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">2020-Jun-18 (Thu)</li>
+                            <li class="author">
+                                By
+                                <span>MingLun Allen Wu</span>
+                            </li>
+                            <li> views</li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    
+                    <ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#如何使用transformers">如何使用Transformers</a></li>
+<li><a href="#tokenizer">Tokenizer</a><ul>
+<li><a href="#1-初始化">1. 初始化</a></li>
+<li><a href="#2-基本使用">2. 基本使用</a></li>
+</ul>
+</li>
+<li><a href="#pre-trained-language-model">Pre-trained Language Model</a><ul>
+<li><a href="#1-初始化-1">1. 初始化</a></li>
+<li><a href="#2-基本使用-1">2. 基本使用</a></li>
+</ul>
+</li>
+<li><a href="#transformers-的優勢">Transformers 的優勢</a></li>
+<li><a href="#後記">後記</a></li>
+</ul>
+<p id="前言"></p>
+
+<h1>前言</h1>
+<p>本篇筆記所紀錄的 Transformers 並不是 Attention 論文中所提到的 "Transformer"模型，而是由Higginface團隊所開發的 <code>Transformers</code> 套件。</p>
+<p>這則筆記的重點在於:  </p>
+<ol>
+<li>為什麼要使用 Transformers</li>
+<li>Transformers 的兩大元件:<ul>
+<li>Tokenizer</li>
+<li>Model</li>
+</ul>
+</li>
+<li>使用 Transformers 實作 Feature Extraction.</li>
+</ol>
+<p>近年來 NLP 在 Attention 概念提出以後，各種模型如同雨後春筍般噴發：
+<img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://miro.medium.com/max/1400/1*corMthPJwan-yw0KOcZ6qQ.png">
+(圖片來源: <a href="https://medium.com/@hamdan.hussam/from-bert-to-albert-pre-trained-langaug-models-5865aa5c3762">https://medium.com/@hamdan.hussam/from-bert-to-albert-pre-trained-langaug-models-5865aa5c3762</a>)</p>
+<p>然而在使用不同的模型時，每個模型的架構、參數的載入方式都不相同，大大的提高了模型間的轉換成本。舉例來說： 進行假新聞分類任務時，可能會想要嘗試從「BERT」轉換到「XLNet」，在其餘架構不變的前提下，光是進行 Pre-train Language Model 的更換可能就會花費不少時間。</p>
+<p>透過 <code>Transformers</code> 這個套件，能夠將轉換成本降到最低！ 使用這套框架能夠直接對多種模型進行操作，各種模型的架構及參數都已經被封裝在套件中，只需要了解此框架的機制，即可快速套用到數十種不同的模型！</p>
+<blockquote>
+<p>直白的說：學習這個套件，就能同時學會使用多種主流的語言模型。</p>
+</blockquote>
+<p>附上 <code>Transfomers</code> 的 官方網站:</p>
+<p><a href="https://huggingface.co/transformers/">Hugging Face - Transformers</a></p>
+<p>以及 <code>Transformers</code> 當前所支援的模型清單:</p>
+<p><a href="https://huggingface.co/models">Hugging Face - On a mission to solve NLP, one commit at a time.</a></p>
+<hr>
+<p><p id="如何使用transformers"></p></p>
+<h1>如何使用Transformers</h1>
+<p>我將 <code>Transformers</code> 套件分成兩個部分: </p>
+<ol>
+<li><strong>Tokenizer</strong>  : 將文字斷詞後轉換為 Index. </li>
+<li><strong>Pre-trained Model</strong> :  接受轉換的 Index， 輸出 Word Representation.</li>
+</ol>
+<p>下面這張流程圖，是從文字轉換成 Word Representation的過程，我們藉此來了解這兩個元件的作用(反黃)到底是什麼 :
+<img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20200618/word2vec_flow-2.png"></p>
+<p id="tokenizer"></p>
+
+<h2>Tokenizer</h2>
+<p id="1-初始化"></p>
+
+<h3>1. 初始化</h3>
+<p>Tokenizer 的功用是將文字進行斷詞及轉換為Index，不同的 Pre-trained Language Model 所使用的斷詞方式以及 Index 也不盡相同，所以在使用前需要先進行「初始化」。</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">BertTokenizer</span>
+
+<span class="c1"># 常見模型具有自己的Tokenizer</span>
+<span class="n">tokenizer_bert</span> <span class="o">=</span> <span class="n">BertTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;bert-base-cased&quot;</span><span class="p">)</span>
+
+<span class="c1"># AutoTokenizer 則是通用型</span>
+<span class="n">tokenizer_other</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;emilyalsentzer/Bio_ClinicalBERT&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>針對較常見的語言模型 (BERT, GPT2, XLM, XLNet...)， <code>Transformers</code>有提供專屬的 Tokenizer可以使用。 </p>
+<p>除此之外，還有額外定義一個 <code>AutoTokenizer</code>，可以讓使用者互相分享、使用訓練好的模型。  透過 <code>tokenizer.from_pretrained(&lt;model_name&gt;)</code>即可下載並且載入該模型的相關設定。</p>
+<p>在初次使用模型時， <code>transformers</code>會自動下載該模型的權重及相關設定，需要花費一點時間 (時間長度端看模型的大小)，下載完成後，往後的執行將會從本地端的快取資料夾載入，就不需要再進行下載了。</p>
+<p id="2-基本使用"></p>
+
+<h3>2. 基本使用</h3>
+<div class="highlight"><pre><span></span><span class="n">tokenizer_bert</span> <span class="o">=</span> <span class="n">BertTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;bert-base-cased&quot;</span><span class="p">)</span>
+<span class="n">test_input</span> <span class="o">=</span> <span class="s2">&quot;I don&#39;t want to work.&quot;</span>
+
+<span class="n">encode_result</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">test_input</span><span class="p">)</span>  <span class="c1"># 使用 encode() 來對文字進行斷詞、編碼。</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">encode_result</span><span class="p">)</span>
+<span class="c1"># [101, 146, 1274, 112, 189, 1328, 1106, 1250, 119, 102]</span>
+
+<span class="n">decode_result</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encode_result</span><span class="p">)</span> <span class="c1"># 使用 decode() 來將 id 轉換回文字。</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">decode_result</span><span class="p">)</span>
+<span class="c1"># &quot;[CLS] I don&#39;t want to work. [SEP]&quot;</span>
+</pre></div>
+
+
+<p>從中我們觀察到兩件事情：</p>
+<ol>
+<li>
+<p><code>encode_result</code> 的長度好像跟 <code>test_input</code> 的長度不相同！: </p>
+<p>這是因為有些模型會使用 Word Piece Tokenizer，也就是在斷詞過程中將詞彙進行拆解，所以會導致Encode過的結果長度與原始Input不同！</p>
+</li>
+<li>
+<p>Decode後的結果好像跟原本的不太一樣...: </p>
+<p>因為在 <code>tokenizer.encode()</code>過程中會自動加入 [CLS]、[SEP]等特殊標記，這是由於 BERT 模型的機制而自動產生，其餘模型的 Tokenizer 不一定會有，也可以在encode過程中加入參數來移除:</p>
+<div class="highlight"><pre><span></span><span class="n">encode_result</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">test_input</span><span class="p">,</span> <span class="n">add_special_tokens</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># 編碼過程中，移除特殊符號</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">encode_result</span><span class="p">)</span> 
+<span class="c1"># [146, 1274, 112, 189, 1328, 1106, 1250, 119]</span>
+
+<span class="n">decode_result</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encode_result</span><span class="p">)</span> <span class="c1"># 使用 decode() 來將 id 轉換回文字。</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">decode_result</span><span class="p">)</span>
+<span class="c1"># &quot;I don&#39;t want to work.&quot;</span>
+</pre></div>
+
+
+</li>
+</ol>
+<p>除此之外，在進行資料前處理時，另外一個麻煩的問題是在產生 "batch"時，必須要讓每一筆資料的長度相同(也就是要進行"Padding")，假設最大長度設定為 <code>64</code>: </p>
+<ul>
+<li>長度不足的句子需要補齊 "[PAD]"符號，使長度達到 64。</li>
+<li>長度過長的句子需要只保留前64個字，超過的部分捨棄不用。</li>
+</ul>
+<p>這件事情如果自己處理，會有點小麻煩，幸好 Tokenizer 都幫忙做好了.</p>
+<div class="highlight"><pre><span></span><span class="n">test_input</span> <span class="o">=</span> <span class="s2">&quot;I don&#39;t want to work.&quot;</span>
+
+<span class="n">encode_result</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">test_input</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">pad_to_max_length</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">encode_result</span><span class="p">)</span>
+<span class="c1"># [101, 146, 1274, 112, 189, 1328, 1106, 1250, 119, 102, 0, 0, 0,.... 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]</span>
+
+<span class="n">decode_result</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">encode_result</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">decode_result</span><span class="p">)</span>
+<span class="c1"># &quot;[CLS] I don&#39;t want to work. [SEP] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]...[PAD]&quot;</span>
+</pre></div>
+
+
+<p>透過 Tokenizer 進行斷詞及編碼後，我們就能將其送入 Pre-trained Model 中取得 Representation了！</p>
+<hr>
+<p id="pre-trained-language-model"></p>
+
+<h2>Pre-trained Language Model</h2>
+<p id="1-初始化-1"></p>
+
+<h3>1. 初始化</h3>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoModel</span><span class="p">,</span> <span class="n">BertModel</span>
+
+<span class="n">model_bert</span> <span class="o">=</span> <span class="n">BertModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;bert-base-cased&quot;</span><span class="p">)</span>
+<span class="n">model_other</span> <span class="o">=</span> <span class="n">AutoModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;emilyalsentzer/Bio_ClinicalBERT&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>與 <code>Tokenizer</code>的機制相同， <code>Transformers</code>中也包含了各種預先定義好的 Model (例如 <code>BertModel</code>)，以及方便使用其他開源模型的泛用Model (<code>AutoModel</code>)。</p>
+<p>在使用前也需要透過 <code>model.from_pretrained(&lt;model_name&gt;)</code>來指定要載入的模型。</p>
+<p>與 <code>Tokenizer</code>相同，初次使用模型時會需要進行下載，所以需要等待一段時間，以<code>xlnet-large-cased</code>為例，大約有3.3G需要進行下載。</p>
+<p>值得注意的是：<code>Tokenizer</code> 及 <code>Model</code> 是有先後關係的：
+1. 文字進入<code>Tokenizer</code>轉換。
+2. 轉換後的Index送入<code>Model</code>中取得Word Representation。</p>
+<p>所以 <code>Tokenizer</code> 及 <code>Model</code> 的 <code>&lt;model_name&gt;</code>必需要一致，以免發生錯誤。</p>
+<p id="2-基本使用-1"></p>
+
+<h3>2. 基本使用</h3>
+<div class="highlight"><pre><span></span><span class="n">tokenizer_bert</span> <span class="o">=</span> <span class="n">BertTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;bert-base-cased&quot;</span><span class="p">)</span>
+<span class="n">test_input</span> <span class="o">=</span> <span class="s2">&quot;I don&#39;t want to work.&quot;</span>
+
+<span class="n">encode_result</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">test_input</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">pad_to_max_length</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># 使用 encode() 來對文字進行斷詞、編碼。</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">encode_result</span><span class="p">)</span>
+<span class="c1"># [101, 146, 1274, 112, 189, 1328, 1106, 1250, 119, 102, 0, 0, ..., 0]</span>
+
+<span class="n">model_bert</span> <span class="o">=</span> <span class="n">BertModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;bert-base-cased&quot;</span><span class="p">)</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">model_bert</span><span class="p">(</span><span class="n">encode_result</span><span class="p">)</span> <span class="c1"># 等同於將 encode_result 送入 model 中進行 forward propagation.</span>
+<span class="n">last_hidden_layer</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># 這就是 “test_input&quot; 的 word representation.</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">last_hidden_layer</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="c1"># (1, 64, 768)   =&gt; (batch, words, word vector dimension)</span>
+</pre></div>
+
+
+<p><code>transformers</code>中的所有 <code>model</code> 都是繼承 <code>torch.nn.Module</code>而來，在使用上其實跟 Pytorch 的 Model 相當類似！ 所以在上述的語法中將 <code>encode_result</code> 送入 <code>model_bert</code>中，就等同於將 <code>encode_result</code>送入 <code>model</code> 中進行 Forward Propagation，最後即可得到 Word Representation.</p>
+<p>至於為什麼 <code>last_hidden_layer = output[0]</code>，可以參考 BertModel 的 Return 欄位，回傳的結果有許多內容，而第一個就是「最後一層的 Hidden States」也就是我們要的 Word Representation.</p>
+<p>附上 <code>BertModel</code>的官方文件連結：
+<a href="https://huggingface.co/transformers/model_doc/bert.html#transformers.BertModel.forward">BERT - transformers 2.11.0 documentation</a></p>
+<hr>
+<p id="transformers-的優勢"></p>
+
+<h1>Transformers 的優勢</h1>
+<p>了解 <code>Transformers</code>的基本運作原理後，再回頭強調一次它的優勢！: </p>
+<ol>
+<li>
+<p><strong>可視為封裝好的 Language Model :</strong></p>
+<p>Transformers 的 Model 繼承了 <code>torch.nn.Module</code>，也就是說在設計整個任務的過程中，不需要自己去定義 "Pre-trained Language Model" 的結構、也不需要自行載入權重，<strong>只需要將其視為一個Pytorch 預先定義好的 Model ：</strong>實作一個 <code>Transformers</code>的Model、載入相關權重，接下來只需要組裝就好了！</p>
+<div class="highlight"><pre><span></span><span class="n">model_bert</span> <span class="o">=</span> <span class="n">BertModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;bert-base-cased&quot;</span><span class="p">)</span>
+<span class="n">model_ln1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">768</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">model_bert</span><span class="p">(</span><span class="n">encode_result</span><span class="p">)</span> <span class="c1"># 等同於將 encode_result 送入 model 中進行 forward propagation.</span>
+<span class="n">last_hidden_layer</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">model_ln1</span><span class="p">(</span><span class="n">last_hidden_layer</span><span class="p">)</span> <span class="c1"># 可以直接再將 BertModel 的 Output送入其他自定義的結構。</span>
+</pre></div>
+
+
+<p>了解到如何組裝、如何使用後，除了將其拿來做 Feature Extraction外，也可以用相同的概念組裝成 Transfer Learning 的模型架構！不過這超出這則筆記想要紀錄的範圍了～</p>
+<p>另外，習慣使用 Tensorflow 的朋友也別傷心， <code>transformers</code>也有提供 tensorflow版本的 Model (例如 <code>tfBertModel</code>)!</p>
+</li>
+<li>
+<p><strong>同樣的架構能使用多種模型 → 方便抽換</strong></p>
+<p>由於 <code>Transformers</code> 中包含許多模型：有部分是官方持續新增，有些則是使用者互相釋出，導致使用這套架構就能快速切換多種模型。</p>
+<div class="highlight"><pre><span></span><span class="n">MODEL</span> <span class="o">=</span> <span class="s2">&quot;bert-base-cased&quot;</span>
+<span class="n">model_language</span> <span class="o">=</span> <span class="n">AutoModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">MODEL</span><span class="p">)</span>
+<span class="n">model_ln1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">768</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">model_language</span><span class="p">(</span><span class="n">encode_result</span><span class="p">)</span> <span class="c1"># 等同於將 encode_result 送入 model 中進行 forward propagation.</span>
+<span class="n">last_hidden_layer</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">model_ln1</span><span class="p">(</span><span class="n">last_hidden_layer</span><span class="p">)</span> <span class="c1"># 可以直接再將 model_language 的 Output送入其他自定義的結構。</span>
+</pre></div>
+
+
+<p>相同的程式碼，只需要更換模型變數即可達到「抽換底層 Pre-trained Langauge Model的效果」</p>
+<div class="highlight"><pre><span></span><span class="n">MODEL</span> <span class="o">=</span> <span class="s2">&quot;xlnet-large-cased&quot;</span>
+<span class="n">model_language</span> <span class="o">=</span> <span class="n">AutoModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">MODEL</span><span class="p">)</span>
+<span class="n">model_ln1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">768</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">model_language</span><span class="p">(</span><span class="n">encode_result</span><span class="p">)</span> <span class="c1"># 等同於將 encode_result 送入 model 中進行 forward propagation.</span>
+<span class="n">last_hidden_layer</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">model_ln1</span><span class="p">(</span><span class="n">last_hidden_layer</span><span class="p">)</span> <span class="c1"># 可以直接再將 model_language 的 Output送入其他自定義的結構。</span>
+</pre></div>
+
+
+</li>
+</ol>
+<hr>
+<p id="後記"></p>
+
+<h1>後記</h1>
+<p>了解 <code>Transformers</code> 這個套件後，在進行 NLP 的相關任務上節省了許多時間，可以快速地切換Pre-trained Language Model 來進行各種嘗試。</p>
+<p>此外，在Survey新的Language Model時，如果在Github上面看到它支援 <code>transformers</code>，會備感欣慰QQ，頓時感到世界的美好～</p>
+<p>感謝你的閱讀，希望你也能跟我一起感受世界的美好！XD </p>
+<p>有任何問題歡迎一起交流！ 下次見！</p>
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                             <a href="#0">transformers</a>
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="blog-content__prev">
+                                <a href="https://minglunwu.com/notes/2020/gitlab-ci-cd.html" rel="prev">
+                                    <span>Previous Post</span>
+                                    進職場學到的Git - (1) Gitlab CI/CD
+                                </a>
+                            </div>
+                            <div class="blog-content__next">
+                                <a href="https://minglunwu.com/notes/2020/20200527.html" rel="next">
+                                    <span>Next Post</span>
+                                    不再被大量超參數及模型表現淹沒！使用MLFlow進行實驗管理
+                                </a>
+                            </div>
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="https://minglunwu.com/archives.html" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
+        <script src="https://utteranc.es/client.js"
+                repo="MingLunWu/MingLunWu.github.io"
+                issue-term="pathname"
+                theme="github-dark-orange"
+                crossorigin="anonymous"
+                async>
+        </script>
+        <!-- Comment Box 留言系統 - 需要調整位置 -->
+        <!-- <div class="commentbox"></div>
+        <script src="https://unpkg.com/commentbox.io/dist/commentBox.min.js"></script>
+        <script>commentBox('5640802722119680-proj')</script> -->
+            <!-- footer
+    ================================================== -->
+    <footer>
+        <div class="row">
+            <div class="col-full">
+
+                <div class="footer-logo">
+                    <a class="footer-site-logo" href="#0"><img src="https://minglunwu.com/theme/images/logo.png" alt="Homepage"></a>
+                </div>
+                <ul class="footer-social">
+                    <li>
+                        <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                    </li>
+                    <li>
+                        <a href="https://minglun-wu.medium.com" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/%E6%98%8E%E5%80%AB-%E5%90%B3-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/fade_relish/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                    </li>
+                </ul>
+                    
+            </div>
+        </div>
+
+        <div class="row footer-bottom">
+
+            <div class="col-twelve">
+                <div class="copyright">
+                    <span>© Copyright MingLunWu 2021</span> 
+                    <span>Design by <a href="https://www.styleshout.com/">styleshout</a></span>	
+                </div>
+
+                <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- end footer-bottom -->
+
+    </footer> <!-- end footer -->
+    <!-- Java Script
+        ================================================== -->
+        <script src="https://minglunwu.com/theme/js/jquery-3.2.1.min.js"></script>
+        <script src="https://minglunwu.com/theme/js/plugins.js"></script>
+        <script src="https://minglunwu.com/theme/js/main.js"></script>
+
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161863471-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-161863471-1');
+    </script>
+    
+</body>

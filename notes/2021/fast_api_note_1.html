@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+        <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <!--
+    <meta name="description" content="">
+    <meta name="author" content="">
+    -->
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/base.css">
+    <!--<link rel="stylesheet" href="https://minglunwu.com/theme/css/vendor.css">-->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/main.css">
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/styles.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="https://minglunwu.com/theme/js/modernizr.js"></script>
+    <script src="https://minglunwu.com/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+
+    <title>Fast API 入門筆記 (一) - 基本介紹</title>
+    <meta property="og:title" content="Fast API 入門筆記 (一) - 基本介紹">
+    <meta name="description" content="<p>Fast API 是近期 Python受到矚目的網頁框架，執行速度快、語法簡單。</p>">
+    <meta property="og:description" content="<p>Fast API 是近期 Python受到矚目的網頁框架，執行速度快、語法簡單。</p>">
+    <meta name="author" content="MingLun Allen Wu">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1555488205-d5e67846cf40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGxpZ2h0fGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=900&q=60">
+    
+    <link rel="image_src" type="image/jpeg" href="https://images.unsplash.com/photo-1555488205-d5e67846cf40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGxpZ2h0fGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=900&q=60" />
+    <style>
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body id="top">
+            <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+        <div class="header-logo">
+            <a class="site-logo" href="https://minglunwu.com"><img src="https://minglunwu.com/theme/images/logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
+
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a href="https://minglunwu.com/#home" title="home">Home</a></li>
+                <li><a href="https://minglunwu.com/#about" title="about">About</a></li>
+                <li><a href="https://minglunwu.com/#blog" title="blog">Blogs</a></li>
+                <li><a href="https://minglunwu.com/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1555488205-d5e67846cf40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGxpZ2h0fGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=900&q=60)">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                    <a href="#0">Fast API</a>
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                Fast API 入門筆記 (一) - 基本介紹
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">2021-Jan-21 (Thu)</li>
+                            <li class="author">
+                                By
+                                <span>MingLun Allen Wu</span>
+                            </li>
+                            <li> views</li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    
+                    <ul>
+<li><a href="#tldr">TL;DR</a></li>
+<li><a href="#requirements--installation">Requirements \&amp; Installation</a></li>
+<li><a href="#撰寫第一支api">撰寫第一支API</a></li>
+<li><a href="#基本結構">基本結構</a></li>
+<li><a href="#啟動服務">啟動服務</a></li>
+<li><a href="#型態提示typing-hints">型態提示(Typing Hints)</a><ul>
+<li><a href="#1-fastapi-在收到請求時會自動檢查參數的格式是否符合條件">1. FastAPI 在收到請求時，會自動檢查參數的格式是否符合條件</a></li>
+<li><a href="#2-自動轉換文件">2. 自動轉換文件</a></li>
+</ul>
+</li>
+</ul>
+<p id="tldr"></p>
+
+<h1>TL;DR</h1>
+<p><code>FastAPI</code>是近期受到矚目的網頁框架，與Python常用的框架 <code>Flask</code> 、 <code>Django</code> 相同，可以用來建立 API 及網頁服務， 用以下幾點來概括<code>FastAPI</code>的特色： </p>
+<ul>
+<li><strong>快速</strong>： 如同它的名字，執行速度相當快速，是<strong>當前最快的Python框架</strong></li>
+<li><strong>直覺</strong>： <code>FastAPI</code> 使用 <code>OpenAPI</code> 的開源標準，所以在開發時，能夠套用 auto complete</li>
+<li><strong>自動產生文件</strong>: API撰寫完成後，<code>FastAPI</code>會自動產生對應的文件。</li>
+<li><strong>簡單</strong>: 語法上與 <code>Flask</code> 相差不大，轉換陣痛並不高。</li>
+</ul>
+<p id="requirements--installation"></p>
+
+<h1>Requirements &amp; Installation</h1>
+<ul>
+<li>
+<p>Python 環境 : Python 3.6 + </p>
+</li>
+<li>
+<p>基本套件:
+ (bash script) </p>
+<div class="highlight"><pre><span></span>pip install fastapi <span class="c1"># FastAPI</span>
+pip install uvicorn<span class="o">[</span>standard<span class="o">]</span> <span class="c1"># ASGI Server</span>
+</pre></div>
+
+
+</li>
+</ul>
+<p id="撰寫第一支api"></p>
+
+<h1>撰寫第一支API</h1>
+<p id="基本結構"></p>
+
+<h2>基本結構</h2>
+<p>與 <code>Flask</code> 的 <code>run.py</code> 類似， 可以將所有程式碼放在 <code>main.py</code> 中，快速建立第一個 <code>FastAPI</code>。</p>
+<p>在語法結構上，與<code>Flask</code>大同小異，,也是透過 <code>@app</code> 裝飾子來定義API路徑。</p>
+<p>不過<code>FastAPI</code>在定義路徑時，會透過裝飾子<strong>一併定義API可提供的HTTP Method</strong>:</p>
+<ul>
+<li><code>@app.post()</code> : Post 方法</li>
+<li><code>@app.get()</code> : Get 方法</li>
+<li><code>@app.put()</code> : Put 方法</li>
+<li><code>@app.delete()</code> : Delete 方法</li>
+</ul>
+<p>了解裝飾子的概念後，參考<a href="https://fastapi.tiangolo.com/#example">官方文件</a>的範例，在<code>main.py</code>中輸入:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span> <span class="c1"># 建立一個 Fast API application</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="c1"># 指定 api 路徑 (get方法)</span>
+<span class="k">def</span> <span class="nf">read_root</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Hello&quot;</span><span class="p">:</span> <span class="s2">&quot;World&quot;</span><span class="p">}</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/users/</span><span class="si">{user_id}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="c1"># 指定 api 路徑 (get方法)</span>
+<span class="k">def</span> <span class="nf">read_user</span><span class="p">(</span><span class="n">user_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">q</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span> <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">}</span>
+</pre></div>
+
+
+<p id="啟動服務"></p>
+
+<h2>啟動服務</h2>
+<p>與 <code>Flask</code> 不同的是，如果直接執行此 <code>main.py</code>  <strong>不會啟動服務</strong>。</p>
+<p>需要透過 ASGI Server <code>gvicorn</code> 來啟用：</p>
+<div class="highlight"><pre><span></span><span class="o">(</span>bash script<span class="o">)</span>
+uvicorn main:app --reload
+<span class="c1"># uvicorn &lt;檔名&gt;:&lt;app名稱&gt;</span>
+<span class="c1"># --reload 在專案更新時，自動重新載入，類似Flask的debug模式</span>
+</pre></div>
+
+
+<p>啟用後在瀏覽器輸入 <code>127.0.0.1:8000/users/8?q=minglunwu</code>，將會得到如下的回傳結果: </p>
+<div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;user_id&quot;</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span><span class="nt">&quot;q&quot;</span><span class="p">:</span><span class="s2">&quot;minglunwu&quot;</span><span class="p">}</span>
+</pre></div>
+
+
+<p>當我們鍵入 <code>127.0.0.1:8000/users/8?q=minglunwu</code>時， <code>FastAPI</code>會在定義好的裝飾子中，尋找符合路徑前綴: <code>/users</code> 的 function，也就是 <code>read_user()</code>。 這部分的機制與<code>Flask</code>相當類似。</p>
+<p><code>FastAPI</code> 與 <code>Flask</code>不同的地方在於：</p>
+<blockquote>
+<p>FastAPI 在建立API時，需要以 <strong>型態提示 (Typing Hints)</strong> 來定義參數的型態</p>
+</blockquote>
+<p id="型態提示typing-hints"></p>
+
+<h2>型態提示(Typing Hints)</h2>
+<p>舉例來說： 在上圖的 <code>read_user()</code> 中，我們定義了以下的格式：</p>
+<div class="highlight"><pre><span></span>@app.get<span class="o">(</span><span class="s2">&quot;/users/{user_id}&quot;</span><span class="o">)</span> <span class="c1"># 指定 api 路徑 (get方法)</span>
+def read_user<span class="o">(</span>user_id: int, q: Optional<span class="o">[</span>str<span class="o">]</span> <span class="o">=</span> None<span class="o">)</span>:
+    <span class="k">return</span> <span class="o">{</span><span class="s2">&quot;user_id&quot;</span>: user_id, <span class="s2">&quot;q&quot;</span>: q<span class="o">}</span>
+</pre></div>
+
+
+<p>在定義function的參數時，使用Python內建的型態檢查語法，指定<strong>各參數的型態</strong>，以上圖的Function來看，我們分別設定了下列的參數及型態:</p>
+<ul>
+<li><code>user_id</code>: <code>int</code>格式</li>
+<li><code>q</code>: <code>str</code>格式（Optional)</li>
+</ul>
+<p>使用 <code>Typing Hint</code> 有兩項優點：</p>
+<p id="1-fastapi-在收到請求時會自動檢查參數的格式是否符合條件"></p>
+
+<h4>1. FastAPI 在收到請求時，會自動檢查參數的格式是否符合條件</h4>
+<p>當<code>FastAPI</code>收到 Request時，會先檢查URL，尋找符合 <code>@app</code> 所定義的路徑規則。</p>
+<p>在解析 Request 所攜帶的參數時，將比對定義的變數型態，如果有不符合的，將會回傳錯誤訊息，舉例來說：</p>
+<p>如果我們嘗試在瀏覽器中輸入 <strong>不符合規則的URL</strong>: </p>
+<p><code>127.0.0.1:8000/users/error_type?q=minglunwu</code> </p>
+<p>(將原本的整數 <code>8</code> 換成字串 <code>error_type</code>)</p>
+<p>此時因為收到的參數 <code>error_type?q=minglunwu</code>  因為參數 <code>error_type</code> 並不符合預先定義好的參數型態: <code>int</code>，此次Request無效。</p>
+<p>不像 <code>Flask</code> 會回傳驚心動魄的錯誤訊息， <code>FastAPI</code> 會自動將錯誤訊息轉換成下列「有用」且「清楚」的錯誤訊息後，進行回傳:</p>
+<div class="highlight"><pre><span></span><span class="p">{</span><span class="nt">&quot;detail&quot;</span><span class="p">:[{</span><span class="nt">&quot;loc&quot;</span><span class="p">:[</span><span class="s2">&quot;path&quot;</span><span class="p">,</span><span class="s2">&quot;user_id&quot;</span><span class="p">],</span><span class="nt">&quot;msg&quot;</span><span class="p">:</span><span class="s2">&quot;value is not a valid integer&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;type_error.integer&quot;</span><span class="p">}]}</span>
+</pre></div>
+
+
+<p id="2-自動轉換文件"></p>
+
+<h4>2. 自動轉換文件</h4>
+<p><code>FastAPI</code> 的另一項特色在於:</p>
+<blockquote>
+<p>自動生成 API 文件</p>
+</blockquote>
+<p>完成了第一支 API 後，在瀏覽器輸入: <code>http://127.0.0.1:8000/docs</code>:</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20210118/fast_api_doc.png"></p>
+<p>可以看到在畫面中，除了API的名稱外，參數的型態及Response的結果都包含在自動產生的文件中！</p>
+<p>除了方便使用者閱讀外，這些文件也有提供即時互動功能，能夠即時測試: </p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20210118/fast_api_trial.png"></p>
+<p>撰寫API是一件費力耗神的工作，我曾傻傻地使用 <code>Markdown</code> 手刻文件，大概寫到十來個函式時就崩潰放棄 Orz</p>
+<p>後來嘗試使用 <a href="https://www.sphinx-doc.org/en/master/"><code>Sphinx</code></a> 工具，能直接將註解轉換為文件，不過在使用時還需要再多進行一次轉換，稍嫌麻煩。</p>
+<p>個人蠻喜歡<code>FastAPI</code> 內建的轉換功能，在撰寫好API的同時就自動產生完整的文件。</p>
+<hr>
+<p>前往下集: </p>
+<p><a href="https://minglunwu.github.io/notes/2021/fast_api_note_2.html">Fast API 入門筆記 (二) - Typing Hint &amp; Async</a></p>
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                             <a href="#0">Fast API</a>
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="blog-content__prev">
+                                <a href="https://minglunwu.com/notes/2021/flask_plus_wsgi.html" rel="prev">
+                                    <span>Previous Post</span>
+                                    Flask想上線? 你還需要一些酷東西
+                                </a>
+                            </div>
+                            <div class="blog-content__next">
+                                <a href="https://minglunwu.com/notes/2021/mongodb_plus_express.html" rel="next">
+                                    <span>Next Post</span>
+                                    使用Docker，快速佈建MongoDB + Mongo Express
+                                </a>
+                            </div>
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="https://minglunwu.com/archives.html" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
+        <script src="https://utteranc.es/client.js"
+                repo="MingLunWu/MingLunWu.github.io"
+                issue-term="pathname"
+                theme="github-dark-orange"
+                crossorigin="anonymous"
+                async>
+        </script>
+        <!-- Comment Box 留言系統 - 需要調整位置 -->
+        <!-- <div class="commentbox"></div>
+        <script src="https://unpkg.com/commentbox.io/dist/commentBox.min.js"></script>
+        <script>commentBox('5640802722119680-proj')</script> -->
+            <!-- footer
+    ================================================== -->
+    <footer>
+        <div class="row">
+            <div class="col-full">
+
+                <div class="footer-logo">
+                    <a class="footer-site-logo" href="#0"><img src="https://minglunwu.com/theme/images/logo.png" alt="Homepage"></a>
+                </div>
+                <ul class="footer-social">
+                    <li>
+                        <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                    </li>
+                    <li>
+                        <a href="https://minglun-wu.medium.com" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/%E6%98%8E%E5%80%AB-%E5%90%B3-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/fade_relish/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                    </li>
+                </ul>
+                    
+            </div>
+        </div>
+
+        <div class="row footer-bottom">
+
+            <div class="col-twelve">
+                <div class="copyright">
+                    <span>© Copyright MingLunWu 2021</span> 
+                    <span>Design by <a href="https://www.styleshout.com/">styleshout</a></span>	
+                </div>
+
+                <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- end footer-bottom -->
+
+    </footer> <!-- end footer -->
+    <!-- Java Script
+        ================================================== -->
+        <script src="https://minglunwu.com/theme/js/jquery-3.2.1.min.js"></script>
+        <script src="https://minglunwu.com/theme/js/plugins.js"></script>
+        <script src="https://minglunwu.com/theme/js/main.js"></script>
+
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161863471-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-161863471-1');
+    </script>
+    
+</body>

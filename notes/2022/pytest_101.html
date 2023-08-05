@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+        <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <!--
+    <meta name="description" content="">
+    <meta name="author" content="">
+    -->
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/base.css">
+    <!--<link rel="stylesheet" href="https://minglunwu.com/theme/css/vendor.css">-->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/main.css">
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/styles.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="https://minglunwu.com/theme/js/modernizr.js"></script>
+    <script src="https://minglunwu.com/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+
+    <title>Pytest 101 - 給 Python 開發者的測試入門</title>
+    <meta property="og:title" content="Pytest 101 - 給 Python 開發者的測試入門">
+    <meta name="description" content="<p>本篇筆記介紹 Python 開發者該怎麼透過 <code>pytest</code> 進行測試</p>">
+    <meta property="og:description" content="<p>本篇筆記介紹 Python 開發者該怎麼透過 <code>pytest</code> 進行測試</p>">
+    <meta name="author" content="MingLun Allen Wu">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1581472723648-909f4851d4ae?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80">
+    
+    <link rel="image_src" type="image/jpeg" href="https://images.unsplash.com/photo-1581472723648-909f4851d4ae?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" />
+    <style>
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body id="top">
+            <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+        <div class="header-logo">
+            <a class="site-logo" href="https://minglunwu.com"><img src="https://minglunwu.com/theme/images/logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
+
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a href="https://minglunwu.com/#home" title="home">Home</a></li>
+                <li><a href="https://minglunwu.com/#about" title="about">About</a></li>
+                <li><a href="https://minglunwu.com/#blog" title="blog">Blogs</a></li>
+                <li><a href="https://minglunwu.com/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1581472723648-909f4851d4ae?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80)">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                    <a href="#0">Python</a>
+                                    <a href="#0">Test</a>
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                Pytest 101 - 給 Python 開發者的測試入門
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">2022-Mar-04 (Fri)</li>
+                            <li class="author">
+                                By
+                                <span>MingLun Allen Wu</span>
+                            </li>
+                            <li> views</li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    
+                    <h2>TL;DR</h2>
+<p>寫 Python 大概也有 4 ~ 5 年的時間了，用 Python 開發過平台、寫 API、訓練深度模型，但似乎一直都沒有寫過測試。</p>
+<p>對測試的印象就是 : 很常聽到！感覺很重要！ 欸！ 但我不會！</p>
+<p>實際開始接觸後，開始發現有趣的地方，也漸漸體會為什麼測試很重要。</p>
+<p>今天這則筆記希望能跟大家分享 Python 開發者該怎麼透過 <code>pytest</code> 進行測試。</p>
+<h2>誰適合讀這篇？</h2>
+<ul>
+<li>會寫 Python，但不知道怎麼撰寫測試</li>
+<li>聽過測試，但不知道為什麼需要測試？</li>
+<li>隨著專案規模越來越大，開始覺得程式碼一團亂，改A壞B</li>
+</ul>
+<h2>為何需要測試?</h2>
+<p>其實在開發過程中，為了確保程式/函式運作正常，在開發完成後，通常都會實際執行一次，確定沒有什麼異常。</p>
+<p>舉例來說: </p>
+<div class="highlight"><pre><span></span><span class="c1"># utils.py</span>
+<span class="k">def</span> <span class="nf">sum_two_str</span><span class="p">(</span><span class="n">str1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">str2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    將兩個字串合併在一起:</span>
+<span class="sd">    Args:</span>
+<span class="sd">        str1 (str): 字串 1</span>
+<span class="sd">        str2 (str): 字串 2</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: 字串1 + 字串2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">str1</span> <span class="o">+</span> <span class="n">str2</span>
+</pre></div>
+
+
+<p>當我們寫了上述的函式，通常會怎麼測試呢? </p>
+<p>我會另外執行一個 <code>test.py</code>，實際 import 這個函式，確定行為沒有什麼異常。</p>
+<div class="highlight"><pre><span></span><span class="c1"># test.py</span>
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">sum_two_str</span>
+
+<span class="n">str1</span> <span class="o">=</span> <span class="s2">&quot;冷萃&quot;</span>
+<span class="n">str2</span> <span class="o">=</span> <span class="s2">&quot;咖啡&quot;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">sum_two_str</span><span class="p">(</span><span class="n">str1</span><span class="o">=</span> <span class="n">str1</span><span class="p">,</span> <span class="n">str2</span><span class="o">=</span> <span class="n">str2</span><span class="p">))</span> <span class="c1"># 結果應該要是&quot;冷萃咖啡&quot;</span>
+</pre></div>
+
+
+<p>其實這樣子的行為，就是一種測試。</p>
+<p>這種行為，通常我們稱為 "Manual Testing" (手動測試)，這種做法有什麼問題嗎?</p>
+<p>以我的經驗來說，在專案開發初期，使用 Manual Testing 會有極高的開發效率，彷彿是造物主般，隨心所欲地創造自己的小世界。</p>
+<p>但隨著專案的規模成長，函式與模組的數量增加，我開始意識到兩個問題:</p>
+<ol>
+<li>
+<p><strong><code>test.py</code> 的數量越來越肥大</strong></p>
+<p>當一個函式開發完成後，就是我使用 <code>test.py</code> 的時機，如同上述的例子，我會實際 import 函式，執行確認結果沒問題，然後開始開發下一個函式。</p>
+<p>下一個函式開發結束後，我會把剛剛的測試程式碼<strong>註解</strong>起來。</p>
+<p>不直接刪掉的原因是「我覺得等等會再用到」，如果刪掉要再重打很麻煩</p>
+<p>接著輸入下一段測試程式碼來手動測試新的函式，如此持續迭代。</p>
+<p>發現問題了嗎? </p>
+<p>在我的流程中，測試程式碼只會不斷地被<strong>註解</strong>，到後期開始影響到我的開發效率。</p>
+<p>為了要測試先前寫過的某個函式，我要先滑過被註解的數百行程式碼，找到正確的那段，重新執行。</p>
+<blockquote>
+<p>毫無規劃的蔓生，是混亂的起源</p>
+</blockquote>
+</li>
+<li>
+<p><strong>函式只會測試一次，但偶而會有連鎖反應</strong></p>
+<p>由於每次 <code>test.py</code> 在執行時，只會針對一個函式進行測試，只要通過了，我就會繼續開發下一個函式。</p>
+<p>但有時候函式間是會互相影響的，A 函式通過了手動測試，但在開發 B 函式時，可能不小心影響到了 A 函式的行為，導致 A 函式發生錯誤。</p>
+<p>但此時我只會在 <code>test.py</code> 測試 B 函式的行為。 </p>
+<p>直到執行主程式時，發生出錯了!</p>
+<blockquote>
+<p>唉呀! 真奇怪! 我之前執行時明明都好好的呀!</p>
+</blockquote>
+</li>
+</ol>
+<h2>為何需要測試框架</h2>
+<p>在介紹 <code>pytest</code> 這個測試框架前，我們先來談談「測試框架」</p>
+<p>我認為「測試框架」的目的，是讓你能</p>
+<blockquote>
+<p>有效率的管理並執行測試</p>
+</blockquote>
+<p>手動測試雖然快速且方便，但當專案規模達到一定程度後，不容易管理，且也很難做到重複測試。</p>
+<ul>
+<li>測試框架能同時進行多項測試，並將結果以結構化報表的形式呈現。</li>
+<li>測試框架能按照測試目的分類，按照需求執行不同類型的測試</li>
+</ul>
+<p>以 Python 來說，較主流的測試框架是 <code>unittest</code> 及 <code>pytest</code></p>
+<p>當初選擇從 <code>pytest</code> 入手，是看中它簡單的語法 (只需要依靠 <code>assert</code> 就能實現測試)，希望能在開發之餘慢慢摸索，試著習慣測試的存在。</p>
+<h2>安裝</h2>
+<p><code>pytest</code> 身為主流的測試框架，可以透過 <code>pip</code> 快速安裝: </p>
+<p>如果有 Clone 範例 Repo 的讀者，可以直接透過 <code>requirements.txt</code> 進行安裝：</p>
+<div class="highlight"><pre><span></span>conda create -n pytest <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7 <span class="c1"># Optional</span>
+conda activate pytest <span class="c1"># Optional</span>
+pip install -r requirements.txt
+</pre></div>
+
+
+<p>如果想要手動安裝的讀者，可以直接安裝下列套件: </p>
+<div class="highlight"><pre><span></span>pytest
+pytest-mock
+pytest-cov
+requests-mock
+</pre></div>
+
+
+<p>安裝完成後，試著在 Terminal 輸入:</p>
+<div class="highlight"><pre><span></span>pytest --version
+</pre></div>
+
+
+<p>如果有看到版本號就是安裝成功了！</p>
+<h2>基本架構</h2>
+<p>使用 <code>Pytest</code> 測試框架進行測試時，需要按照特定格式擺放檔案。</p>
+<p>並沒有唯一正確的格式，身為一個廣泛使用的測試框架，<code>Pytest</code> 可依照使用者的需求自行指定。</p>
+<p>但是為了方便介紹，讓我們先以下面的架構進行說明：</p>
+<p>(此架構同步更新在 <a href="https://github.com/MingLunWu/pytest_101">Github Repo</a>)</p>
+<div class="highlight"><pre><span></span><span class="p">|</span>
+<span class="p">|</span>_ Your Repo
+<span class="p">|</span>
+<span class="p">|</span>_ src/                  <span class="c1"># 主要程式碼資料夾</span>
+    <span class="p">|</span>_ module_a.py       <span class="c1"># 範例模組 A</span>
+    <span class="p">|</span>_ module_b.py       <span class="c1"># 範例模組 B</span>
+<span class="p">|</span>
+<span class="p">|</span>_ tests/                <span class="c1"># 測試程式碼資料夾</span>
+    <span class="p">|</span>_ test_module_a.py  <span class="c1"># 模組 A 的測試程式碼</span>
+    <span class="p">|</span>_ test_module_b.py  <span class="c1"># 模組 B 的測試程式碼</span>
+<span class="p">|</span>
+<span class="p">|</span>_ pytest.ini            <span class="c1"># pytest 相關設定</span>
+</pre></div>
+
+
+<p>從上述的架構我們可以掌握幾個原則 : </p>
+<ul>
+<li>主要的程式碼會統一放在 <code>src/</code> (也有人稱為 <code>app</code>, <code>lib</code> 或直接用模組的用途命名) </li>
+<li>測試用的程式碼則統一放在 <code>tests</code> 資料夾</li>
+<li>通常測試用的程式碼會以 <code>test_xxx.py</code> 命名 (我自己的習慣是直接對應到 <code>src/</code> 中的模組)</li>
+</ul>
+<h2>撰寫第一個測試</h2>
+<p>舉例來說，如果在 <code>src/module_a.py</code> 中撰寫了: </p>
+<div class="highlight"><pre><span></span><span class="c1"># src/module_a.py</span>
+    <span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">num</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;範例函式，回傳平方值</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num (int): 數值</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: 平方後的數值</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">num</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+
+
+<p>如果是一般的手動測試，我們可能會另外開一個 <code>test.py</code> </p>
+<div class="highlight"><pre><span></span><span class="c1"># test.py</span>
+<span class="kn">from</span> <span class="nn">src.module_a</span> <span class="kn">import</span> <span class="n">square</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">square</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span> <span class="c1"># 得到 64</span>
+</pre></div>
+
+
+<p>好！ 經過「肉眼」的判斷，這個函式寫對了！</p>
+<blockquote>
+<p>該發生的，一定要發生!</p>
+</blockquote>
+<p>使用 <code>pytest</code> 的做法，則是另外撰寫一小段程式碼來確認，這樣的測試函式<strong>必須以<code>test</code></strong> 開頭，通常稱為一個 "Test Case" : </p>
+<div class="highlight"><pre><span></span><span class="c1"># tests/test_module_a.py</span>
+<span class="kn">from</span> <span class="nn">src.module_a</span> <span class="kn">import</span> <span class="n">square</span>
+
+<span class="k">def</span> <span class="nf">test_square</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">square</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">==</span> <span class="mi">64</span>
+</pre></div>
+
+
+<p>測試的方法，是透過 Python 的 <code>assert</code> 語法，來做基本的條件判斷: </p>
+<div class="highlight"><pre><span></span><span class="c1"># assert &lt;條件為真&gt;, &quot;錯誤訊息&quot;</span>
+<span class="k">assert</span> <span class="n">square</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">==</span> <span class="mi">64</span> <span class="c1"># 如果 square(8) 不等於 64，則會發生錯誤</span>
+</pre></div>
+
+
+<p>透過 <code>assert</code> 語法來指定 <strong>「函式應該要達成的條件」</strong>，這個條件會隨著函式的目的而有所不同，以上述例子來說，<code>square()</code> 的目的是計算平方值，因此我們需要在 test case <code>test_square()</code> 中試著驗證「計算平方值」這件事是否有被達成。</p>
+<h3>執行第一個測試</h3>
+<p>寫好 Test Case 後，接著在 Terminal 執行: </p>
+<div class="highlight"><pre><span></span>pytest -vv
+</pre></div>
+
+
+<p><code>pytest</code> 會在執行測試時，自動至測試的資料夾(預設是 <code>tests</code>)尋找檔名為 <code>test_</code> 開頭的檔案，並且執行開頭為 <code>test_</code> 的函數。</p>
+<p>執行測試後，會得到下列畫面: </p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20220304/pytest_1.png"></p>
+<p>這意味著我們撰寫的第一個 Test Case - <code>test_square</code> 成功通過了！</p>
+<h3>計算 Coverage</h3>
+<p>接著我們嘗試輸入 : </p>
+<div class="highlight"><pre><span></span>pytest -vv --cov src/
+</pre></div>
+
+
+<p><code>--cov src/</code> 意味著我們要在執行測試時，計算 <code>src/</code> 有多少比例的程式碼是「有被測試過」！</p>
+<p>執行後則會得到下列結果：</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20220304/pytest_2.png"></p>
+<p>從上圖中可以看到除了原先的測試結果以外，在下方還多了一欄 <code>coverage</code> 的表格，顯示了 <code>src/</code> 資料夾中的每一個檔案有多少行程式碼(<code>Stmts</code>)，以及有多少行程式碼是沒有被測試到的 (<code>Miss</code>)。</p>
+<h3>將常用參數寫入至 pytest.ini 中</h3>
+<p>雖然 flag 很好用，但每次執行 <code>pytest</code> 時都需要加上 <code>-vv</code>、<code>--cov src/</code> 其實並不方便。</p>
+<p>這時候我們可以在專案的根目錄加上 <code>pytest.ini</code> 檔案，這是 <code>pytest</code> 的主要設定檔，執行 <code>pytest</code> 時，會自動尋找當前位置是否有 <code>pytest.ini</code>，若有，則讀取相關設定後執行:</p>
+<div class="highlight"><pre><span></span><span class="k">[pytest]</span>
+<span class="na">addopts</span><span class="o">=</span> <span class="s">-vv --cov src/</span>
+</pre></div>
+
+
+<p><code>addopts</code>意味著「添加參數」，我們設定 <code>-vv</code> 及 <code>--cov src</code>後，接下來只需要執行:</p>
+<div class="highlight"><pre><span></span>pytest
+</pre></div>
+
+
+<p>就會等價於 </p>
+<div class="highlight"><pre><span></span>pytest -vv --cov src/
+</pre></div>
+
+
+<p>如果有更多參數，是在每次執行時都需要附加的話，可以考慮統一放置於 <code>pytest.ini</code>，會更省事一些！</p>
+<h2>測試「正確的錯誤」</h2>
+<blockquote>
+<p>該錯誤的地方，也應該要拋出錯誤</p>
+</blockquote>
+<p>接下來讓我們看看 <code>src/module_a.py</code> 的下一個函式</p>
+<div class="highlight"><pre><span></span><span class="c1"># src/module_a.py</span>
+<span class="k">def</span> <span class="nf">concat</span><span class="p">(</span><span class="n">str_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">str_2</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;將兩個字串串接在一起</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        str_1 (str): 字串 1</span>
+<span class="sd">        str_2 (str): 字串 2</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        TypeError: 當任一參數不為 str 時，拋出 TypeError</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: str_1+str_2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">str_1</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">str_2</span><span class="p">,</span> <span class="nb">str</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;錯誤型態&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">str_1</span> <span class="o">+</span> <span class="n">str_2</span>
+</pre></div>
+
+
+<p>在這個函式中:</p>
+<ul>
+<li>判斷參數的型態是否為<code>str</code>，如果是，就將兩個字串相加</li>
+<li>若不是<code>str</code>，則 Raise Error。</li>
+</ul>
+<p>為了妥善的測試兩個不同情境，我們可以分開建立兩個測試案例: </p>
+<p>第一個案例，我們測試的是<strong>當兩個參數都是字串的時候</strong> ，函數行為是否正常。</p>
+<p>這與上一小節的測試基本上是一樣的。</p>
+<div class="highlight"><pre><span></span><span class="c1"># tests/test_module_a.py</span>
+<span class="k">def</span> <span class="nf">test_concat</span><span class="p">():</span>
+    <span class="n">str_1</span> <span class="o">=</span> <span class="s2">&quot;Hello! &quot;</span>
+    <span class="n">str_2</span> <span class="o">=</span> <span class="s2">&quot;MingLun!&quot;</span>
+    <span class="k">assert</span> <span class="n">concat</span><span class="p">(</span><span class="n">str_1</span><span class="o">=</span><span class="n">str_1</span><span class="p">,</span> <span class="n">str_2</span><span class="o">=</span><span class="n">str_2</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Hello! MingLun!&quot;</span>
+</pre></div>
+
+
+<p>第二個案例，我們要測試的是<strong>當參數不為字串時</strong>，是否有拋出正確的錯誤: </p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_concat_failed</span><span class="p">():</span>
+    <span class="n">str_1</span> <span class="o">=</span> <span class="mi">555</span> <span class="c1"># Error Type</span>
+    <span class="n">str_2</span> <span class="o">=</span> <span class="mi">666</span> <span class="c1"># Error Type</span>
+    <span class="n">concat</span><span class="p">(</span><span class="n">str_1</span><span class="o">=</span><span class="n">str_1</span><span class="p">,</span> <span class="n">str_2</span><span class="o">=</span><span class="n">str_2</span><span class="p">)</span>
+</pre></div>
+
+
+<p>我們期待這段程式應該會因為參數型態異常，而拋出錯誤。 來看看結果:</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20220304/pytest_3.png"></p>
+<p>這邊出現了一個有意思的狀況: 在測試中到底要是成功還是失敗呢？ </p>
+<p>當我們丟 <code>int</code> 格式給 <code>concat()</code> 時，我們<strong>期待它要拋出錯誤</strong>，現在它真的拋出錯誤了，所以在結果中顯示為<code>failed</code>。</p>
+<p>但其實拋出錯誤才是「正確的」，我們本來就希望拋出錯誤，所以理論上應該要是 <code>passed</code> 才對！</p>
+<p>為了要確保函式有「正確的」拋出「錯誤」，我們可以把剛剛的測試函式改成:</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_concat_failed</span><span class="p">():</span>
+    <span class="n">str_1</span> <span class="o">=</span> <span class="mi">555</span> <span class="c1"># Error Type</span>
+    <span class="n">str_2</span> <span class="o">=</span> <span class="mi">666</span> <span class="c1"># Error Type</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span> <span class="c1"># 以下範圍內的程式碼應該要拋出 Type Error</span>
+        <span class="n">concat</span><span class="p">(</span><span class="n">str_1</span><span class="o">=</span><span class="n">str_1</span><span class="p">,</span> <span class="n">str_2</span><span class="o">=</span><span class="n">str_2</span><span class="p">)</span>
+</pre></div>
+
+
+<p>使用 <code>pytest</code> 內建的 Context Switcher 可以指定「範圍內的程式碼應該要拋出何種錯誤」。</p>
+<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="o">&lt;</span><span class="n">錯誤型態</span><span class="o">&gt;</span><span class="p">):</span>
+    <span class="c1"># 底下的程式碼如果沒有拋出&lt;錯誤型態&gt;，pytest會認為該次測試失敗</span>
+</pre></div>
+
+
+<p>現在我們再執行一次測試:</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20220304/pytest_4.png"></p>
+<p>搞定！現在不管是「該正確的測試」還是「該失敗的測試」，我們都可以透過測試來判斷函式行為是否正常了！</p>
+<h2>使用 mark 來劃分類別</h2>
+<p>隨著開發的規模上升，可預見測試的數量也會隨之提升，有時不見得會想要執行全部的測試，這時候可以為測試劃分不同的類別，根據需求執行特定類別的測試。</p>
+<p>設定的方式是透過 <code>pytest.mark</code> 裝飾子，在測試函式上加上<code>@pytest.mark.&lt;類別&gt;</code>裝飾子，即可將該測試函式設定為特定類別。</p>
+<p>舉例來說，我們可以將剛剛的 <code>square()</code> 設定為 <code>math</code> 類別、將 <code>concat()</code> 設定為 <code>string</code> 類別。</p>
+<p>設定後的測試如下:</p>
+<div class="highlight"><pre><span></span><span class="c1"># tests/test_module_a.py</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">module_a</span> <span class="kn">import</span> <span class="n">square</span><span class="p">,</span> <span class="n">concat</span>
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">math</span> <span class="c1"># 設定為 math 類別</span>
+<span class="k">def</span> <span class="nf">test_square</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">square</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">==</span> <span class="mi">64</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">string</span> <span class="c1"># 設定為 string 類別</span>
+<span class="k">def</span> <span class="nf">test_concat</span><span class="p">():</span>
+    <span class="n">str_1</span> <span class="o">=</span> <span class="s2">&quot;Hello! &quot;</span>
+    <span class="n">str_2</span> <span class="o">=</span> <span class="s2">&quot;MingLun!&quot;</span>
+    <span class="k">assert</span> <span class="n">concat</span><span class="p">(</span><span class="n">str_1</span><span class="o">=</span><span class="n">str_1</span><span class="p">,</span> <span class="n">str_2</span><span class="o">=</span><span class="n">str_2</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;Hello! MingLun!&quot;</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">string</span>
+<span class="k">def</span> <span class="nf">test_concat_failed</span><span class="p">():</span>
+    <span class="n">str_1</span> <span class="o">=</span> <span class="mi">555</span> <span class="c1"># Error Type</span>
+    <span class="n">str_2</span> <span class="o">=</span> <span class="mi">666</span> <span class="c1"># Error Type</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s2">&quot;錯誤型態&quot;</span><span class="p">):</span>
+        <span class="n">concat</span><span class="p">(</span><span class="n">str_1</span><span class="o">=</span><span class="n">str_1</span><span class="p">,</span> <span class="n">str_2</span><span class="o">=</span><span class="n">str_2</span><span class="p">)</span>
+</pre></div>
+
+
+<p>在執行測試時，可使用 <code>-m</code> 標籤來執行特定類別的測試:</p>
+<div class="highlight"><pre><span></span>pytest -m string <span class="c1"># 執行 string 類別的測試</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>pytest -m <span class="s2">&quot;not string&quot;</span> <span class="c1"># 執行非 string 類別的測試</span>
+</pre></div>
+
+
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20220304/pytest_5.png"></p>
+<p>不符合類別的測試會如同上圖一樣，被歸類到 <code>deselected</code>，並不會進行測試。 </p>
+<p>Tips: 我自己很喜歡在函式開發完，準備撰寫 Test Case 時，在「開發中」的 Test Case 上加上 <code>@pytest.mark.test</code> ，也就是賦予這個半成品 <code>test</code> 類別，這是我自己保留給「開發中」的 Test Case。</p>
+<p>這樣的好處是在開發 Test Case 時，可以透過:</p>
+<div class="highlight"><pre><span></span>pytest -m <span class="nb">test</span>
+</pre></div>
+
+
+<p>快速的檢查當前的 Test Case 是否正確，可以更頻繁的進行迭代，不需要執行既有的其他測試案例。</p>
+<h2>使用 Fixture 來提高重用率</h2>
+<blockquote>
+<p>把常用的物件封裝起來，不需要重複宣告</p>
+</blockquote>
+<p>接著我們看看下一個範例 <code>src/module_b.py</code>，其中宣告了兩個函式：</p>
+<ul>
+<li><code>update_value_by_key</code> : 其實就是更新 Dictionary 的值</li>
+<li><code>check_key_exists</code> : 其實就是確認 Key 有沒有在 Dictionary 裡面</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># src/module_b.py</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="k">def</span> <span class="nf">update_value_by_key</span><span class="p">(</span><span class="n">origin_dict</span><span class="p">:</span><span class="n">Dict</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;更新特定 Key 的 Value</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        origin_dict (Dict): Python 的 Dictionary</span>
+<span class="sd">        key (str): 要被更新值的 Key</span>
+<span class="sd">        value (Union[str, int, float]): 新的 Value</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        KeyError: 當 Key 不存在時，拋出 KeyError</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dict: 更新後的 Dictionary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">origin_dict</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span>
+
+    <span class="n">new_dict</span> <span class="o">=</span> <span class="n">origin_dict</span>
+    <span class="n">new_dict</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">new_dict</span>
+
+<span class="k">def</span> <span class="nf">check_key_exists</span><span class="p">(</span><span class="n">dictionary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;確認特定的 Key 是否存在於 Dictionary 中</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dictionary (Dict): 被檢查的 Dictionary</span>
+<span class="sd">        key (str): 要確認的 Key</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: key 是否存在於 dictionary 中</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">dictionary</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</pre></div>
+
+
+<p>因為這兩個函式都是對 Dictionary 進行操作，在撰寫 Test Case 時，我們也需要建立一個「測試用的Dictionary」，我們來看看 <code>tests/test_module_b.py</code> 的內容: </p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">src.module_b</span> <span class="kn">import</span> <span class="n">update_value_by_key</span><span class="p">,</span> <span class="n">check_key_exists</span>
+
+<span class="k">def</span> <span class="nf">test_update_value_by_key</span><span class="p">():</span>
+    <span class="n">test_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span> <span class="c1"># 測試用 Dictionary</span>
+
+    <span class="n">new_dict</span> <span class="o">=</span> <span class="n">update_value_by_key</span><span class="p">(</span>
+        <span class="n">origin_dict</span><span class="o">=</span><span class="n">test_dict</span><span class="p">,</span>
+        <span class="n">key</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span>
+        <span class="n">value</span><span class="o">=</span><span class="mi">999</span>
+    <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">new_dict</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">999</span>
+
+<span class="k">def</span> <span class="nf">test_update_value_by_key_error</span><span class="p">():</span>
+    <span class="n">test_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span> <span class="c1"># 測試用 Dictionary</span>
+
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
+        <span class="n">new_dict</span> <span class="o">=</span> <span class="n">update_value_by_key</span><span class="p">(</span>
+            <span class="n">origin_dict</span><span class="o">=</span><span class="n">test_dict</span><span class="p">,</span>
+            <span class="n">key</span><span class="o">=</span><span class="s2">&quot;error_key&quot;</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="mi">999</span>
+        <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_check_key_exists</span><span class="p">():</span>
+    <span class="n">test_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span> <span class="c1"># 測試用 Dictionary</span>
+
+    <span class="k">assert</span> <span class="n">check_key_exists</span><span class="p">(</span><span class="n">dictionary</span><span class="o">=</span><span class="n">test_dict</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">check_key_exists</span><span class="p">(</span><span class="n">dictionary</span><span class="o">=</span><span class="n">test_dict</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;not existed&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>發現了嗎？ </p>
+<p>因為三個函式都需要對 Dictionary 進行操作，所以三個 Test Case 的一開始都需要宣告一個 <code>test_dict</code>，但其實他們是一樣的東西。</p>
+<p>同樣的東西要在每個 Test Case 中宣告一次，實在很沒有效率。</p>
+<p>這時候我們可以善用 Fixture 來增加效率：</p>
+<div class="highlight"><pre><span></span><span class="c1"># tests/fixture.py</span>
+<span class="kn">import</span> <span class="nn">pytest</span>
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">test_dict</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+</pre></div>
+
+
+<p>在 <code>fixture.py</code> 中，我們將會被重複使用的物件封裝為<code>fixture</code>，具體來說：</p>
+<ol>
+<li>用一個函式來回傳結果</li>
+<li>並在該函式上加上一個 <code>@pytest.fixture</code> 裝飾子</li>
+</ol>
+<p>封裝完成後，我們可以在 Test Case 中，直接將該 fixture 當成參數傳入! </p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">src.module_b</span> <span class="kn">import</span> <span class="n">update_value_by_key</span><span class="p">,</span> <span class="n">check_key_exists</span>
+<span class="kn">from</span> <span class="nn">.fixture</span> <span class="kn">import</span> <span class="n">test_dict</span> <span class="c1"># 從 Fixture 中引入 test_dict</span>
+
+<span class="k">def</span> <span class="nf">test_update_value_by_key</span><span class="p">(</span><span class="n">test_dict</span><span class="p">):</span> <span class="c1"># 直接將 test_dict 當成參數傳入</span>
+    <span class="n">new_dict</span> <span class="o">=</span> <span class="n">update_value_by_key</span><span class="p">(</span> 
+        <span class="n">origin_dict</span><span class="o">=</span><span class="n">test_dict</span><span class="p">,</span>
+        <span class="n">key</span><span class="o">=</span><span class="s2">&quot;b&quot;</span><span class="p">,</span>
+        <span class="n">value</span><span class="o">=</span><span class="mi">999</span>
+    <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">new_dict</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">999</span>
+
+<span class="k">def</span> <span class="nf">test_update_value_by_key_error</span><span class="p">(</span><span class="n">test_dict</span><span class="p">):</span> <span class="c1"># 直接將 test_dict 當成參數傳入</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
+        <span class="n">new_dict</span> <span class="o">=</span> <span class="n">update_value_by_key</span><span class="p">(</span>
+            <span class="n">origin_dict</span><span class="o">=</span><span class="n">test_dict</span><span class="p">,</span>
+            <span class="n">key</span><span class="o">=</span><span class="s2">&quot;error_key&quot;</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="mi">999</span>
+        <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">test_check_key_exists</span><span class="p">(</span><span class="n">test_dict</span><span class="p">):</span> <span class="c1"># 直接將 test_dict 當成參數傳入</span>
+    <span class="k">assert</span> <span class="n">check_key_exists</span><span class="p">(</span><span class="n">dictionary</span><span class="o">=</span><span class="n">test_dict</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">check_key_exists</span><span class="p">(</span><span class="n">dictionary</span><span class="o">=</span><span class="n">test_dict</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;not existed&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>使用 Fixture 的好處除了不用在每個 Test Case 都宣告一樣的物件外，如果需要調整物件 (例如 <code>test_dict</code> )的內容，也不需要更改每一個 Test Case 的物件，只需要在 <code>fixture.py</code> 修改一次就可以了！</p>
+<h2>結語</h2>
+<p>在本篇筆記中，介紹了 <code>Pytest</code> 的基本操作：</p>
+<ul>
+<li><code>Pytest</code> 的基本架構</li>
+<li>使用 <code>mark</code> 來分類管理測試</li>
+<li>使用 <code>fixture</code> 來提高程式碼重用率</li>
+</ul>
+<p>希望看完這篇筆記後，大家都能掌握基本的 <code>pytest</code> 語法，試著以自己現行開發的程式碼作為標的，慢慢加入一些測試。</p>
+<p>如果有任何問題，歡迎聯絡我，一起交流！</p>
+<p>我個人的經驗:</p>
+<p>雖然撰寫測試是相當麻煩的一件事情，對於開發的進度會有影響。相對地，有了測試後，<strong>開發會變得較為踏實</strong>，就算專案的規模越來越大，也不會擔心自己改了這個函式，是不是會造成什麼潛在的影響。</p>
+<p>在下篇筆記，我們會繼續討論測試中的大魔王 - <code>mock</code>!</p>
+<p>我們下次見～</p>
+<hr>
+<p>前往下集 : <a href="https://www.minglunwu.com/notes/2023/pytest_101_2.html">Pytest 101 - 給 Python 開發者的測試入門 (2) - Mock</a></p>
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                             <a href="#0">Python</a>
+                             <a href="#0">Test</a>
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="blog-content__prev">
+                                <a href="https://minglunwu.com/notes/2022/utteranc_on_github_page.html" rel="prev">
+                                    <span>Previous Post</span>
+                                    使用 utterances 建置 Github Page 留言系統
+                                </a>
+                            </div>
+                            <div class="blog-content__next">
+                                <a href="https://minglunwu.com/notes/2022/fast_api_note_3.html" rel="next">
+                                    <span>Next Post</span>
+                                    Fast API 入門筆記 (三) - Query Parameter & Path Parameter
+                                </a>
+                            </div>
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="https://minglunwu.com/archives.html" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
+        <script src="https://utteranc.es/client.js"
+                repo="MingLunWu/MingLunWu.github.io"
+                issue-term="pathname"
+                theme="github-dark-orange"
+                crossorigin="anonymous"
+                async>
+        </script>
+        <!-- Comment Box 留言系統 - 需要調整位置 -->
+        <!-- <div class="commentbox"></div>
+        <script src="https://unpkg.com/commentbox.io/dist/commentBox.min.js"></script>
+        <script>commentBox('5640802722119680-proj')</script> -->
+            <!-- footer
+    ================================================== -->
+    <footer>
+        <div class="row">
+            <div class="col-full">
+
+                <div class="footer-logo">
+                    <a class="footer-site-logo" href="#0"><img src="https://minglunwu.com/theme/images/logo.png" alt="Homepage"></a>
+                </div>
+                <ul class="footer-social">
+                    <li>
+                        <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                    </li>
+                    <li>
+                        <a href="https://minglun-wu.medium.com" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/%E6%98%8E%E5%80%AB-%E5%90%B3-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/fade_relish/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                    </li>
+                </ul>
+                    
+            </div>
+        </div>
+
+        <div class="row footer-bottom">
+
+            <div class="col-twelve">
+                <div class="copyright">
+                    <span>© Copyright MingLunWu 2021</span> 
+                    <span>Design by <a href="https://www.styleshout.com/">styleshout</a></span>	
+                </div>
+
+                <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- end footer-bottom -->
+
+    </footer> <!-- end footer -->
+    <!-- Java Script
+        ================================================== -->
+        <script src="https://minglunwu.com/theme/js/jquery-3.2.1.min.js"></script>
+        <script src="https://minglunwu.com/theme/js/plugins.js"></script>
+        <script src="https://minglunwu.com/theme/js/main.js"></script>
+
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161863471-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-161863471-1');
+    </script>
+    
+</body>

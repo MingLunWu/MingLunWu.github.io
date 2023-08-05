@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+        <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <!--
+    <meta name="description" content="">
+    <meta name="author" content="">
+    -->
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/base.css">
+    <!--<link rel="stylesheet" href="https://minglunwu.com/theme/css/vendor.css">-->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/main.css">
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/styles.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="https://minglunwu.com/theme/js/modernizr.js"></script>
+    <script src="https://minglunwu.com/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+
+    <title>如何透過 VSCode 的 Python Extension 進行 Debug ?</title>
+    <meta property="og:title" content="如何透過 VSCode 的 Python Extension 進行 Debug ?">
+    <meta name="description" content="<p>VSCode 中的 Python Extension 除了 Syntax Highlight 外，其實還有很棒的 Debug 功能。</p>">
+    <meta property="og:description" content="<p>VSCode 中的 Python Extension 除了 Syntax Highlight 外，其實還有很棒的 Debug 功能。</p>">
+    <meta name="author" content="MingLun Allen Wu">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1606159068539-43f36b99d1b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZGVidWd8ZW58MHwwfDB8fHww&auto=format&fit=crop&w=900&q=60">
+    
+    <link rel="image_src" type="image/jpeg" href="https://images.unsplash.com/photo-1606159068539-43f36b99d1b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZGVidWd8ZW58MHwwfDB8fHww&auto=format&fit=crop&w=900&q=60" />
+    <style>
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body id="top">
+            <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+        <div class="header-logo">
+            <a class="site-logo" href="https://minglunwu.com"><img src="https://minglunwu.com/theme/images/logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
+
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a href="https://minglunwu.com/#home" title="home">Home</a></li>
+                <li><a href="https://minglunwu.com/#about" title="about">About</a></li>
+                <li><a href="https://minglunwu.com/#blog" title="blog">Blogs</a></li>
+                <li><a href="https://minglunwu.com/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1606159068539-43f36b99d1b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZGVidWd8ZW58MHwwfDB8fHww&auto=format&fit=crop&w=900&q=60)">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                    <a href="#0">Python</a>
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                如何透過 VSCode 的 Python Extension 進行 Debug ?
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">2023-Jul-29 (Sat)</li>
+                            <li class="author">
+                                By
+                                <span>MingLun Allen Wu</span>
+                            </li>
+                            <li> views</li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    
+                    <h1>TL;DR</h1>
+<p><code>VSCode</code> 的 Python Extension 除了 Syntax Highlight 外，其實還提供了相當好用的 Debug 功能。</p>
+<p>本篇筆記分享 Debugger 工具的使用方式、操作介面以及如何將其整合至開發流程中。</p>
+<h1>VSCode - Python Extension</h1>
+<p>近年來 Python 一直最熱門的幾種程式語言之一，如果你是使用 <code>VSCode</code> 作為開發的 IDE，那麼一定對於 <code>VSCode</code> 的 Python Extension 不陌生。</p>
+<p>安裝 Python Extension 後，當開啟 Python Script 時，會在指定的環境中，讀取相關的 Python Module，並且提供適當的 Syntax Highlight。</p>
+<p>但是其實 <code>VSCode</code> 的 Python Extension 真正好用的功能可不只這樣，它其實還提供了很完整的 <strong>Debug</strong> 功能。</p>
+<p>從研究所時期，不論是 Machine Learning 的建模，或是近期在開發 Python 的 SDK，這個 <strong>Debug</strong> 功能對我的開發效率有極大的提升。</p>
+<p>今天想要用這篇短短的筆記，來細細分享這個功能。</p>
+<h1>使用流程圖</h1>
+<p>我想用下面這張圖片來說明 Debug 的流程 : </p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20230729/flow.png"></p>
+<h2>1. 開發程式</h2>
+<p>使用 <code>VSCode</code> 搭配 Python Extension 進行開發 : </p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20230729/syntax_highlight.png"></p>
+<h2>2. 設定暫停點</h2>
+<p>在開發過程中，難免會有一些「抽象時刻」: </p>
+<blockquote>
+<p>我不確定這個變數，在程式執行的時間點，到底長什麼樣子？</p>
+</blockquote>
+<p>我們稍微舉個實際的例子 : </p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="k">def</span> <span class="nf">confused_func</span><span class="p">(</span><span class="n">product_info</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    示範用，假設你需要在這個函式中處理 product_info</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="o">...</span>
+    <span class="k">if</span> <span class="s2">&quot;pID&quot;</span> <span class="ow">in</span> <span class="n">product_info</span><span class="p">:</span> <span class="c1"># 開發到此處時，你突然不確定 product_info 的內容。</span>
+        <span class="o">...</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">product_info</span> <span class="o">=</span> <span class="n">read_product_info</span><span class="p">()</span> <span class="c1"># 假設 product_info 是從其他地方來的物件</span>
+
+    <span class="n">confused_func</span><span class="p">(</span><span class="n">product_info</span><span class="p">)</span>
+</pre></div>
+
+
+<p>當你在開發 <code>confused_func()</code> 時，你不確定 <code>"pID"</code> 這個屬性到底有沒有存在於 <code>product_info</code> 中。</p>
+<p>這時候，最直覺的作法可能是 : 直接執行這個 Python Script，反正錯了再改就好～</p>
+<p>但其實你還有另外一種做法，在你想確認的地方<strong>設定 Break Point</strong> ! </p>
+<p>方法很簡單： 只需要在「覺得疑惑的程式碼」旁，點選行數旁的空白，就會出現一個紅點，這代表你在此處設定了一個 <code>Breakpoint</code> ! : </p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20230729/set_breakpoint.png"></p>
+<h2>3. 透過 Debugger 執行腳本</h2>
+<p>接下來，我們準備啟動 Debugger 工具 : 點擊右上方紅圈處，選擇 <code>"Debug Python File"</code> 選項。如果有多個 Python 環境的使用者，此時會要求你選擇一個特定的 Python 環境：</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20230729/debug_1.png"></p>
+<h2>4. 程式暫停</h2>
+<p>透過 Debugger 執行程式時， Debugger 會在特定的時間點「<strong>暫停</strong>」：這時候，你會發現剛剛設定 <code>Breakpoint</code> 的那一行變成「黃底」:</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20230729/debug_2.png">
+<br>
+此時，程式會「凍結」在「黃底」程式碼的前一行 (以上圖來說，會凍結在第 7 行)。</p>
+<p>這時候我們就可以開始透過 Debug 工具進行互動了！</p>
+<h2>5. 透過 Debugger 進行互動</h2>
+<p>接下來，我們來介紹使用 Debug 工具時，幾個好用的 Panel !</p>
+<h3>1 - VARIABLES</h3>
+<p>首先是 <code>VARIABLES</code> 區塊 : </p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20230729/debug_3.png">
+<br>
+在這個區塊中，你可以即時看到當下「所有的變數狀態」，這個區塊包含了所有 Scope 的變數 (Globals &amp; Locals)。</p>
+<p>你可以在此掌握所有物件的狀態，也可以依據需求向下展開，呈現當前的屬性值是多少。</p>
+<h3>2 - WATCH</h3>
+<p>接著是 <code>WATCH</code> 區塊 : </p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20230729/debug_4.png">
+<br></p>
+<p>在此區塊中，你可以「<strong>設定客製化的條件</strong>」來查看變數。</p>
+<p>以範例程式碼來說，我們希望能夠掌握 <code>product_info</code> 這個物件的 key 是什麼，因此我們可以在 <code>WATCH</code> 區塊設定兩個條件 : </p>
+<ul>
+<li><code>product_info["pid"]</code></li>
+<li><code>product_info.keys()</code> </li>
+</ul>
+<p>如此一來，我們不再需要手動展開 <code>VARIABLES</code> 區塊的變數，可以直接設定我們真正關心的值。</p>
+<p>當執行當下包含許多複雜的物件時，直接在 <code>WATCH</code> 區塊設定條件，可以更快掌握所需資訊。</p>
+<h3>3 - CALL STACK</h3>
+<p>第三個區塊是 <code>CALL STACK</code>，此區可以協助梳理程式碼的拓墣關係：</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20230729/debug_5.png">
+<br></p>
+<p>以上圖來說，可以發現 <code>CALL STACK</code> 中包含了兩列資訊，因為 Debugger 工具執行此檔案時，是先從第 11 行的 <code>main</code> 區塊開始執行，然後在第 13 行的 <code>confused_func()</code> 進入，接著在第 8 行遭遇 Breakpoint。 </p>
+<p>我們可以點選此區，快速切換幾個關鍵的 Entrypoint，我個人認為這個功能在處理「多個 Python Module 相互引用」的情境時，特別有幫助，可以快速確認當下在 Debug 的程式碼，是如何被呼叫的！</p>
+<h3>4 - DEBUG CONSOLE</h3>
+<p>下一個區塊是我個人最喜歡的 <code>DEBUG CONSOLE</code>，需要點選下圖紅圈處進行切換 :</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20230729/debug_6.png">
+<br></p>
+<p>此處就是在「當下凍結的環境」中，提供一個「互動式介面」，讓你可以自由地進行嘗試。</p>
+<p>舉例來說，我們可以自由輸入程式碼，來確認 <code>product_info</code> 到底有哪些 key ? 也可以直接輸入我目前猜測的 Key : <code>pID</code>，然後得到 KeyError。</p>
+<p>在 <code>DEBUG CONSOLE</code> 中執行的指令，都能在第一時間得到結果。</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20230729/debug_7.png">
+<br></p>
+<p>過往在建模時，常會需要進行矩陣相乘，我常常在開發的過程中忘記矩陣的維度，透過 <code>Debug Console</code> 可以很直覺的進行 Trial &amp; Error，再也不用從頭開始執行 Python 程式，然後等待程式噴錯才能判讀錯誤資訊。</p>
+<p>值得注意的是 : 在 <code>Debug Console</code> 進行的操作，是會直接改變當下的 Debug 環境，也就是說如果我在 <code>Debug Console</code> 中，替 <code>product_info</code> 加入一個新的 Key (例如 : <code>price</code>)，在左上角的 <code>Variables</code> 是會即時更新的！</p>
+<h3>5 - Debug 選單</h3>
+<p>了解各區塊的用處後，最後我們要介紹 <code>Debug 選單</code> (下圖紅圈處): </p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.github.io/images/20230729/debug_8.png">
+<br></p>
+<p>由左而右分別是 : </p>
+<ul>
+<li><strong>Continue</strong> : 會繼續執行 Debug 程序，直到遇到下個 Breakpoint 或是程式結束。</li>
+<li><strong>Step Over</strong>: 當接下來遭遇 Function 時，不進入其中，直接往下執行。</li>
+<li><strong>Step In</strong> : 當接下來遭遇 Function 時，進入其中 (通常你會在 Function 中設定 Breakpoint)</li>
+<li><strong>Step Out</strong> : 如果你已經透過 Step In 進入 Function，點選此按鈕可以往下執行，直到跳出當前的 Function。</li>
+<li><strong>Restart</strong> : 重新執行一次 Debug 流程。</li>
+<li><strong>Stop</strong> : 停止當前 Debug 流程。</li>
+</ul>
+<p><code>Debug 選單</code> 中的功能讓開發者在 Debug 階段，可以根據自己的需求來調整 Debug 的深淺。 </p>
+<p>藉由 Debugger 工具所得到的資訊，可以帶給開發者更即時的回饋。在開發當下能夠以互動式的介面，取得當前開發環境的特定資訊。</p>
+<p>得到這些資訊後，可以回到流程圖中的第一步 - 進行開發，從而進入一個循環，當遇到不確定的情境、或是程式碼出現 Bug 時，透過 Debugger 工具來確認細節，得到資訊後再繼續進行下一個開發流程。</p>
+<h1>總結</h1>
+<p>身邊許多人都是使用 <code>VSCode</code> 進行 Python 開發，儘管有使用 Python Extension，卻不是每個人都知道 Debug 這個功能的精妙之處。</p>
+<p>我個人認為 <code>VSCode</code> 的 Python Extension Debug 功能，對於我的開發效率，有極大的提升。</p>
+<p>透過這篇筆記，我希望能夠帶給你 Debugger 工具的基本使用方式，幫助你在 Python 開發之路上，有更高的開發效率。</p>
+<p>如果這篇筆記對你有幫助，或是有任何問題的話，歡迎底下留言告訴我。 Happy Coding !</p>
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                             <a href="#0">Python</a>
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="blog-content__next">
+                                <a href="https://minglunwu.com/notes/2023/pytest_101_2.html" rel="next">
+                                    <span>Next Post</span>
+                                    Pytest 101 - 給 Python 開發者的測試入門 (2) - Mock 基礎介紹
+                                </a>
+                            </div>
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="https://minglunwu.com/archives.html" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
+        <script src="https://utteranc.es/client.js"
+                repo="MingLunWu/MingLunWu.github.io"
+                issue-term="pathname"
+                theme="github-dark-orange"
+                crossorigin="anonymous"
+                async>
+        </script>
+        <!-- Comment Box 留言系統 - 需要調整位置 -->
+        <!-- <div class="commentbox"></div>
+        <script src="https://unpkg.com/commentbox.io/dist/commentBox.min.js"></script>
+        <script>commentBox('5640802722119680-proj')</script> -->
+            <!-- footer
+    ================================================== -->
+    <footer>
+        <div class="row">
+            <div class="col-full">
+
+                <div class="footer-logo">
+                    <a class="footer-site-logo" href="#0"><img src="https://minglunwu.com/theme/images/logo.png" alt="Homepage"></a>
+                </div>
+                <ul class="footer-social">
+                    <li>
+                        <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                    </li>
+                    <li>
+                        <a href="https://minglun-wu.medium.com" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/%E6%98%8E%E5%80%AB-%E5%90%B3-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/fade_relish/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                    </li>
+                </ul>
+                    
+            </div>
+        </div>
+
+        <div class="row footer-bottom">
+
+            <div class="col-twelve">
+                <div class="copyright">
+                    <span>© Copyright MingLunWu 2021</span> 
+                    <span>Design by <a href="https://www.styleshout.com/">styleshout</a></span>	
+                </div>
+
+                <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- end footer-bottom -->
+
+    </footer> <!-- end footer -->
+    <!-- Java Script
+        ================================================== -->
+        <script src="https://minglunwu.com/theme/js/jquery-3.2.1.min.js"></script>
+        <script src="https://minglunwu.com/theme/js/plugins.js"></script>
+        <script src="https://minglunwu.com/theme/js/main.js"></script>
+
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161863471-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-161863471-1');
+    </script>
+    
+</body>

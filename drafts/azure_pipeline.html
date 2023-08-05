@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+        <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <!--
+    <meta name="description" content="">
+    <meta name="author" content="">
+    -->
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/base.css">
+    <!--<link rel="stylesheet" href="https://minglunwu.com/theme/css/vendor.css">-->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/main.css">
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/styles.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="https://minglunwu.com/theme/js/modernizr.js"></script>
+    <script src="https://minglunwu.com/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+
+    <title>Azure DevOps - 初探 Azure Pipeline</title>
+    <meta property="og:title" content="Azure DevOps - 初探 Azure Pipeline">
+    <meta name="description" content="<p>待補</p>">
+    <meta property="og:description" content="<p>待補</p>">
+    <meta name="author" content="MingLun Allen Wu">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1581472723648-909f4851d4ae?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80">
+    
+    <link rel="image_src" type="image/jpeg" href="https://images.unsplash.com/photo-1581472723648-909f4851d4ae?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" />
+    <style>
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body id="top">
+            <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+        <div class="header-logo">
+            <a class="site-logo" href="https://minglunwu.com"><img src="https://minglunwu.com/theme/images/logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
+
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a href="https://minglunwu.com/#home" title="home">Home</a></li>
+                <li><a href="https://minglunwu.com/#about" title="about">About</a></li>
+                <li><a href="https://minglunwu.com/#blog" title="blog">Blogs</a></li>
+                <li><a href="https://minglunwu.com/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1581472723648-909f4851d4ae?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80)">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                    <a href="#0">DevOps</a>
+                                    <a href="#0">Azure DevOps</a>
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                Azure DevOps - 初探 Azure Pipeline
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">2022-Jan-13 (Thu)</li>
+                            <li class="author">
+                                By
+                                <span>MingLun Allen Wu</span>
+                            </li>
+                            <li> views</li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    
+                    <hr>
+<h2>TL;DR</h2>
+<h2>何謂 Azure Pipelines ?</h2>
+<p><code>Azure DevOps</code> 是微軟的程式碼版控平台</p>
+<p><code>Azure Pipeline</code> 是 <code>Azure DevOps</code> 的功能，可以根據團隊成員的需求，<strong>自動測試、部署開發成果</strong>。</p>
+<p>這裡提到的自動測試、自動部署，並不是開發完成後，將程式碼丟給 <code>Azure Pipeline</code>，它就會自動幫你檢查程式、或是幫你安裝在你想要的機器上。 而是<strong>提供一個介面，讓使用者可按照需求，建立一套「自動流程」</strong>。</p>
+<p>這套流程通常會結合 <strong>「持續整合」(CI)</strong> 和 <strong>「持續部署」(CD)</strong> 的概念。</p>
+<p>在持續整合階段，希望透過適當的測試：</p>
+<blockquote>
+<p>確保使用者(開發者)建立具有一致品質的程式碼</p>
+</blockquote>
+<p>開發者透過撰寫 Test Case，來定義何謂「正確的程式碼」，專案團隊藉由共享相同的 Test Cases，能對「程式碼的正確性」有相同的共識。</p>
+<p>這些測試通常會透過測試框架 (以 Python 來說可能是 <code>Pytest</code>)進行，是很花時間的。</p>
+<p>如果在開發過程中，透過 <code>Azure Pipeline</code> 來自動檢查，當檢查通過，將此次開發的新項目整併回產品中。</p>
+<blockquote>
+<p>使開發者專注在開發程式及測試案例，執行測試就交給 Azure Pipeline 來完成。</p>
+</blockquote>
+<p>在程式碼的品質經過檢查後，則可透過 <code>Azure Pipeline</code> 進行自動部署，將這些經過檢驗的程式碼，<strong>自動部署</strong>到特定的環境上。</p>
+<p>常見的版控平台都有類似的自動化功能:</p>
+<ul>
+<li><strong>Azure DevOps</strong>: <code>Azure Pipeline</code></li>
+<li><strong>Github</strong>: <code>Github Action</code></li>
+<li><strong>Gitlab</strong>: <code>Gitlab CI/CD</code></li>
+</ul>
+<hr>
+<h2>開始使用 Azure Pipelines</h2>
+<p>在專案的儲存庫中，建立一個 <code>azure-pipelines.yml</code>:</p>
+<div class="highlight"><pre><span></span><span class="nt">trigger</span><span class="p">:</span> <span class="c1"># 觸發時機</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">main</span>
+
+<span class="nt">steps</span><span class="p">:</span> <span class="c1"># 任務步驟</span>
+<span class="p p-Indicator">-</span> <span class="nt">script</span><span class="p">:</span> <span class="p p-Indicator">|</span>
+    <span class="no">echo &quot;my first pipeline&quot;</span>
+</pre></div>
+
+
+<p>當你在專案根目錄中放置 <code>azure-pipelines.yml</code> 後，就可以在專案的 <strong>Build</strong> 選單中看到此 Pipeline。</p>
+<p>以下先開始說明 Pipeline 架構：</p>
+<h3>觸發時機</h3>
+<p>在 pipeline 的開頭，通常會定義此 pipeline 的觸發時間點，常見的觸發時間點有幾項: </p>
+<ul>
+<li>當「特定的Branch被更新」時(使用 <strong>trigger</strong> 關鍵字)</li>
+<li>當「PR要被Merege回特定Branch」時 (使用 <strong>pr</strong>關鍵字)</li>
+</ul>
+<p>確定使用 <strong>triiger</strong> 或 <strong>pr</strong> 後，接下來就是決定觸發的分支為何。</p>
+<p><code>Azure DevOps</code> 是透過 <strong>Wildcard</strong> 來設定當哪個分支被更新，流程要被觸發:</p>
+<ul>
+<li>features/* : 所有名稱為 <code>features/</code> 開頭的 branch 被更新時，此自動流程會被觸發。</li>
+<li>master: 只有當 <code>master</code> 被更新時，此自動流程會被觸發。</li>
+</ul>
+<h3>任務步驟</h3>
+<p>設定完觸發時機後，接下來要設定被觸發後應該要做哪些事情，透過 <code>steps</code> 關鍵字來定義接下來的步驟。</p>
+<p>在 <code>steps</code> 中能夠排列一至多個指令，這些指令有幾種類型: </p>
+<ol>
+<li><strong>script</strong>: 直接下 Bash Script</li>
+</ol>
+<p><code>yaml
+   steps:
+   - script: |
+       echo "my first pipeline"</code> </p>
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                             <a href="#0">DevOps</a>
+                             <a href="#0">Azure DevOps</a>
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="https://minglunwu.com/archives.html" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
+        <script src="https://utteranc.es/client.js"
+                repo="MingLunWu/MingLunWu.github.io"
+                issue-term="pathname"
+                theme="github-dark-orange"
+                crossorigin="anonymous"
+                async>
+        </script>
+        <!-- Comment Box 留言系統 - 需要調整位置 -->
+        <!-- <div class="commentbox"></div>
+        <script src="https://unpkg.com/commentbox.io/dist/commentBox.min.js"></script>
+        <script>commentBox('5640802722119680-proj')</script> -->
+            <!-- footer
+    ================================================== -->
+    <footer>
+        <div class="row">
+            <div class="col-full">
+
+                <div class="footer-logo">
+                    <a class="footer-site-logo" href="#0"><img src="https://minglunwu.com/theme/images/logo.png" alt="Homepage"></a>
+                </div>
+                <ul class="footer-social">
+                    <li>
+                        <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                    </li>
+                    <li>
+                        <a href="https://minglun-wu.medium.com" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/%E6%98%8E%E5%80%AB-%E5%90%B3-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/fade_relish/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                    </li>
+                </ul>
+                    
+            </div>
+        </div>
+
+        <div class="row footer-bottom">
+
+            <div class="col-twelve">
+                <div class="copyright">
+                    <span>© Copyright MingLunWu 2021</span> 
+                    <span>Design by <a href="https://www.styleshout.com/">styleshout</a></span>	
+                </div>
+
+                <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- end footer-bottom -->
+
+    </footer> <!-- end footer -->
+    <!-- Java Script
+        ================================================== -->
+        <script src="https://minglunwu.com/theme/js/jquery-3.2.1.min.js"></script>
+        <script src="https://minglunwu.com/theme/js/plugins.js"></script>
+        <script src="https://minglunwu.com/theme/js/main.js"></script>
+
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161863471-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-161863471-1');
+    </script>
+    
+</body>

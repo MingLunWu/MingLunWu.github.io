@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<!--[if lt IE 9 ]><html class="no-js oldie" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+        <!--- basic page needs
+    ================================================== -->
+    <meta charset="utf-8">
+    <!--
+    <meta name="description" content="">
+    <meta name="author" content="">
+    -->
+    <!-- mobile specific metas
+    ================================================== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS
+    ================================================== -->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/base.css">
+    <!--<link rel="stylesheet" href="https://minglunwu.com/theme/css/vendor.css">-->
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/main.css">
+    <link rel="stylesheet" href="https://minglunwu.com/theme/css/styles.css">
+
+    <!-- script
+    ================================================== -->
+    <script src="https://minglunwu.com/theme/js/modernizr.js"></script>
+    <script src="https://minglunwu.com/theme/js/pace.min.js"></script>
+    <!--<script src="https://kit.fontawesome.com/968a4ded4c.js" crossorigin="anonymous"></script>-->
+
+    <!-- favicons
+    ================================================== -->
+    <link rel="shortcut icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://minglunwu.com/theme/favicon.ico" type="image/x-icon">
+
+    <title>使用 utterances 建置 Github Page 留言系統</title>
+    <meta property="og:title" content="使用 utterances 建置 Github Page 留言系統">
+    <meta name="description" content="<p>分享如何使用 utterances 這個小工具，在既有的 Github Page 上建立留言回覆系統。</p>">
+    <meta property="og:description" content="<p>分享如何使用 utterances 這個小工具，在既有的 Github Page 上建立留言回覆系統。</p>">
+    <meta name="author" content="MingLun Allen Wu">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1509001333319-944a48ef262b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80">
+    
+    <link rel="image_src" type="image/jpeg" href="https://images.unsplash.com/photo-1509001333319-944a48ef262b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80" />
+    <style>
+        img{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+
+<body id="top">
+            <!-- header
+    ================================================== -->
+    <header class="s-header">
+
+        <div class="header-logo">
+            <a class="site-logo" href="https://minglunwu.com"><img src="https://minglunwu.com/theme/images/logo.png" width="160" height="56" alt="Homepage"></a>
+        </div>
+
+        <nav class="header-nav-wrap">
+            <ul class="header-nav">
+                <li class="current"><a href="https://minglunwu.com/#home" title="home">Home</a></li>
+                <li><a href="https://minglunwu.com/#about" title="about">About</a></li>
+                <li><a href="https://minglunwu.com/#blog" title="blog">Blogs</a></li>
+                <li><a href="https://minglunwu.com/#note" title="note">Notes</a></li>
+                <!--<li><a class="smoothscroll" href="#note" title="notes">Notes</a></li>-->
+                <!--<li><a class="smoothscroll"  href="#contact" title="contact">Contact</a></li>-->
+            </ul>
+        </nav>
+
+        <a class="header-menu-toggle" href="#0"><span>Menu</span></a>
+
+    </header> <!-- end s-header -->
+
+        <article class="blog-single">
+
+            <!-- page header/blog hero
+            ================================================== -->
+            <div class="page-header page-header--single page-hero" style="background-image:url(https://images.unsplash.com/photo-1509001333319-944a48ef262b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80)">
+            
+                <div class="row page-header__content narrow">
+                    <article class="col-full">
+                        <div class="page-header__info">
+                            <div class="page-header__cat">
+                                    <a href="#0">utterances</a>
+                            </div>
+                        </div>
+                        <h1 class="page-header__title">
+                            <a href="#0" title="">
+                                使用 utterances 建置 Github Page 留言系統
+                            </a>
+                        </h1>
+                        <ul class="page-header__meta">
+                            <li class="date">2022-Oct-19 (Wed)</li>
+                            <li class="author">
+                                By
+                                <span>MingLun Allen Wu</span>
+                            </li>
+                            <li> views</li>
+                        </ul>
+                        
+                    </article>
+                </div>
+        
+            </div> <!-- end page-header -->
+    
+            <div class="row blog-content">
+                <div class="col-full blog-content__main">
+                    
+                    <h2>TL;DR</h2>
+<p>本篇筆記分享如何使用 utteranc 這個小工具，在既有的 <code>Github Page</code> 上建立留言回覆系統。</p>
+<h2>前言</h2>
+<p>使用 <code>Github Page</code> 可以很方便的建立自己的靜態部落格。</p>
+<p>如果你對於使用 <code>Github Page</code> 建立自己的靜態部落格有興趣，歡迎參考我的這篇文章 : </p>
+<p><a href="https://minglun-wu.medium.com/建立一個屬於自己的-程式-部落格-4d295ed96236">Medium - 建立一個屬於自己的(程式)部落格</a></p>
+<h2>留言系統的好處</h2>
+<p>儘管靜態網頁已經能夠達到發布內容的功能，但我認為在寫作的過程中，留言系統是非常重要的功能！</p>
+<p>留言系統可以讓作者和讀者間有更高的互動性，我曾經在 <code>Medium</code> 上收到陌生讀者的留言鼓勵，說實話，在那個當下是寫作成就感最高的時候了～ </p>
+<p>各位客倌目前所在的這個部落格，初期並沒有建置留言系統，曾經有讀者看了 <code>Flask</code> 相關的文章有疑問，輾轉找到我的聯絡方式，透過 Facebook 才聯繫上我。</p>
+<p>所以在個人部落格建立留言系統一直是 Backlog 中的一項，如今終於實現了！</p>
+<h2>哪個工具好 ?</h2>
+<p>我曾經使用過 <code>DISQUS</code> 這套工具來建立留言板，但免費版會在網頁中持續塞入廣告，破壞部落格的質感，用了一陣子後就棄用了。</p>
+<p>直到最近意外發現這套小工具 <a href="https://utteranc.es">utterances</a>，很適合以使用 <code>Github Page</code> 建置的網頁為目標，擴充出基本的留言系統。</p>
+<h2>utterances</h2>
+<p>這套工具基本上就是以 <code>Github</code> Repo 中的 Issue 功能作為留言板的存放地，所有網頁的留言都會依照<strong>貼文</strong>為單位，存放在 Issue 中 (一個頁面就是一個 Issue)。</p>
+<p>因為 <code>Github Page</code> 本身就是在 Github 中建立一個 Public 的 <username>.github.io 格式的 Repo，所以搭配 <code>utterances</code> 正好能將留言功能整合在同一個 Repo 中！</p>
+<h2>如何設定</h2>
+<h3>prerequisite</h3>
+<p>在開始設定前，請務必確認以下事項：</p>
+<ul>
+<li>在你的 Github 帳號下已經建立一個 <code>&lt;username&gt;.github.io</code> 的 Public Repo</li>
+<li>Repo 中已經有靜態頁面 (html) 檔案，並且已經可以在瀏覽器中造訪</li>
+</ul>
+<p>如果以上事項尚未設定完成，歡迎點擊 <a href="https://minglun-wu.medium.com/建立一個屬於自己的-程式-部落格-4d295ed96236">Medium - 建立一個屬於自己的(程式)部落格</a> 先進行相關設定。</p>
+<h3>安裝 App</h3>
+<p>將 <code>utterances</code> 這個 App 安裝至你的 <code>Github Page Repo</code> 中，點擊 <a href="https://github.com/apps/utterances">github app - utterances</a> 後，選擇 <em>Install</em> :</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.com/images/20221019/install.png"></p>
+<p>接下來會進入權限設定畫面，在畫面中選擇你的 <code>Github Page Repo</code> (也就是 <username>.github.io，以我為例會是 <code>MingLunWu.github.io</code>) : </p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.com/images/20221019/choose.png"></p>
+<h3>進階設定</h3>
+<p>設定完成後，會跳轉至 <code>utterances</code> 的官方頁面，如果沒有跳出，也可以點下方連結 : </p>
+<p><a href="https://utteranc.es">utterances - 首頁</a></p>
+<p>進入 <code>Configuration</code> 的區塊 : </p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.com/images/20221019/configuration.png"></p>
+<p>在 <code>repo:</code> 欄位中輸入 <code>使用者名稱/Repo名稱</code> (以我為例: <code>MingLunWu/MingLunWu.github.io</code> )</p>
+<p>下一個區塊 <code>Blog Post ↔️ Issue Mapping</code> 則是設定 <strong>「Issue」 和「頁面」之間的關係如何呈現</strong>。</p>
+<p>我選擇 <strong>Issue title contains page URL</strong>，因此當我設定完成時，如果有人在 <code>minglunwu.com/xxx</code> 留言時，<code>utterances</code> 會自動在我的 <code>MingLunWu.github.io</code> 中新增一個 <code>xxx</code> 的 Issue，其中存放相關的留言。</p>
+<p>可以根據自己的需求進行相關設置。</p>
+<p>最後在 <code>Theme</code> 區塊可以設定留言系統的主題。</p>
+<h3>獲得 Script Tag</h3>
+<p>全部設定完成後，下滑至 <code>Enable Utterances</code> 區塊，系統會自動附上一組 script tag : </p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.com/images/20221019/final.png"></p>
+<p>將這組 script tag 複製至靜態網頁中，至於「你希望留言板出現的位置」，重新發佈靜態網頁後，留言系統就會自動上線了！</p>
+<p>我將留言系統放在文章的最底部，從圖中可以看到編輯器還支援 <code>Markdown</code> 語法，實在是太美妙了!</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.com/images/20221019/result.png"></p>
+<p>留言送出後， <code>utterances</code> 會在 Repo 中建立 Issue (Issue 的名稱對應到上方的 <code>Blog Post ↔️ Issue Mapping</code> 設定)</p>
+<p><img style="display:block; margin-left:auto; margin-right:auto; width:100%;" src="https://minglunwu.com/images/20221019/comment.png"></p>
+<h2>結語</h2>
+<p>至此，我們就成功在 <code>Gitgub Page</code> 的網頁上建立一個基礎的留言系統了！ </p>
+<p>我認為 <code>utterances</code> 這個小工具設定簡單，也不需要提供過多的權限，即可有基本的留言系統。</p>
+<p>值得注意的是，因為這套工具本身是以 <code>Github</code> Issue 作為載體，在留言前需要先登入 <code>Github</code> 帳號，因此可能不太適合以「普羅大眾」為目標受眾的網站。 (因為不是每個人都有 <code>Github</code> 帳號)</p>
+<p>但因為我的部落格本身就是存放技術相關筆記，跟技術無關的文章被我抽離在<a href="https://medium.minglunwu.com">個人Medium</a>，因此我預設部落格受眾都有 <code>Github</code> 帳號，這點請各位特別留意。</p>
+<p>有機會的話，也試試替自己的部落格加上留言系統吧！</p>
+<p>如果有任何問題，歡迎在下方留言告訴我！（終於可以使用這句xD）</p>
+<p>我們下次見～</p>
+    
+                    <p class="blog-content__tags">
+                        <span>Post Tags</span>
+    
+                        <span class="blog-content__tag-list">
+                             <a href="#0">utterances</a>
+                        </span>
+    
+                    </p>
+    
+                    <div class="blog-content__pagenav">
+                        <div class="blog-content__nav">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <div class="blog-content__prev">
+                                <a href="https://minglunwu.com/notes/2022/cka_exam_sharing.html" rel="prev">
+                                    <span>Previous Post</span>
+                                    2022 CKA 考試經驗分享
+                                </a>
+                            </div>
+                            <div class="blog-content__next">
+                                <a href="https://minglunwu.com/notes/2022/pytest_101.html" rel="next">
+                                    <span>Next Post</span>
+                                    Pytest 101 - 給 Python 開發者的測試入門
+                                </a>
+                            </div>
+                        </div>
+    
+                        <div class="blog-content__all">
+                            <a href="https://minglunwu.com/archives.html" class="btn btn--primary">
+                                View All Post
+                            </a>
+                        </div>
+                    </div>
+    
+                </div><!-- end blog-content__main -->
+            </div> <!-- end blog-content -->
+    
+        </article>
+        <script src="https://utteranc.es/client.js"
+                repo="MingLunWu/MingLunWu.github.io"
+                issue-term="pathname"
+                theme="github-dark-orange"
+                crossorigin="anonymous"
+                async>
+        </script>
+        <!-- Comment Box 留言系統 - 需要調整位置 -->
+        <!-- <div class="commentbox"></div>
+        <script src="https://unpkg.com/commentbox.io/dist/commentBox.min.js"></script>
+        <script>commentBox('5640802722119680-proj')</script> -->
+            <!-- footer
+    ================================================== -->
+    <footer>
+        <div class="row">
+            <div class="col-full">
+
+                <div class="footer-logo">
+                    <a class="footer-site-logo" href="#0"><img src="https://minglunwu.com/theme/images/logo.png" alt="Homepage"></a>
+                </div>
+                <ul class="footer-social">
+                    <li>
+                        <a href="https://www.facebook.com/zebra52000" target="_blank"><i class="im im-facebook" aria-hidden="true"></i><span>Facebook</span></a>
+                    </li>
+                    <li>
+                        <a href="https://minglun-wu.medium.com" target="_blank"><i class="im im-book" aria-hidden="true"></i><span>Medium</span></a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/MingLunWu" target="_blank"><i class="im im-github" aria-hidden="true"></i><span>Github</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/in/%E6%98%8E%E5%80%AB-%E5%90%B3-637020142/" target="_blank"><i class="im im-linkedin" aria-hidden="true"></i><span>LinkedIn</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.instagram.com/fade_relish/" target="_blank"><i class="im im-instagram" aria-hidden="true"></i><span>Instagram</span></a>
+                    </li>
+                </ul>
+                    
+            </div>
+        </div>
+
+        <div class="row footer-bottom">
+
+            <div class="col-twelve">
+                <div class="copyright">
+                    <span>© Copyright MingLunWu 2021</span> 
+                    <span>Design by <a href="https://www.styleshout.com/">styleshout</a></span>	
+                </div>
+
+                <div class="go-top">
+                <a class="smoothscroll" title="Back to Top" href="#top"><i class="im im-arrow-up" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+        </div> <!-- end footer-bottom -->
+
+    </footer> <!-- end footer -->
+    <!-- Java Script
+        ================================================== -->
+        <script src="https://minglunwu.com/theme/js/jquery-3.2.1.min.js"></script>
+        <script src="https://minglunwu.com/theme/js/plugins.js"></script>
+        <script src="https://minglunwu.com/theme/js/main.js"></script>
+
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-161863471-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-161863471-1');
+    </script>
+    
+</body>
