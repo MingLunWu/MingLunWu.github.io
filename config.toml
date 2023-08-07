@@ -4,7 +4,7 @@ theme = "hugo-theme-cleanwhite"
 languageCode = "en-us"
 # Enable comments by entering your Disqus shortname
 disqusShortname = ""
-googleAnalytics = ""
+googleAnalytics = "G-NC508K3RBY"
 preserveTaxonomyNames = true
 paginate = 7 #frontpage pagination
 hasCJKLanguage = true
@@ -103,13 +103,15 @@ home = ["HTML", "RSS", "Algolia"]
   [[params.bookmark_link]]
   title = "unsplash"
   href = "https://unsplash.com"
-  
+  #[[params.addtional_menus]]
+  #title =  "ARCHIVES"
+  #href =  "/archives/"
   [[params.addtional_menus]]
   title =  "NOTES"
   href =  "/notes/"
-  [[params.addtional_menus]]
-  title =  "ABOUT"
-  href =  "/"
+  # [[params.addtional_menus]]
+  # title =  "ABOUT"
+  # href =  "/"
 
 [outputFormats.Algolia]
 baseName = "algolia"
