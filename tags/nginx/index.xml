@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nginx on MingLun Blog</title>
+    <link>https://minglunwu.com/tags/nginx/</link>
+    <description>Recent content in Nginx on MingLun Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 22 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://minglunwu.com/tags/nginx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Flask想上線? 你還需要一些酷東西</title>
+      <link>https://minglunwu.com/notes/2021/flask_plus_wsgi/</link>
+      <pubDate>Fri, 22 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://minglunwu.com/notes/2021/flask_plus_wsgi/</guid>
+      <description>想要好好部署Flask，你得先了解一些酷東西</description>
+    </item>
+    
+  </channel>
+</rss>

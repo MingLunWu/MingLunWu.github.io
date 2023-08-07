@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on Docura</title>
-    <link>https://docura.github.io/categories/</link>
-    <description>Recent content in Categories on Docura</description>
+    <title>Categories on MingLun Blog</title>
+    <link>https://minglunwu.com/categories/</link>
+    <description>Recent content in Categories on MingLun Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language><atom:link href="https://docura.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="https://minglunwu.com/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
