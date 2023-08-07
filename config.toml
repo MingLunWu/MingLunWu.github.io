@@ -67,17 +67,17 @@ home = ["HTML", "RSS", "Algolia"]
   #custom_js = ["js/lightbox.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js", "js/main.js"]
 
   [params.social]
-  rss            = true 
-  email          = "youremail@gmail.com"
+  rss            = false 
+  email          = "alen6997535@gmail.com"
   #facebook      = "full profile url in facebook"
   #googleplus    = "full profile url in googleplus"
   #twitter       = "full profile url in twitter"
-  linkedin       = "https://www.linkedin.com/in/yourlinkedinid"
-  stackoverflow  = "https://stackoverflow.com/users/yourstackoverflowid"
+  linkedin       = "https://www.linkedin.com/in/ming-lun-wu-637020142/"
+  #stackoverflow  = "https://stackoverflow.com/users/yourstackoverflowid"
   #instagram     = "full profile url in instagram"
-  github         = "https://github.com/yourgithub"
-  wechat         = "your wechat qr code image"
-  #medium        = "full profile url in medium"
+  github         = "https://github.com/minglunwu"
+  #wechat         = "your wechat qr code image"
+  medium        = "https://medium.com/@minglun-wu"
   #slack         = "full workspace url in slack"
   #pinterest     = "full profile url in pinterest"
   #reddit        = "full profile url in reddit"
@@ -105,14 +105,11 @@ home = ["HTML", "RSS", "Algolia"]
   href = "https://unsplash.com"
   
   [[params.addtional_menus]]
-  title =  "ARCHIVE"
-  href =  "/archive/"
-  [[params.addtional_menus]]
   title =  "NOTES"
   href =  "/notes/"
   [[params.addtional_menus]]
   title =  "ABOUT"
-  href =  "/about/"
+  href =  "/"
 
 [outputFormats.Algolia]
 baseName = "algolia"
