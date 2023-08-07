@@ -1,255 +1,19 @@
-<!DOCTYPE html>
-<html lang="en-us">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    
-    <meta property="og:site_name" content="MingLun Blog">
-    <meta property="og:type" content="article">
-
-    
-    <meta property="og:image" content="https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2070&amp;q=80">
-    <meta property="twitter:image" content="https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=2070&amp;q=80" />
-    
-
-    
-    <meta name="title" content="Ansible 入門筆記(ㄧ) - 核心概念及架構" />
-    <meta property="og:title" content="Ansible 入門筆記(ㄧ) - 核心概念及架構" />
-    <meta property="twitter:title" content="Ansible 入門筆記(ㄧ) - 核心概念及架構" />
-    
-
-    
-    <meta name="description" content="">
-    <meta property="og:description" content="" />
-    <meta property="twitter:description" content="" />
-    
-
-    
-    <meta property="twitter:card" content="了解Ansible的基本架構，並使用Ansible來提高環境部署效率及穩定性。" />
-    
-    
-
-    <meta name="keyword"  content="吳明倫, MingLun, minglunwu">
-    <link rel="shortcut icon" href="/img/favicon.ico">
-
-    <title>Ansible 入門筆記(ㄧ) - 核心概念及架構 | MingLun Blog</title>
-
-    <link rel="canonical" href="/notes/2021/ansible_note/">
-
-    
-    
-    
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-
-    
-    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
-
-    
-    <link rel="stylesheet" href="/css/zanshang.css">
-
-    
-    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
-
-    
-    
-
-    
-    <script src="/js/jquery.min.js"></script>
-
-    
-    <script src="/js/bootstrap.min.js"></script>
-
-    
-    <script src="/js/hux-blog.min.js"></script>
-
-    
-    <script src="/js/lazysizes.min.js"></script>
-
-    
-    
-
-</head>
-
-
-
-
-
-
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-
-    <div class="container-fluid">
-        
-        <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">MingLun Blog</a>
-        </div>
-
-        
-        
-        <div id="huxblog_navbar">
-            <div class="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/">All Posts</a>
-                    </li>
-                    
-                        
-                    
-                    
-		    
-                        <li><a href="/archive//">ARCHIVE</a></li>
-                    
-                        <li><a href="/notes//">NOTES</a></li>
-                    
-                        <li><a href="/about//">ABOUT</a></li>
-                    
-		            <li>
-                        <a href="/search"><i class="fa fa-search"></i></a>
-		           </li>
-                </ul>
-            </div>
-        </div>
-        
-    </div>
-    
-</nav>
-<script>
-    
-    
-    
-    var $body   = document.body;
-    var $toggle = document.querySelector('.navbar-toggle');
-    var $navbar = document.querySelector('#huxblog_navbar');
-    var $collapse = document.querySelector('.navbar-collapse');
-
-    $toggle.addEventListener('click', handleMagic)
-    function handleMagic(e){
-        if ($navbar.className.indexOf('in') > 0) {
-        
-            $navbar.className = " ";
-            
-            setTimeout(function(){
-                
-                if($navbar.className.indexOf('in') < 0) {
-                    $collapse.style.height = "0px"
-                }
-            },400)
-        }else{
-        
-            $collapse.style.height = "auto"
-            $navbar.className += " in";
-        }
-    }
-</script>
-
-
-
-
-<style type="text/css">
-    header.intro-header {
-        background-image: url('https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80')
-    }
-</style>
-
-<header class="intro-header" >
-
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                        <a class="tag" href="/tags/python" title="Python">
-                            Python
-                        </a>
-                        
-                        <a class="tag" href="/tags/ansible" title="Ansible">
-                            Ansible
-                        </a>
-                        
-                    </div>
-                    <h1>Ansible 入門筆記(ㄧ) - 核心概念及架構</h1>
-                    <h2 class="subheading"></h2>
-                    <span class="meta">
-                        
-                            Posted by 
-                            
-                                MingLun Allen Wu
-                             
-                            on 
-                            Monday, September 27, 2021
-                            
-                            
-                            
-                            
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-
-
-
-
-<article>
-    <div class="container">
-        <div class="row">
-
-            
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
-                
-                <h1 id="tldr">TL;DR</h1>
-<p><code>Ansible</code>是適用於Python環境的自動化組態管理工具，組態(Configuration Management)意味著環境的設定及部署。</p>
-<p>部署環境時，需要花費大量的時間來安裝套件、設定Config檔案、調整dependency，使用 <code>Ansible</code> 可以將這些「制式化的系統操作」自動化，讓開發者將注意力投注在值得關注的事物上。</p>
-<p>撰寫好「部署的流程」(例如安裝套件、複製檔案&hellip;)及「遠端主機的連線資訊」後，運行Ansible的主機即可連線至其他主機，進行自動部署，提高部署的效率、降低安裝過程中人為失誤的機率。</p>
-<h1 id="1-why-ansible-">1. Why Ansible ?</h1>
-<p><code>Ansible</code>的優勢在於:</p>
-<ol>
-<li>
-<p>使用Python生態系：</p>
-<p>近期許多機器學習框架皆是建構於Python生態系</p>
-</li>
-<li>
-<p>使用SSH連線，不需額外安裝工具:</p>
-<p>使用 <code>Ansible</code> 對遠端主機進行操作時，是透過 <code>SSH</code> 進行遠端操作，意味著不需要在遠端主機額外安裝套件，僅需開啟SSH連接阜即可。 在某些難以安裝套件的環境(例如醫院、銀行)相當方便。</p>
-</li>
-</ol>
-<h1 id="2-使用-ansible-的目的">2. 使用 Ansible 的目的</h1>
-<ul>
-<li>
-<p>提升 Production 環境的穩定性及可靠性</p>
-<p>使用檔案管理「部署內容」，達到 <a href="https://www.trendmicro.com/zh_hk/what-is/cloud-security/infrastructure-as-code.html"><em>Infrastructure as Code</em></a>，管理上也相對單純，可以使用版本控制進行進退版操作。</p>
-</li>
-<li>
-<p>減少服務中斷時間</p>
-<p>若發生服務中斷，需要將節點下線重新部署，使用<code>Ansible</code>進行部署能夠按照「預先設計好的流程」重新部署，不會受限於人員的精神狀況及操作穩定度。</p>
-</li>
-<li>
-<p>確保環境間(開發、測試、正式)設定對齊</p>
-<p>如果同時有多台機器，使用 Ansible 統一部署，可確保在部署過程中統一參考組態檔案，不會發生人為失誤(例如手誤輸入錯誤的資訊)，或是不同部署人員部署順序不一致。</p>
-</li>
-</ul>
-<hr>
-<h1 id="3-檔案結構--安裝">3. 檔案結構 &amp; 安裝</h1>
-<h2 id="31-安裝">3.1 安裝</h2>
-<p>雖然在先前曾提過 <code>Ansible</code> 不需要額外安裝套件，但這是指<strong>被操控的機器</strong>，我們仍然需要在主要操作的主機上安裝 <code>Ansible</code>，使用 <code>pip</code> 即可輕易安裝:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>python <span style="color:#ff79c6">-</span>m pip install <span style="color:#ff79c6">--</span>user ansible
-</span></span></code></pre></div><h2 id="32-檔案結構">3.2 檔案結構</h2>
-<p>在學習一個工具時，我習慣先確認「專案的結構該長怎麼樣」，在後續的文章我們將會以此專案結構來作為範例。</p>
-<p>以下是一個 <code>Ansible</code> 專案的大致樣貌:</p>
-<pre tabindex="0"><code>ansible_project
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:site_name" content="MingLun Blog"><meta property="og:type" content="article"><meta property="og:image" content="https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80"><meta property="twitter:image" content="https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80"><meta name=title content="Ansible 入門筆記(ㄧ) - 核心概念及架構"><meta property="og:title" content="Ansible 入門筆記(ㄧ) - 核心概念及架構"><meta property="twitter:title" content="Ansible 入門筆記(ㄧ) - 核心概念及架構"><meta name=description content><meta property="og:description" content><meta property="twitter:description" content><meta property="twitter:card" content="了解Ansible的基本架構，並使用Ansible來提高環境部署效率及穩定性。"><meta name=keyword content="吳明倫, MingLun, minglunwu"><link rel="shortcut icon" href=/img/favicon.ico><title>Ansible 入門筆記(ㄧ) - 核心概念及架構 | MingLun Blog</title><link rel=canonical href=/notes/2021/ansible_note/><link rel=stylesheet href=/css/bootstrap.min.css><link rel=stylesheet href=/css/hugo-theme-cleanwhite.min.css><link rel=stylesheet href=/css/zanshang.css><link rel=stylesheet href=/css/font-awesome.all.min.css><script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js></script>
+<script src=/js/hux-blog.min.js></script>
+<script src=/js/lazysizes.min.js></script></head><nav class="navbar navbar-default navbar-custom navbar-fixed-top"><div class=container-fluid><div class="navbar-header page-scroll"><button type=button class=navbar-toggle>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span></button>
+<a class=navbar-brand href=/>MingLun Blog</a></div><div id=huxblog_navbar><div class=navbar-collapse><ul class="nav navbar-nav navbar-right"><li><a href=/>All Posts</a></li><li><a href=/archive//>ARCHIVE</a></li><li><a href=/notes//>NOTES</a></li><li><a href=/about//>ABOUT</a></li><li><a href=/search><i class="fa fa-search"></i></a></li></ul></div></div></div></nav><script>var $body=document.body,$toggle=document.querySelector(".navbar-toggle"),$navbar=document.querySelector("#huxblog_navbar"),$collapse=document.querySelector(".navbar-collapse");$toggle.addEventListener("click",handleMagic);function handleMagic(){$navbar.className.indexOf("in")>0?($navbar.className=" ",setTimeout(function(){$navbar.className.indexOf("in")<0&&($collapse.style.height="0px")},400)):($collapse.style.height="auto",$navbar.className+=" in")}</script><style type=text/css>header.intro-header{background-image:url(https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80)}</style><header class=intro-header><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><div class=tags><a class=tag href=/tags/python title=Python>Python</a>
+<a class=tag href=/tags/ansible title=Ansible>Ansible</a></div><h1>Ansible 入門筆記(ㄧ) - 核心概念及架構</h1><h2 class=subheading></h2><span class=meta>Posted by
+MingLun Allen Wu
+on
+Monday, September 27, 2021</span></div></div></div></div></header><article><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2
+col-md-10 col-md-offset-1
+post-container"><h1 id=tldr>TL;DR</h1><p><code>Ansible</code>是適用於Python環境的自動化組態管理工具，組態(Configuration Management)意味著環境的設定及部署。</p><p>部署環境時，需要花費大量的時間來安裝套件、設定Config檔案、調整dependency，使用 <code>Ansible</code> 可以將這些「制式化的系統操作」自動化，讓開發者將注意力投注在值得關注的事物上。</p><p>撰寫好「部署的流程」(例如安裝套件、複製檔案&mldr;)及「遠端主機的連線資訊」後，運行Ansible的主機即可連線至其他主機，進行自動部署，提高部署的效率、降低安裝過程中人為失誤的機率。</p><h1 id=1-why-ansible->1. Why Ansible ?</h1><p><code>Ansible</code>的優勢在於:</p><ol><li><p>使用Python生態系：</p><p>近期許多機器學習框架皆是建構於Python生態系</p></li><li><p>使用SSH連線，不需額外安裝工具:</p><p>使用 <code>Ansible</code> 對遠端主機進行操作時，是透過 <code>SSH</code> 進行遠端操作，意味著不需要在遠端主機額外安裝套件，僅需開啟SSH連接阜即可。 在某些難以安裝套件的環境(例如醫院、銀行)相當方便。</p></li></ol><h1 id=2-使用-ansible-的目的>2. 使用 Ansible 的目的</h1><ul><li><p>提升 Production 環境的穩定性及可靠性</p><p>使用檔案管理「部署內容」，達到 <a href=https://www.trendmicro.com/zh_hk/what-is/cloud-security/infrastructure-as-code.html><em>Infrastructure as Code</em></a>，管理上也相對單純，可以使用版本控制進行進退版操作。</p></li><li><p>減少服務中斷時間</p><p>若發生服務中斷，需要將節點下線重新部署，使用<code>Ansible</code>進行部署能夠按照「預先設計好的流程」重新部署，不會受限於人員的精神狀況及操作穩定度。</p></li><li><p>確保環境間(開發、測試、正式)設定對齊</p><p>如果同時有多台機器，使用 Ansible 統一部署，可確保在部署過程中統一參考組態檔案，不會發生人為失誤(例如手誤輸入錯誤的資訊)，或是不同部署人員部署順序不一致。</p></li></ul><hr><h1 id=3-檔案結構--安裝>3. 檔案結構 & 安裝</h1><h2 id=31-安裝>3.1 安裝</h2><p>雖然在先前曾提過 <code>Ansible</code> 不需要額外安裝套件，但這是指<strong>被操控的機器</strong>，我們仍然需要在主要操作的主機上安裝 <code>Ansible</code>，使用 <code>pip</code> 即可輕易安裝:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>python <span style=color:#ff79c6>-</span>m pip install <span style=color:#ff79c6>--</span>user ansible
+</span></span></code></pre></div><h2 id=32-檔案結構>3.2 檔案結構</h2><p>在學習一個工具時，我習慣先確認「專案的結構該長怎麼樣」，在後續的文章我們將會以此專案結構來作為範例。</p><p>以下是一個 <code>Ansible</code> 專案的大致樣貌:</p><pre tabindex=0><code>ansible_project
 | - README.md
 | - INVENTORY_FILE_1  # 概念 - Inventory
 | - INVENTORY_FILE_2
@@ -264,11 +28,7 @@
             | - main.yml
         | - handlers/
             | - main.yml
-</code></pre><p>備註: 這是用來說明的專案結構，更多Ansible的專案結構可以參考 <a href="https://docs.ansible.com/ansible/2.8/user_guide/playbooks_best_practices.html#directory-layout">Best Practices - Ancible Documentation</a></p>
-<h1 id="4-playbook---設定工作的流程及步驟">4. Playbook - 設定工作的流程及步驟</h1>
-<p>在上方架構中，首先看到 <code>main.yml</code>，這是 <code>Ansible</code> 專案中的一個 <strong>Playbook(劇本)</strong>，顧名思義在這個檔案中記錄了「做事的方式」及「做事的流程」。</p>
-<p><code>Playbook</code> 的範例如下:</p>
-<pre tabindex="0"><code># main.yml
+</code></pre><p>備註: 這是用來說明的專案結構，更多Ansible的專案結構可以參考 <a href=https://docs.ansible.com/ansible/2.8/user_guide/playbooks_best_practices.html#directory-layout>Best Practices - Ancible Documentation</a></p><h1 id=4-playbook---設定工作的流程及步驟>4. Playbook - 設定工作的流程及步驟</h1><p>在上方架構中，首先看到 <code>main.yml</code>，這是 <code>Ansible</code> 專案中的一個 <strong>Playbook(劇本)</strong>，顧名思義在這個檔案中記錄了「做事的方式」及「做事的流程」。</p><p><code>Playbook</code> 的範例如下:</p><pre tabindex=0><code># main.yml
 - name: The example playbook # 階層1 - Play
   hosts: localhost # 定義執行此Play的機器
   vars: # 設定變數
@@ -289,31 +49,10 @@
   - name: print file result   # 定義 task-3
     debug:
       msg: &#34;{{ result.stdout_lines }}&#34;
-</code></pre><h2 id="41-playbook的階層">4.1 Playbook的階層</h2>
-<p>在 <code>Playbook</code> 中包含幾個不同的概念:</p>
-<ul>
-<li>
-<p><code>Play</code>: 定義了「角色」(hosts) 該執行什麼樣的「任務」(task)</p>
-</li>
-<li>
-<p><code>Task</code>: 一個具體的工作，可能是一個具體的 bash 指令 (例如: <code>echo $PATH</code>)</p>
-</li>
-<li>
-<p>在一個 <code>Playbook</code> 中可能包含了數個不同的 <code>Play</code>:</p>
-<p>分別定義「扮演DB-Server角色」的機器該完成哪些任務、「扮演Web-Server」的機器又該完成哪些任務。</p>
-</li>
-<li>
-<p>在一個 <code>Play</code> 中可能定義了數個 <code>Task</code>:</p>
-<p>「扮演DB-Server角色」的機器可能需要「建立本地資料夾」、「安裝PostgreDB」、「初始化DB」等三項具體的任務。</p>
-</li>
-</ul>
-<p>以上方的 <code>main.yml</code> 來說，我們建立了一個 <code>Play</code> (<em>The example playbook</em>)，執行這個<code>Play</code>的角色是<code>localhost</code>(<code>hosts: localhost</code>)，而這個 <code>Play</code> 裡面包含了三項具體的 <code>Task</code> :
+</code></pre><h2 id=41-playbook的階層>4.1 Playbook的階層</h2><p>在 <code>Playbook</code> 中包含幾個不同的概念:</p><ul><li><p><code>Play</code>: 定義了「角色」(hosts) 該執行什麼樣的「任務」(task)</p></li><li><p><code>Task</code>: 一個具體的工作，可能是一個具體的 bash 指令 (例如: <code>echo $PATH</code>)</p></li><li><p>在一個 <code>Playbook</code> 中可能包含了數個不同的 <code>Play</code>:</p><p>分別定義「扮演DB-Server角色」的機器該完成哪些任務、「扮演Web-Server」的機器又該完成哪些任務。</p></li><li><p>在一個 <code>Play</code> 中可能定義了數個 <code>Task</code>:</p><p>「扮演DB-Server角色」的機器可能需要「建立本地資料夾」、「安裝PostgreDB」、「初始化DB」等三項具體的任務。</p></li></ul><p>以上方的 <code>main.yml</code> 來說，我們建立了一個 <code>Play</code> (<em>The example playbook</em>)，執行這個<code>Play</code>的角色是<code>localhost</code>(<code>hosts: localhost</code>)，而這個 <code>Play</code> 裡面包含了三項具體的 <code>Task</code> :
 + <em>generate the hello_world.txt file</em>
 + <em>show file context</em>
-+ <em>print file result</em></p>
-<h2 id="42-task-的定義">4.2 Task 的定義</h2>
-<p>接著我們來看如何定義 <code>Task</code>，從上方 <code>main.yml</code> 中節錄 <code>Task</code> 的部分:</p>
-<pre tabindex="0"><code>tasks: # 設定 task
++ <em>print file result</em></p><h2 id=42-task-的定義>4.2 Task 的定義</h2><p>接著我們來看如何定義 <code>Task</code>，從上方 <code>main.yml</code> 中節錄 <code>Task</code> 的部分:</p><pre tabindex=0><code>tasks: # 設定 task
   - name: generate the hello_world.txt file   # 定義 task-1
     lineinfile:  # 概念 - Module
       path: /tmp/hello_world.txt
@@ -328,91 +67,41 @@
   - name: print file result   # 定義 task-3
     debug:
       msg: &#34;{{ result.stdout_lines }}&#34;
-</code></pre><p>這三個 <code>Task</code> 語法看起來很不一樣，感覺相當複雜，但涵蓋了大部分的概念，理解這三個<code>Task</code>，就大致了解 <code>Ansible Task</code>了！</p>
-<p>首先可以看到三個 <code>Task</code> 都有一個共通的 <code>name</code> 欄位，定義此 <code>Task</code> 的名稱。</p>
-<p>接下來我們將三個任務分開來講:</p>
-<h3 id="421---command-task2">4.2.1 - Command (Task2)</h3>
-<p><code>command</code> 欄位放的是單純的 <strong>bash script</strong>，舉凡 <code>ls /tmp</code>, <code>cat /xxx/yyy.txt</code>，是最為單純的使用方式。</p>
-<p><code>task-2 (show file context)</code> 使用 command 來顯示特定位置的檔案:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">-</span> name: show file context   <span style="color:#6272a4"># 定義 task-2</span>
-</span></span><span style="display:flex;"><span>    command: cat <span style="color:#ff79c6">/</span>tmp<span style="color:#ff79c6">/</span>hello_word<span style="color:#ff79c6">.</span>txt
-</span></span><span style="display:flex;"><span>    register: result
-</span></span></code></pre></div><p>如果需要將 terminal 執行的資訊儲存下來，則需要透過 <code>register</code> 語法來註冊變數，以上方yml檔為例，將<code>cat /tmp/hello_world.txt</code> 的內容儲存至 <code>result</code> 變數中。</p>
-<h3 id="422---module-task1--task3">4.2.2 - Module (Task1 &amp; Task3)</h3>
-<p>除了單純使用 <code>command</code> 下語法外， <code>Ansible</code> 還有提供許多內建的語法，讓使用者能用簡單的語法執行複雜的任務（例如檔案新增、權限變動、Git下載等等)。 接下來我們分別以 <code>Task1</code> 及 <code>Task3</code> 來介紹兩個常用的 <code>Module</code>。</p>
-<h4 id="4221---debug">4.2.2.1 - debug</h4>
-<p>在 <code>Task2</code> 我們將輸出結果儲存至 <code>result</code> 變數中，接下來我們就透過 <code>Ansible</code> 的 <code>Module - Debug</code> 來輸出結果，每個不同的 <code>Module</code> 會自帶不同的參數，這些參數可以在 <code>Ansible</code> 的<a href="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/debug_module.html#parameters">文件</a>查詢，得到參數 <code>msg</code> 是放置要輸出的值。</p>
-<p>所以在 <code>Task3</code> 中，我們將剛剛註冊的變數放入 <code>msg</code> 中:</p>
-<pre tabindex="0"><code>- name: print file result   # 定義 task-3
+</code></pre><p>這三個 <code>Task</code> 語法看起來很不一樣，感覺相當複雜，但涵蓋了大部分的概念，理解這三個<code>Task</code>，就大致了解 <code>Ansible Task</code>了！</p><p>首先可以看到三個 <code>Task</code> 都有一個共通的 <code>name</code> 欄位，定義此 <code>Task</code> 的名稱。</p><p>接下來我們將三個任務分開來講:</p><h3 id=421---command-task2>4.2.1 - Command (Task2)</h3><p><code>command</code> 欄位放的是單純的 <strong>bash script</strong>，舉凡 <code>ls /tmp</code>, <code>cat /xxx/yyy.txt</code>，是最為單純的使用方式。</p><p><code>task-2 (show file context)</code> 使用 command 來顯示特定位置的檔案:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>-</span> name: show file context   <span style=color:#6272a4># 定義 task-2</span>
+</span></span><span style=display:flex><span>    command: cat <span style=color:#ff79c6>/</span>tmp<span style=color:#ff79c6>/</span>hello_word<span style=color:#ff79c6>.</span>txt
+</span></span><span style=display:flex><span>    register: result
+</span></span></code></pre></div><p>如果需要將 terminal 執行的資訊儲存下來，則需要透過 <code>register</code> 語法來註冊變數，以上方yml檔為例，將<code>cat /tmp/hello_world.txt</code> 的內容儲存至 <code>result</code> 變數中。</p><h3 id=422---module-task1--task3>4.2.2 - Module (Task1 & Task3)</h3><p>除了單純使用 <code>command</code> 下語法外， <code>Ansible</code> 還有提供許多內建的語法，讓使用者能用簡單的語法執行複雜的任務（例如檔案新增、權限變動、Git下載等等)。 接下來我們分別以 <code>Task1</code> 及 <code>Task3</code> 來介紹兩個常用的 <code>Module</code>。</p><h4 id=4221---debug>4.2.2.1 - debug</h4><p>在 <code>Task2</code> 我們將輸出結果儲存至 <code>result</code> 變數中，接下來我們就透過 <code>Ansible</code> 的 <code>Module - Debug</code> 來輸出結果，每個不同的 <code>Module</code> 會自帶不同的參數，這些參數可以在 <code>Ansible</code> 的<a href=https://docs.ansible.com/ansible/latest/collections/ansible/builtin/debug_module.html#parameters>文件</a>查詢，得到參數 <code>msg</code> 是放置要輸出的值。</p><p>所以在 <code>Task3</code> 中，我們將剛剛註冊的變數放入 <code>msg</code> 中:</p><pre tabindex=0><code>- name: print file result   # 定義 task-3
 debug:
     msg: &#34;{{ result.stdout_lines }}&#34;
-</code></pre><p>在稍後執行 <code>Playbook</code> 的過程中，即可將 <code>Task2</code> 的結果輸出。</p>
-<h4 id="4222---fileinline">4.2.2.2 - fileinline</h4>
-<p>除了 <code>debug</code> 之外，<code>Ansible</code>還提供許多模組，例如檔案的處理(<a href="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html">Module-file</a>)、Git操作(<a href="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html">Module-git</a>)等等&hellip;</p>
-<p>第二個介紹的模組是<a href="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html">Module-fileinline</a>，將內容寫入檔案時使用，參考官網的<a href="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html#parameters">文件</a>可以得到各項參數的意義，以 <code>task1</code> 為例：</p>
-<pre tabindex="0"><code>- name: generate the hello_world.txt file   # 定義 task-1
+</code></pre><p>在稍後執行 <code>Playbook</code> 的過程中，即可將 <code>Task2</code> 的結果輸出。</p><h4 id=4222---fileinline>4.2.2.2 - fileinline</h4><p>除了 <code>debug</code> 之外，<code>Ansible</code>還提供許多模組，例如檔案的處理(<a href=https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html>Module-file</a>)、Git操作(<a href=https://docs.ansible.com/ansible/latest/collections/ansible/builtin/git_module.html>Module-git</a>)等等&mldr;</p><p>第二個介紹的模組是<a href=https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html>Module-fileinline</a>，將內容寫入檔案時使用，參考官網的<a href=https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html#parameters>文件</a>可以得到各項參數的意義，以 <code>task1</code> 為例：</p><pre tabindex=0><code>- name: generate the hello_world.txt file   # 定義 task-1
     lineinfile:  # 概念 - Module
       path: /tmp/hello_world.txt
       state: present
       line: &#34;{{ dynamic_word }}&#34;
       create: yes
-</code></pre><ul>
-<li><strong>path</strong>: 要寫入檔案的路徑</li>
-<li><strong>state</strong>: present(寫入)、absent(移除)</li>
-<li><strong>line</strong>: 要寫入的資訊 (對於 <code>Jinja</code> 語法不熟悉的朋友，別緊張，請繼續看下去)</li>
-<li><strong>create</strong>: 檔案若不存在，是否要創建</li>
-</ul>
-<p>透過 <code>Module - lineinfile</code> ， <code>task1</code> 將會創建 <code>/tmp/hello_world.txt</code>，並將 <code>dynamic_word</code> 變數寫入檔案中。 (請見下節)</p>
-<h3 id="43-variable">4.3 Variable</h3>
-<p>在 <code>Playbook</code> 中，我們可以自定義變數，以 <code>main.yml</code> 為例:</p>
-<pre tabindex="0"><code># main.yml
+</code></pre><ul><li><strong>path</strong>: 要寫入檔案的路徑</li><li><strong>state</strong>: present(寫入)、absent(移除)</li><li><strong>line</strong>: 要寫入的資訊 (對於 <code>Jinja</code> 語法不熟悉的朋友，別緊張，請繼續看下去)</li><li><strong>create</strong>: 檔案若不存在，是否要創建</li></ul><p>透過 <code>Module - lineinfile</code> ， <code>task1</code> 將會創建 <code>/tmp/hello_world.txt</code>，並將 <code>dynamic_word</code> 變數寫入檔案中。 (請見下節)</p><h3 id=43-variable>4.3 Variable</h3><p>在 <code>Playbook</code> 中，我們可以自定義變數，以 <code>main.yml</code> 為例:</p><pre tabindex=0><code># main.yml
 - name: The example playbook # 階層1 - Play
   hosts: localhost # 定義執行此Play的機器
   vars: # 設定變數
     dynamic_word: &#34;Hello World&#34;
-</code></pre><p>我們在 <code>Play</code> 中定義了一個變數 <code>dynamic_word</code>，在此<code>Play</code>的各項任務中，如果需要使用此變數，可以使用 <code>Jinja2</code> 的渲染語法來取得 :</p>
-<pre tabindex="0"><code>- name: generate the hello_world.txt file   # 定義 task-1
+</code></pre><p>我們在 <code>Play</code> 中定義了一個變數 <code>dynamic_word</code>，在此<code>Play</code>的各項任務中，如果需要使用此變數，可以使用 <code>Jinja2</code> 的渲染語法來取得 :</p><pre tabindex=0><code>- name: generate the hello_world.txt file   # 定義 task-1
     lineinfile:  # 概念 - Module
       path: /tmp/hello_world.txt
       state: present
       line: &#34;{{ dynamic_word }}&#34; # 使用 {{ 變數名稱 }} 來取得變數 
       create: yes
-</code></pre><p>這樣的好處在於: <strong>多個<code>task</code>都使用 Jinja 方式取得變數，未來該變數的值如果有變動，可以直接更換 <code>vars</code> 欄位，不需要每一個 <code>task</code> 都更動</strong></p>
-<h3 id="44-執行-playbook">4.4 執行 <code>Playbook</code></h3>
-<p>恭喜！ 我們成功設定好第一個 <code>Playbook</code> 了，快速總結這個<code>Playbook</code>的目的:</p>
-<blockquote>
-<p>扮演「localhost」角色的主機，需要進行三個任務，依序是建立檔案、顯示資訊、輸出資訊</p>
-</blockquote>
-<p>設定好劇本後，該開始執行了！</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>ansible<span style="color:#ff79c6">-</span>playbook main<span style="color:#ff79c6">.</span>yml
-</span></span></code></pre></div><p>應該可以看到 <code>Ansible</code> 開始依序執行三項任務，且最後輸出結果將會如下圖:</p>
-<!-- raw HTML omitted -->
-<p>在執行的過程中，也可以透過 <code>-e</code> 來覆蓋原先設定的變數，舉例來說，原先在 <code>main.yml</code> 中設定的 <code>dynamic_word</code> 變數為 <em>hello world</em> ，我們可以透過:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>ansible<span style="color:#ff79c6">-</span>playbook <span style="color:#ff79c6">-</span>e dynamic_word<span style="color:#ff79c6">=</span>minglunwu main<span style="color:#ff79c6">.</span>yml
-</span></span></code></pre></div><p>透過上述指令將 <code>dynamic_word</code> 變數覆寫為 <em>minglunwu</em>，執行結束時，應可在debug的介面看到檔案內容由 <em>hello world</em> 變為 <em>minglunwu</em>了。</p>
-<h1 id="5-inventory---紀錄機器的群組及連線資訊">5. Inventory - 紀錄機器的群組及連線資訊</h1>
-<p>在 <code>Playbook</code> 中我們定義了不同角色的機器需要進行什麼樣的行為，接下來我們將介紹 <code>Inventory File</code>，這個檔案的用意是</p>
-<blockquote>
-<p>定義機器的連線資訊以及所屬的角色</p>
-</blockquote>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#6272a4"># INVENTORY_FILE_1</span>
-</span></span><span style="display:flex;"><span>[test<span style="color:#ff79c6">-</span>server] <span style="color:#6272a4"># 群組(角色)名稱</span>
-</span></span><span style="display:flex;"><span>localhost ansible_connection<span style="color:#ff79c6">=</span>local
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>[web<span style="color:#ff79c6">-</span>server] <span style="color:#6272a4"># 群組(角色)名稱</span>
-</span></span><span style="display:flex;"><span><span style="color:#6272a4"># 連線資訊</span>
-</span></span><span style="display:flex;"><span><span style="color:#6272a4"># 機器名稱/連線方式/使用者帳號/使用者密碼(不建議)</span>
-</span></span><span style="display:flex;"><span>webserver ansible_connection<span style="color:#ff79c6">=</span>ssh ansible_user<span style="color:#ff79c6">=</span>myuser ansible_ssh_pass<span style="color:#ff79c6">=</span>password
-</span></span><span style="display:flex;"><span>webserver<span style="color:#ff79c6">-</span><span style="color:#bd93f9">2</span> ansible_connection<span style="color:#ff79c6">=</span>ssh ansible_user<span style="color:#ff79c6">=</span>myuser<span style="color:#ff79c6">-</span><span style="color:#bd93f9">2</span> ansible_ssh_pass<span style="color:#ff79c6">=</span>password2
-</span></span></code></pre></div><p>在<code>INVENTORY_FILE_1</code>中我們可以看到 <code>[test-server]</code> 和 <code>[web-server]</code> 兩個群組(角色)，這些群組中可包含不同的機器及連線資訊。</p>
-<p>對於 <code>Inventory File</code> 和 <code>Group</code>，我個人的理解是:</p>
-<ul>
-<li><code>Inventory File</code> 是用來管理不同的環境(例如 SIT、UAT、PROD)</li>
-<li><code>Group</code>: 同一個環境中，則用<code>Group</code>來區別不同類型的服務(例如: DB、Web-Server)。<code>Playbook</code> 在設定<code>task</code>時，可以透過 <code>hosts</code> 來篩選不同<code>Group</code>的機器該做什麼任務。</li>
-</ul>
-<p>你可能會有兩個不同的 <code>Inventory File</code>，分別代表 <code>UAT</code> 及 <code>PROD</code> 環境的機器連線資訊，而兩個 <code>Inventory File</code> 中可能都會有 <code>db-server</code> 和 <code>web-server</code>的群組。</p>
-<p>在編寫 <code>Playbook</code> 時，你可以透過設定 <code>hosts</code> 參數來設定各個角色要做的事情:</p>
-<pre tabindex="0"><code>- name: task-db
+</code></pre><p>這樣的好處在於: <strong>多個<code>task</code>都使用 Jinja 方式取得變數，未來該變數的值如果有變動，可以直接更換 <code>vars</code> 欄位，不需要每一個 <code>task</code> 都更動</strong></p><h3 id=44-執行-playbook>4.4 執行 <code>Playbook</code></h3><p>恭喜！ 我們成功設定好第一個 <code>Playbook</code> 了，快速總結這個<code>Playbook</code>的目的:</p><blockquote><p>扮演「localhost」角色的主機，需要進行三個任務，依序是建立檔案、顯示資訊、輸出資訊</p></blockquote><p>設定好劇本後，該開始執行了！</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>ansible<span style=color:#ff79c6>-</span>playbook main<span style=color:#ff79c6>.</span>yml
+</span></span></code></pre></div><p>應該可以看到 <code>Ansible</code> 開始依序執行三項任務，且最後輸出結果將會如下圖:</p><p>在執行的過程中，也可以透過 <code>-e</code> 來覆蓋原先設定的變數，舉例來說，原先在 <code>main.yml</code> 中設定的 <code>dynamic_word</code> 變數為 <em>hello world</em> ，我們可以透過:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>ansible<span style=color:#ff79c6>-</span>playbook <span style=color:#ff79c6>-</span>e dynamic_word<span style=color:#ff79c6>=</span>minglunwu main<span style=color:#ff79c6>.</span>yml
+</span></span></code></pre></div><p>透過上述指令將 <code>dynamic_word</code> 變數覆寫為 <em>minglunwu</em>，執行結束時，應可在debug的介面看到檔案內容由 <em>hello world</em> 變為 <em>minglunwu</em>了。</p><h1 id=5-inventory---紀錄機器的群組及連線資訊>5. Inventory - 紀錄機器的群組及連線資訊</h1><p>在 <code>Playbook</code> 中我們定義了不同角色的機器需要進行什麼樣的行為，接下來我們將介紹 <code>Inventory File</code>，這個檔案的用意是</p><blockquote><p>定義機器的連線資訊以及所屬的角色</p></blockquote><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#6272a4># INVENTORY_FILE_1</span>
+</span></span><span style=display:flex><span>[test<span style=color:#ff79c6>-</span>server] <span style=color:#6272a4># 群組(角色)名稱</span>
+</span></span><span style=display:flex><span>localhost ansible_connection<span style=color:#ff79c6>=</span>local
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[web<span style=color:#ff79c6>-</span>server] <span style=color:#6272a4># 群組(角色)名稱</span>
+</span></span><span style=display:flex><span><span style=color:#6272a4># 連線資訊</span>
+</span></span><span style=display:flex><span><span style=color:#6272a4># 機器名稱/連線方式/使用者帳號/使用者密碼(不建議)</span>
+</span></span><span style=display:flex><span>webserver ansible_connection<span style=color:#ff79c6>=</span>ssh ansible_user<span style=color:#ff79c6>=</span>myuser ansible_ssh_pass<span style=color:#ff79c6>=</span>password
+</span></span><span style=display:flex><span>webserver<span style=color:#ff79c6>-</span><span style=color:#bd93f9>2</span> ansible_connection<span style=color:#ff79c6>=</span>ssh ansible_user<span style=color:#ff79c6>=</span>myuser<span style=color:#ff79c6>-</span><span style=color:#bd93f9>2</span> ansible_ssh_pass<span style=color:#ff79c6>=</span>password2
+</span></span></code></pre></div><p>在<code>INVENTORY_FILE_1</code>中我們可以看到 <code>[test-server]</code> 和 <code>[web-server]</code> 兩個群組(角色)，這些群組中可包含不同的機器及連線資訊。</p><p>對於 <code>Inventory File</code> 和 <code>Group</code>，我個人的理解是:</p><ul><li><code>Inventory File</code> 是用來管理不同的環境(例如 SIT、UAT、PROD)</li><li><code>Group</code>: 同一個環境中，則用<code>Group</code>來區別不同類型的服務(例如: DB、Web-Server)。<code>Playbook</code> 在設定<code>task</code>時，可以透過 <code>hosts</code> 來篩選不同<code>Group</code>的機器該做什麼任務。</li></ul><p>你可能會有兩個不同的 <code>Inventory File</code>，分別代表 <code>UAT</code> 及 <code>PROD</code> 環境的機器連線資訊，而兩個 <code>Inventory File</code> 中可能都會有 <code>db-server</code> 和 <code>web-server</code>的群組。</p><p>在編寫 <code>Playbook</code> 時，你可以透過設定 <code>hosts</code> 參數來設定各個角色要做的事情:</p><pre tabindex=0><code>- name: task-db
   hosts: db-server
   tasks:
     - name: example-1
@@ -423,385 +112,27 @@ debug:
   tasks:
     - name: example-2
       command: pip install flask
-</code></pre><p>被歸類在 <code>db-server</code> 群組的機器需要安裝<code>MySQL-python</code>、被歸類在 <code>web-server</code> 群組的機器則需要安裝 <code>flask</code></p>
-<blockquote>
-<p>這是以「群組」去區分不同機器該做什麼事情 (功能層級)</p>
-</blockquote>
-<p>在執行 <code>Playbook</code> 時，也可以透過 <code>-i</code> 來指定 <code>Inventory file</code></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>    ansible<span style="color:#ff79c6">-</span>playbook <span style="color:#ff79c6">-</span>i INVENTORY_FILE_1 main<span style="color:#ff79c6">.</span>yml
-</span></span></code></pre></div><p><strong>不同的 <code>Inventory File</code> 可能會定義相同的<code>Group</code>(Ex: <code>web-server</code>, <code>db-server</code>)，但這些群組中包含著不同的節點 (<code>Prod</code> 環境的 <code>web-server</code> 是節點A、<code>UAT</code>環境的 <code>web-server</code> 則是節點B)</strong></p>
-<p>單純切換 <code>Inventory File</code> 即可在多個環境間部署多台節點，且每個節點根據自身被賦予的角色，進行不同的任務。</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>ansible<span style="color:#ff79c6">-</span>playbook <span style="color:#ff79c6">-</span>i UAT main<span style="color:#ff79c6">.</span>yml <span style="color:#6272a4"># 僅更新UAT環境</span>
-</span></span><span style="display:flex;"><span>ansible<span style="color:#ff79c6">-</span>playbook <span style="color:#ff79c6">-</span>i PROD main<span style="color:#ff79c6">.</span>yml <span style="color:#6272a4"># 僅更新PROD環境</span>
-</span></span><span style="display:flex;"><span>ansible<span style="color:#ff79c6">-</span>playbook <span style="color:#ff79c6">-</span>i UAT <span style="color:#ff79c6">-</span>i PROD main<span style="color:#ff79c6">.</span>yml <span style="color:#6272a4"># 兩個環境同時更新</span>
-</span></span></code></pre></div><blockquote>
-<p>使用<code>Group</code>來區分不同性質的服務</p>
-</blockquote>
-<blockquote>
-<p>使用<code>Inventory</code>來區分不同環境</p>
-</blockquote>
-<blockquote>
-<p>透過 <code>Inventory File</code> 和 <code>Group</code> ， <code>Ansible</code> 能根據使用者需求快速的部署對應的機器。</p>
-</blockquote>
-<h1 id="6-小結">6. 小結</h1>
-<p>本篇筆記對於 <code>Ansible</code> 進行入門的介紹，包含幾個重要觀念:</p>
-<ul>
-<li><code>Playbook</code> 中的元件及階層</li>
-<li>如何使用 <code>Ansible</code> 內建的模組</li>
-<li>使用 <code>Group</code> 區分不同功能的節點</li>
-<li>使用 <code>Inventory File</code> 區分不同環境</li>
-<li><code>Ansible</code> 如何執行 <code>Playbook</code></li>
-<li>執行時如何覆寫變數、如何選擇 <code>Inventory File</code></li>
-</ul>
-<p>在下篇筆記中，我們將會繼續介紹 <code>Ansible</code> 的應用，包含:</p>
-<ul>
-<li>設定不同<code>Group</code>專屬的變數</li>
-<li>如何使用 <code>role</code> 來提高 <code>Ansible</code> 專案的程式碼重用率</li>
-<li>使用 <code>Ansible-Galaxy</code> 來取得眾多開源<code>Playbook</code></li>
-</ul>
-<p>筆記連結: <a href="https://minglunwu.github.io/notes/2021/ansible_note_2.html">Ansible 入門筆記(二) - Variable</a></p>
-<p>感謝您的閱讀！如果有任何問題歡迎透過<a href="mailto:allen6997535@gmail.com">電子郵件</a>聯繫我！</p>
-<p>我們下次見！</p>
-
-
-                
-
-                
-                <hr>
-                <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/notes/2021/python_import/" data-toggle="tooltip" data-placement="top" title="告別惱人的Python Import">&larr;
-                            Previous Post</a>
-                    </li>
-                    
-                    
-                    <li class="next">
-                        <a href="/notes/2021/ansible_note_2/" data-toggle="tooltip" data-placement="top" title="Ansible 入門筆記(二) - Variable">Next
-                            Post &rarr;</a>
-                    </li>
-                    
-                </ul>
-                
-
-                
-
-
-
-            </div>
-
-            
-            
-            <div class="
-                col-lg-2 col-lg-offset-0
-                visible-lg-block
-                sidebar-container
-                catalog-container">
-                <div class="side-catalog">
-                    <hr class="hidden-sm hidden-xs">
-                    <h5>
-                        <a class="catalog-toggle" href="#">CATALOG</a>
-                    </h5>
-                    <ul class="catalog-body"></ul>
-                </div>
-            </div>
-            
-
-            
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                
-                
-                <section>
-                    <hr class="hidden-sm hidden-xs">
-                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-                    <div class="tags">
-                        
-                        
-                        
-                        <a href="/tags/ansible" title="ansible">
-                            ansible
-                        </a>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        <a href="/tags/fast-api" title="fast-api">
-                            fast-api
-                        </a>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        <a href="/tags/python" title="python">
-                            python
-                        </a>
-                        
-                        
-                        
-                        
-                        
-                        <a href="/tags/test" title="test">
-                            test
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/tool" title="tool">
-                            tool
-                        </a>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        <a href="/tags/wsgi" title="wsgi">
-                            wsgi
-                        </a>
-                        
-                        
-                    </div>
-                </section>
-                
-
-                
-                
-            </div>
-        </div>
-    </div>
-</article>
-
-
-
-
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">                  
-                    
-                    <li>
-                        <a href="mailto:youremail@gmail.com">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-		           
-                    
-                    
-                    
-                    
-
-		            
-                    
-                    <li>
-                        <a target="_blank" href="/your%20wechat%20qr%20code%20image">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-		            
-                    
-                    <li>
-                        <a target="_blank" href="https://github.com/yourgithub">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-		            
-                    
-                    
-                    
-                    <li>
-                        <a target="_blank" href="https://www.linkedin.com/in/yourlinkedinid">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-		           
-                    
-                    
-                    <li>
-                        <a target="_blank" href="https://stackoverflow.com/users/yourstackoverflowid">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-                    
-                    
-                    
-                    
-                    
-            
-            
-            
-           
-                   <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="MingLun Blog" >
-                           <span class="fa-stack fa-lg">
-                               <i class="fas fa-circle fa-stack-2x"></i>
-                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
-                           </span>
-                       </a>
-                   </li>
-            
-             </ul>
-		<p class="copyright text-muted">
-                    Copyright &copy; MingLun Blog 2023
-                    <br>
-                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
-                    <iframe
-                        style="margin-left: 2px; margin-bottom:-5px;"
-                        frameborder="0" scrolling="0" width="100px" height="20px"
-                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
-                    </iframe>
-                </p>
-            </div>
-        </div>
-    </div>
-</footer>
-
-
-
-
-<script>
-    function loadAsync(u, c) {
-      var d = document, t = 'script',
-          o = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      o.src = u;
-      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-      s.parentNode.insertBefore(o, s);
-    }
-</script>
-
-
-
-
-
-
-<script>
-    
-    if($('#tag_cloud').length !== 0){
-        loadAsync("/js/jquery.tagcloud.js",function(){
-            $.fn.tagcloud.defaults = {
-                
-                color: {start: '#bbbbee', end: '#0085a1'},
-            };
-            $('#tag_cloud a').tagcloud();
-        })
-    }
-</script>
-
-
-<script>
-    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
-        var $nav = document.querySelector("nav");
-        if($nav) FastClick.attach($nav);
-    })
-</script>
-
-
-
-
-
-
-<script type="text/javascript">
-    function generateCatalog(selector) {
-
-        
-        
-        
-        
-            _containerSelector = 'div.post-container'
-        
-
-        
-        var P = $(_containerSelector), a, n, t, l, i, c;
-        a = P.find('h1,h2,h3,h4,h5,h6');
-
-        
-        $(selector).html('')
-
-        
-        a.each(function () {
-            n = $(this).prop('tagName').toLowerCase();
-            i = "#" + $(this).prop('id');
-            t = $(this).text();
-            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
-            l = $('<li class="' + n + '_nav"></li>').append(c);
-            $(selector).append(l);
-        });
-        return true;
-    }
-
-    generateCatalog(".catalog-body");
-
-    
-    $(".catalog-toggle").click((function (e) {
-        e.preventDefault();
-        $('.side-catalog').toggleClass("fold")
-    }))
-
-    
-
-
-    loadAsync("\/js\/jquery.nav.js", function () {
-        $('.catalog-body').onePageNav({
-            currentClass: "active",
-            changeHash: !1,
-            easing: "swing",
-            filter: "",
-            scrollSpeed: 700,
-            scrollOffset: 0,
-            scrollThreshold: .2,
-            begin: null,
-            end: null,
-            scrollChange: null,
-            padding: 80
-        });
-    });
-</script>
-
-
-
-
-
-
-</body>
-</html>
+</code></pre><p>被歸類在 <code>db-server</code> 群組的機器需要安裝<code>MySQL-python</code>、被歸類在 <code>web-server</code> 群組的機器則需要安裝 <code>flask</code></p><blockquote><p>這是以「群組」去區分不同機器該做什麼事情 (功能層級)</p></blockquote><p>在執行 <code>Playbook</code> 時，也可以透過 <code>-i</code> 來指定 <code>Inventory file</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>    ansible<span style=color:#ff79c6>-</span>playbook <span style=color:#ff79c6>-</span>i INVENTORY_FILE_1 main<span style=color:#ff79c6>.</span>yml
+</span></span></code></pre></div><p><strong>不同的 <code>Inventory File</code> 可能會定義相同的<code>Group</code>(Ex: <code>web-server</code>, <code>db-server</code>)，但這些群組中包含著不同的節點 (<code>Prod</code> 環境的 <code>web-server</code> 是節點A、<code>UAT</code>環境的 <code>web-server</code> 則是節點B)</strong></p><p>單純切換 <code>Inventory File</code> 即可在多個環境間部署多台節點，且每個節點根據自身被賦予的角色，進行不同的任務。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>ansible<span style=color:#ff79c6>-</span>playbook <span style=color:#ff79c6>-</span>i UAT main<span style=color:#ff79c6>.</span>yml <span style=color:#6272a4># 僅更新UAT環境</span>
+</span></span><span style=display:flex><span>ansible<span style=color:#ff79c6>-</span>playbook <span style=color:#ff79c6>-</span>i PROD main<span style=color:#ff79c6>.</span>yml <span style=color:#6272a4># 僅更新PROD環境</span>
+</span></span><span style=display:flex><span>ansible<span style=color:#ff79c6>-</span>playbook <span style=color:#ff79c6>-</span>i UAT <span style=color:#ff79c6>-</span>i PROD main<span style=color:#ff79c6>.</span>yml <span style=color:#6272a4># 兩個環境同時更新</span>
+</span></span></code></pre></div><blockquote><p>使用<code>Group</code>來區分不同性質的服務</p></blockquote><blockquote><p>使用<code>Inventory</code>來區分不同環境</p></blockquote><blockquote><p>透過 <code>Inventory File</code> 和 <code>Group</code> ， <code>Ansible</code> 能根據使用者需求快速的部署對應的機器。</p></blockquote><h1 id=6-小結>6. 小結</h1><p>本篇筆記對於 <code>Ansible</code> 進行入門的介紹，包含幾個重要觀念:</p><ul><li><code>Playbook</code> 中的元件及階層</li><li>如何使用 <code>Ansible</code> 內建的模組</li><li>使用 <code>Group</code> 區分不同功能的節點</li><li>使用 <code>Inventory File</code> 區分不同環境</li><li><code>Ansible</code> 如何執行 <code>Playbook</code></li><li>執行時如何覆寫變數、如何選擇 <code>Inventory File</code></li></ul><p>在下篇筆記中，我們將會繼續介紹 <code>Ansible</code> 的應用，包含:</p><ul><li>設定不同<code>Group</code>專屬的變數</li><li>如何使用 <code>role</code> 來提高 <code>Ansible</code> 專案的程式碼重用率</li><li>使用 <code>Ansible-Galaxy</code> 來取得眾多開源<code>Playbook</code></li></ul><p>筆記連結: <a href=https://minglunwu.github.io/notes/2021/ansible_note_2.html>Ansible 入門筆記(二) - Variable</a></p><p>感謝您的閱讀！如果有任何問題歡迎透過<a href=mailto:allen6997535@gmail.com>電子郵件</a>聯繫我！</p><p>我們下次見！</p><hr><ul class=pager><li class=previous><a href=/notes/2021/python_import/ data-toggle=tooltip data-placement=top title="告別惱人的Python Import">&larr;
+Previous Post</a></li><li class=next><a href=/notes/2021/ansible_note_2/ data-toggle=tooltip data-placement=top title="Ansible 入門筆記(二) - Variable">Next
+Post &rarr;</a></li></ul></div><div class="col-lg-2 col-lg-offset-0
+visible-lg-block
+sidebar-container
+catalog-container"><div class=side-catalog><hr class="hidden-sm hidden-xs"><h5><a class=catalog-toggle href=#>CATALOG</a></h5><ul class=catalog-body></ul></div></div><div class="col-lg-8 col-lg-offset-2
+col-md-10 col-md-offset-1
+sidebar-container"><section><hr class="hidden-sm hidden-xs"><h5><a href=/tags/>FEATURED TAGS</a></h5><div class=tags><a href=/tags/ansible title=ansible>ansible</a>
+<a href=/tags/fast-api title=fast-api>fast-api</a>
+<a href=/tags/python title=python>python</a>
+<a href=/tags/test title=test>test</a>
+<a href=/tags/tool title=tool>tool</a>
+<a href=/tags/wsgi title=wsgi>wsgi</a></div></section></div></div></div></article><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center"><li><a href=mailto:youremail@gmail.com><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=/your%20wechat%20qr%20code%20image><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-weixin fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://github.com/yourgithub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://www.linkedin.com/in/yourlinkedinid><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://stackoverflow.com/users/yourstackoverflowid><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i></span></a></li><li><a href rel=alternate type=application/rss+xml title="MingLun Blog"><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-rss fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="copyright text-muted">Copyright &copy; MingLun Blog 2023<br><a href=https://themes.gohugo.io/hugo-theme-cleanwhite>CleanWhite Hugo Theme</a> by <a href=https://zhaohuabing.com>Huabing</a> |
+<iframe style=margin-left:2px;margin-bottom:-5px frameborder=0 scrolling=0 width=100px height=20px src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true"></iframe></p></div></div></div></footer><script>function loadAsync(e,t){var s=document,o="script",n=s.createElement(o),i=s.getElementsByTagName(o)[0];n.src=e,t&&n.addEventListener("load",function(e){t(null,e)},!1),i.parentNode.insertBefore(n,i)}</script><script>$("#tag_cloud").length!==0&&loadAsync("/js/jquery.tagcloud.js",function(){$.fn.tagcloud.defaults={color:{start:"#bbbbee",end:"#0085a1"}},$("#tag_cloud a").tagcloud()})</script><script>loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js",function(){var e=document.querySelector("nav");e&&FastClick.attach(e)})</script><script type=text/javascript>function generateCatalog(e){_containerSelector="div.post-container";var t,n,s,o,i,a=$(_containerSelector),r=a.find("h1,h2,h3,h4,h5,h6");return $(e).html(""),r.each(function(){t=$(this).prop("tagName").toLowerCase(),o="#"+$(this).prop("id"),n=$(this).text(),i=$('<a href="'+o+'" rel="nofollow">'+n+"</a>"),s=$('<li class="'+t+'_nav"></li>').append(i),$(e).append(s)}),!0}generateCatalog(".catalog-body"),$(".catalog-toggle").click(function(e){e.preventDefault(),$(".side-catalog").toggleClass("fold")}),loadAsync("/js/jquery.nav.js",function(){$(".catalog-body").onePageNav({currentClass:"active",changeHash:!1,easing:"swing",filter:"",scrollSpeed:700,scrollOffset:0,scrollThreshold:.2,begin:null,end:null,scrollChange:null,padding:80})})</script></body></html>

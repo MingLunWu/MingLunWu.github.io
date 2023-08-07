@@ -1,752 +1,120 @@
-<!DOCTYPE html>
-<html lang="en-us">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    
-    <meta property="og:site_name" content="MingLun Blog">
-    <meta property="og:type" content="article">
-
-    
-    <meta property="og:image" content="https://images.unsplash.com/reserve/oGLumRxPRmemKujIVuEG_LongExposure_i84.jpeg?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1353&amp;q=80">
-    <meta property="twitter:image" content="https://images.unsplash.com/reserve/oGLumRxPRmemKujIVuEG_LongExposure_i84.jpeg?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1353&amp;q=80" />
-    
-
-    
-    <meta name="title" content="Fast API 入門筆記 (三) - Query Parameter &amp; Path Parameter" />
-    <meta property="og:title" content="Fast API 入門筆記 (三) - Query Parameter &amp; Path Parameter" />
-    <meta property="twitter:title" content="Fast API 入門筆記 (三) - Query Parameter &amp; Path Parameter" />
-    
-
-    
-    <meta name="description" content="">
-    <meta property="og:description" content="" />
-    <meta property="twitter:description" content="" />
-    
-
-    
-    <meta property="twitter:card" content="本篇筆記試著說明 `FastAPI` 的 `Path Parameters`、`Query Parameters` 的區別，以及適用的情境。" />
-    
-    
-
-    <meta name="keyword"  content="吳明倫, MingLun, minglunwu">
-    <link rel="shortcut icon" href="/img/favicon.ico">
-
-    <title>Fast API 入門筆記 (三) - Query Parameter &amp; Path Parameter | MingLun Blog</title>
-
-    <link rel="canonical" href="/notes/2022/fast_api_note_3/">
-
-    
-    
-    
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-
-    
-    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
-
-    
-    <link rel="stylesheet" href="/css/zanshang.css">
-
-    
-    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
-
-    
-    
-
-    
-    <script src="/js/jquery.min.js"></script>
-
-    
-    <script src="/js/bootstrap.min.js"></script>
-
-    
-    <script src="/js/hux-blog.min.js"></script>
-
-    
-    <script src="/js/lazysizes.min.js"></script>
-
-    
-    
-
-</head>
-
-
-
-
-
-
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
-
-    <div class="container-fluid">
-        
-        <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">MingLun Blog</a>
-        </div>
-
-        
-        
-        <div id="huxblog_navbar">
-            <div class="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/">All Posts</a>
-                    </li>
-                    
-                        
-                    
-                    
-		    
-                        <li><a href="/archive//">ARCHIVE</a></li>
-                    
-                        <li><a href="/notes//">NOTES</a></li>
-                    
-                        <li><a href="/about//">ABOUT</a></li>
-                    
-		            <li>
-                        <a href="/search"><i class="fa fa-search"></i></a>
-		           </li>
-                </ul>
-            </div>
-        </div>
-        
-    </div>
-    
-</nav>
-<script>
-    
-    
-    
-    var $body   = document.body;
-    var $toggle = document.querySelector('.navbar-toggle');
-    var $navbar = document.querySelector('#huxblog_navbar');
-    var $collapse = document.querySelector('.navbar-collapse');
-
-    $toggle.addEventListener('click', handleMagic)
-    function handleMagic(e){
-        if ($navbar.className.indexOf('in') > 0) {
-        
-            $navbar.className = " ";
-            
-            setTimeout(function(){
-                
-                if($navbar.className.indexOf('in') < 0) {
-                    $collapse.style.height = "0px"
-                }
-            },400)
-        }else{
-        
-            $collapse.style.height = "auto"
-            $navbar.className += " in";
-        }
-    }
-</script>
-
-
-
-
-<style type="text/css">
-    header.intro-header {
-        background-image: url('https://images.unsplash.com/reserve/oGLumRxPRmemKujIVuEG_LongExposure_i84.jpeg?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1353&q=80')
-    }
-</style>
-
-<header class="intro-header" >
-
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                        <a class="tag" href="/tags/fast-api" title="Fast API">
-                            Fast API
-                        </a>
-                        
-                        <a class="tag" href="/tags/python" title="Python">
-                            Python
-                        </a>
-                        
-                    </div>
-                    <h1>Fast API 入門筆記 (三) - Query Parameter &amp; Path Parameter</h1>
-                    <h2 class="subheading"></h2>
-                    <span class="meta">
-                        
-                            Posted by 
-                            
-                                MingLun Allen Wu
-                             
-                            on 
-                            Friday, January 7, 2022
-                            
-                            
-                            
-                            
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-
-
-
-
-<article>
-    <div class="container">
-        <div class="row">
-
-            
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
-                
-                <p><strong>重溫舊夢：</strong></p>
-<ul>
-<li><a href="https://minglunwu.github.io/notes/2021/fast_api_note_1.html">Fast API 入門筆記(一) - 基本介紹</a></li>
-<li><a href="https://minglunwu.github.io/notes/2021/fast_api_note_2.html">Fast API 入門筆記(二) - Typing Hint &amp; Async</a></li>
-</ul>
-<h1 id="tl-dr">TL; DR</h1>
-<p>做為一個 API 框架， <code>FastAPI</code> 需要以多種方式接受外部傳送的變數(例如 <em>GET</em>、<em>POST</em>)。</p>
-<p>本篇筆記試著說明 <code>FastAPI</code> 的 <code>Path Parameters</code>、<code>Query Parameters</code> 的區別，以及適用的情境。</p>
-<h2 id="path-parameter">Path Parameter</h2>
-<blockquote>
-<p>透過預先定義好的「位置」來接受參數</p>
-</blockquote>
-<h3 id="基本操作">基本操作</h3>
-<p>使用 <code>Path Parameter</code> 時，使用<code>{}</code>在路徑中設定一個參數，舉例來說：</p>
-<p>我們希望建立一個 GET 的 API，可以接受使用者的名字 <code>user_name</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">from</span> fastapi <span style="color:#ff79c6">import</span> FastAPI
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>app <span style="color:#ff79c6">=</span> FastAPI()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>@app.get(<span style="color:#f1fa8c">&#34;/users/</span><span style="color:#f1fa8c">{user_name}</span><span style="color:#f1fa8c">&#34;</span>) <span style="color:#6272a4"># 透過{user_name} 設定參數位置</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">read_user</span>(user_name):
-</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#34;user_name&#34;</span>: user_name}
-</span></span></code></pre></div><!-- raw HTML omitted -->
-<p>在 <code>read_user(user_name)</code> 中定義了 <code>user_name</code> 參數後， <code>FastAPI</code> 會自動去註冊的路徑中尋找 <code>{user_name}</code> 的位置。</p>
-<p>當<code>FastAPI</code>接收到符合條件的 Request(/users/{user_name})時，會自動將 <code>{user_name}</code> 位置的值當成<code>read_user()</code>的<code>user_name</code>參數送入。</p>
-<!-- raw HTML omitted -->
-<ol>
-<li>
-<p>當 API 運行後，在瀏覽器輸入: <!-- raw HTML omitted -->http://127.0.0.1:8000/users/MingLun<!-- raw HTML omitted --></p>
-</li>
-<li>
-<p>由於註冊了 <code>users/{user_name}</code> 規則，<code>FastAPI</code> 識別到該規則，因此將<code>{user_name}</code> 位置的值(MingLun)當作參數送入 <code>read_user()</code></p>
-</li>
-<li>
-<p>根據函式的運行邏輯，將會得到下列的回傳值:</p>
-</li>
-</ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{<span style="color:#f1fa8c">&#34;user_name&#34;</span>: <span style="color:#f1fa8c">&#34;MingLun&#34;</span>}
-</span></span></code></pre></div><h3 id="預先設定型態">預先設定型態</h3>
-<blockquote>
-<p>在設定參數時，可以預先定義變數型態，<code>FastAPI</code>會協助進行轉換及驗證。</p>
-</blockquote>
-<p>了解 <code>Path Variable</code> 的基本使用方式後，可以在函式設定參數時，加入 Python 的 <code>Typing Hint</code>:</p>
-<p><strong>重溫舊夢 - <a href="https://minglunwu.github.io/notes/2021/fast_api_note_2.html">Fast API 入門筆記(二) - Typing Hint &amp; Async</a></strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">from</span> fastapi <span style="color:#ff79c6">import</span> FastAPI
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>app <span style="color:#ff79c6">=</span> FastAPI()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>@app.get(<span style="color:#f1fa8c">&#34;/get_number/</span><span style="color:#f1fa8c">{number}</span><span style="color:#f1fa8c">&#34;</span>) 
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">read_number</span>(number: <span style="color:#8be9fd;font-style:italic">int</span>):
-</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#34;number&#34;</span>: number}
-</span></span></code></pre></div><!-- raw HTML omitted -->
-<p>此時如果在瀏覽器輸入: <a href="">http://127.0.0.1:8000/get_number/1313</a></p>
-<p><code>FastAPI</code>執行時會以<strong>str</strong>的格式將<code>&quot;1313&quot;</code>當成參數送入函式，但由於在 <code>read_number()</code> 中定義的 <code>number</code> 參數已經定義了型態 <strong>int</strong>，<code>FastAPI</code>處理時會嘗試將 <code>&quot;1313&quot;</code> 轉換為 <strong>int</strong> 格式，因此你將會得到:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{<span style="color:#f1fa8c">&#34;number&#34;</span>: <span style="color:#bd93f9">1313</span>}
-</span></span></code></pre></div><p>而非:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{<span style="color:#f1fa8c">&#34;number&#34;</span>: <span style="color:#f1fa8c">&#34;1313&#34;</span>}
-</span></span></code></pre></div><p><strong>例外情況: 如果出現無法轉換的情況</strong></p>
-<p>接續上述的情境，倘若此時我們在瀏覽器輸入: <a href="">http://127.0.0.1/get_number/MingLun</a></p>
-<p>此時 <code>FastAPI</code> 同樣會試著將 <code>{number}</code> 位置的參數轉換為 <strong>int</strong> 格式，也就是將 <code>MingLun</code> 轉換為 <strong>int</strong>，可預見此時會發生錯誤。</p>
-<p>有趣的是，當出現這種意外情境時， <code>FastAPI</code>不會直接噴出 <strong>500 Internal Server Error</strong>，而是會有固定的 HTTP Error 範本，提供使用者基本的錯誤資訊:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>    <span style="color:#f1fa8c">&#34;detail&#34;</span>: [
-</span></span><span style="display:flex;"><span>        {
-</span></span><span style="display:flex;"><span>            <span style="color:#f1fa8c">&#34;loc&#34;</span>: [
-</span></span><span style="display:flex;"><span>                <span style="color:#f1fa8c">&#34;path&#34;</span>,
-</span></span><span style="display:flex;"><span>                <span style="color:#f1fa8c">&#34;number&#34;</span>
-</span></span><span style="display:flex;"><span>            ],
-</span></span><span style="display:flex;"><span>            <span style="color:#f1fa8c">&#34;msg&#34;</span>: <span style="color:#f1fa8c">&#34;value is not a valid interger&#34;</span>,
-</span></span><span style="display:flex;"><span>            <span style="color:#f1fa8c">&#34;type&#34;</span>: <span style="color:#f1fa8c">&#34;type_error.integer&#34;</span>
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>    ]
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h2 id="順序帶來的影響">順序帶來的影響</h2>
-<blockquote>
-<p>在使用 <code>Path Parameter</code> 時，多個 EndPoint 的順序是會有影響的</p>
-</blockquote>
-<p>由於 <code>FastAPI</code> 可定義多層路徑 (Ex: <code>/A/B/C</code>)，所以有時候會發生多個 EndPoint 路徑重疊的情況，此時 <code>FastAPI</code> 將會依照註冊的順序查找。</p>
-<p>舉例來說，我們設計一個 API Endpoint (<code>get_info</code>)，可以根據使用者的<code>pID</code> 來取得相關資訊。 同時如果提供了一個保留字 (<code>SUPERUSER</code>)，則回傳不一樣的資訊。</p>
-<p><strong>(實際上沒有人會這樣設計，這只是個範例)</strong></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">from</span> fastapi <span style="color:#ff79c6">import</span> FastAPI
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>app <span style="color:#ff79c6">=</span> FastAPI()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>@app.get(<span style="color:#f1fa8c">&#34;/get_info/SUPERUSER&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">get_info_super_user</span>():
-</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#34;user&#34;</span>: <span style="color:#f1fa8c">&#34;YOU ARE SUPER USER!&#34;</span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>@app.get(<span style="color:#f1fa8c">&#34;/get_info/</span><span style="color:#f1fa8c">{pID}</span><span style="color:#f1fa8c">&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">get_info</span>(pID: <span style="color:#8be9fd;font-style:italic">str</span>):
-</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#34;user&#34;</span>: pID}
-</span></span></code></pre></div><p>當<code>FastAPI</code>接收到: <a href="">http://127.0.0.1/get_info/SUPERUSER</a>時，會從上至下檢查各個註冊的路徑。</p>
-<p>以上述範例來說，會進入 <code>get_info_super_user()</code>函式，得到特殊的回應。</p>
-<p>接著看看錯誤的情境，我們將兩個路徑對調:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">from</span> fastapi <span style="color:#ff79c6">import</span> FastAPI
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>app <span style="color:#ff79c6">=</span> FastAPI()
-</span></span><span style="display:flex;"><span>@app.get(<span style="color:#f1fa8c">&#34;/get_info/</span><span style="color:#f1fa8c">{pID}</span><span style="color:#f1fa8c">&#34;</span>) <span style="color:#6272a4"># 原本在下方</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">get_info</span>(pID: <span style="color:#8be9fd;font-style:italic">str</span>):
-</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#34;user&#34;</span>: pID}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>@app.get(<span style="color:#f1fa8c">&#34;/get_info/SUPERUSER&#34;</span>) <span style="color:#6272a4"># 原本在上方</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">get_info_super_user</span>():
-</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#34;user&#34;</span>: <span style="color:#f1fa8c">&#34;YOU ARE SUPER USER!&#34;</span>}
-</span></span></code></pre></div><p>此時再次發送  <a href="">http://127.0.0.1/get_info/SUPERUSER</a>
-會發生什麼事情？</p>
-<p><code>FastAPI</code> 接受到請求後，由上而下判斷規則，當判斷到第一個規則(也就是 <code>get_info()</code>)時，會直接進入執行，回傳:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{<span style="color:#f1fa8c">&#34;user&#34;</span>: <span style="color:#f1fa8c">&#34;SUPERUSER&#34;</span>}
-</span></span></code></pre></div><p>順序擺放錯誤時，永遠無法進入 <code>get_info_super_user()</code> 的 Endpoint.</p>
-<blockquote>
-<p><strong>設計時，條件較為嚴格的EndPoint，要放在較上方</strong></p>
-</blockquote>
-<h2 id="query-parameter">Query Parameter</h2>
-<blockquote>
-<p>用來接受URL所附加的參數，與 <code>Path Parameter</code> 最大的差別在於沒有預先定義位置</p>
-</blockquote>
-<p>透過 GET 請求傳送多個參數時，常會附加在URL上，例如:</p>
-<p><a href="">http://xxx.example.com/target?param1=a&amp;param2=b</a></p>
-<p>接收這些變數並進行處理，就是 <code>Query Parameter</code> 所負責的任務。</p>
-<h3 id="基本操作-1">基本操作</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">from</span> fastapi <span style="color:#ff79c6">import</span> FastAPI
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>app <span style="color:#ff79c6">=</span> FastAPI()
-</span></span><span style="display:flex;"><span>@app.get(<span style="color:#f1fa8c">&#34;/path_param_example/</span><span style="color:#f1fa8c">{pID}</span><span style="color:#f1fa8c">&#34;</span>) <span style="color:#6272a4"># 路徑中包含參數，屬於 Path Parameter</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">path_param_example</span>(pID: <span style="color:#8be9fd;font-style:italic">str</span>):
-</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#34;user&#34;</span>: pID}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>@app.get(<span style="color:#f1fa8c">&#34;/query_param_example&#34;</span>) <span style="color:#6272a4"># 路徑中不包含參數，屬於 Query Parameter</span>
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">query_param_example</span>(pID: <span style="color:#8be9fd;font-style:italic">str</span>):
-</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#34;user&#34;</span>: pID}
-</span></span></code></pre></div><p>從上述範例中，我們可以區別 <code>Query Parameter</code> 與 <code>Path Parameter</code> 的最大差異是 : <strong>路徑中是否有預留參數的位置</strong>。</p>
-<p>以 <code>Query Parameter</code> 來說，由於沒有在路徑中預留參數的位置，參數會掛載在URL後。</p>
-<p>以上方案例來說，傳送的方式會如下:</p>
-<p><a href="">http://127.0.0.1/query_param_example?pID=abc01</a></p>
-<h3 id="預先設定型態-1">預先設定型態</h3>
-<p>與 <code>Path Parameter</code> 相同，使用 <code>Query Parameter</code> 時也能透過預先定義參數型態，來觸發 <code>FastAPI</code> 自動檢驗、轉換的功能:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">from</span> fastapi <span style="color:#ff79c6">import</span> FastAPI
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>app <span style="color:#ff79c6">=</span> FastAPI()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>@app.get(<span style="color:#f1fa8c">&#34;/query_param_str&#34;</span>) 
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">query_param_str</span>(pID: <span style="color:#8be9fd;font-style:italic">str</span>): <span style="color:#6272a4"># 轉換成字串</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#34;user&#34;</span>: pID}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>@app.get(<span style="color:#f1fa8c">&#34;/query_param_int&#34;</span>)
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">query_param_int</span>(pID: <span style="color:#8be9fd;font-style:italic">int</span>): <span style="color:#6272a4"># 轉換成整數</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#34;user&#34;</span>: pID}
-</span></span></code></pre></div><p>在上述的例子中，我們定義了兩個EndPoint，差別在於設定參數時，分別指定了 <code>str</code> 和 <code>int</code> 格式。</p>
-<p>當我們同時傳送:</p>
-<ul>
-<li>
-<p><a href="">http://127.0.0.1/query_param_str?pID=1234</a></p>
-<p>由於 <code>pID</code> 被預設為 <code>str</code>，將會收到:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{<span style="color:#f1fa8c">&#34;user&#34;</span>: <span style="color:#f1fa8c">&#34;1234&#34;</span>} <span style="color:#6272a4"># 字串型態</span>
-</span></span></code></pre></div></li>
-<li>
-<p><a href="">http://127.0.0.1/query_param_int?pID=1234</a></p>
-<p>由於 <code>pID</code> 被預設為 <code>int</code>，將會收到:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>{<span style="color:#f1fa8c">&#34;user&#34;</span>: <span style="color:#bd93f9">1234</span>} <span style="color:#6272a4"># 整數型態</span>
-</span></span></code></pre></div></li>
-</ul>
-<p><code>FastAPI</code> 會根據參數所指定的型態，自動轉換收到的值，當轉換失敗時，同樣會回傳結構化的錯誤訊息。</p>
-<h2 id="透過參數的設置來決定行為">透過參數的設置來決定行為</h2>
-<p>在上述筆記中，透過參數的設置，能夠設定 <code>FastAPI</code> 在接收外部傳送的值時，如何進行型態的轉換。</p>
-<p>實際上，透過參數設置，還能做到更多的行為:</p>
-<h3 id="1-設定預設值">1. 設定預設值</h3>
-<p>在參數上設定預設值時，使用者呼叫 API Endpoint 時，如果沒有夾帶該參數，會自動以預設值帶入:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>@app.get(<span style="color:#f1fa8c">&#34;/default_param&#34;</span>) 
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">async</span> <span style="color:#ff79c6">def</span> <span style="color:#50fa7b">query_param_str</span>(param_a: <span style="color:#8be9fd;font-style:italic">str</span>, param_b: <span style="color:#8be9fd;font-style:italic">str</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;example&#34;</span>): <span style="color:#6272a4"># 轉換成字串</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#34;param_a&#34;</span>: param_a, <span style="color:#f1fa8c">&#34;param_b&#34;</span>: param_b}
-</span></span></code></pre></div><p>當使用者輸入: <a href="">http://127.0.0.1/default_param&amp;param_a=abc</a></p>
-<p>將會收到:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>    {<span style="color:#f1fa8c">&#34;param_a&#34;</span>: <span style="color:#f1fa8c">&#34;abc&#34;</span>, <span style="color:#f1fa8c">&#34;param_b&#34;</span>: <span style="color:#f1fa8c">&#34;example&#34;</span>}
-</span></span></code></pre></div><h3 id="2-選擇性參數">2. 選擇性參數</h3>
-<p>在建立 Endpoint 時，有些參數是 Optional ，不見得每次都要攜帶，例如建立一個 Endpoint 有下列條件:</p>
-<ul>
-<li>必須要提供 <code>user_name</code></li>
-<li>不一定要提供 <code>gender</code></li>
-</ul>
-<p>此時我們可以透過 Typing Hint 來讓 <code>gender</code> 欄位可以是 <code>str</code> 或是 <code>None</code>(不存在):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">from</span> typing <span style="color:#ff79c6">import</span> Union
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">optional_example</span>(user_name:<span style="color:#8be9fd;font-style:italic">str</span>, gender: Union[<span style="color:#8be9fd;font-style:italic">str</span>, <span style="color:#ff79c6">None</span>]):
-</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#34;user_name&#34;</span>: user_name, <span style="color:#f1fa8c">&#34;gender&#34;</span>: gender}
-</span></span></code></pre></div><p>除了使用 <code>Union</code> 額外指定 <code>None</code> 型態外，還可以使用更簡潔的語法 <code>Optional</code>:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ff79c6">from</span> typing <span style="color:#ff79c6">import</span> Optional
-</span></span><span style="display:flex;"><span><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">optional_example</span>(user_name:<span style="color:#8be9fd;font-style:italic">str</span>, gender: Optional[<span style="color:#8be9fd;font-style:italic">str</span>]):
-</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">return</span> {<span style="color:#f1fa8c">&#34;user_name&#34;</span>: user_name, <span style="color:#f1fa8c">&#34;gender&#34;</span>: gender}
-</span></span></code></pre></div><blockquote>
-<p><code>Optional[str]</code> 與 <code>Union[str, None]</code> 是完全等價的</p>
-</blockquote>
-<h2 id="結論">結論</h2>
-<p>本篇筆記介紹了 <code>FastAPI</code> 的 <code>Path Parameter</code> 和 <code>Query Parameter</code>，除了比較兩者的差別，也介紹 <code>FastAPI</code> 如何透過參數的設定來達到「型態轉換」、「結構化錯誤訊息」。</p>
-<p><code>Path Parameter</code>是接受特定位置的參數，而<code>Query Parameter</code> 則是接受 「GET 請求掛載在URL後面的參數」。</p>
-<p>在下一篇筆記，我們會更進一步介紹如何使用 <code>FastAPI</code> 的 <code>BaseModel</code> 來定義「參數物件」，接受 POST 請求所傳送的多項參數。</p>
-<p>我們下次見!</p>
-<p>&lt;未完待續&gt;</p>
-
-
-                
-
-                
-                <hr>
-                <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/notes/2021/data_quality/" data-toggle="tooltip" data-placement="top" title="監控資料品質的旅程">&larr;
-                            Previous Post</a>
-                    </li>
-                    
-                    
-                    <li class="next">
-                        <a href="/notes/2022/pytest_101/" data-toggle="tooltip" data-placement="top" title="Pytest 101 - 給 Python 開發者的測試入門">Next
-                            Post &rarr;</a>
-                    </li>
-                    
-                </ul>
-                
-
-                
-
-
-
-            </div>
-
-            
-            
-            <div class="
-                col-lg-2 col-lg-offset-0
-                visible-lg-block
-                sidebar-container
-                catalog-container">
-                <div class="side-catalog">
-                    <hr class="hidden-sm hidden-xs">
-                    <h5>
-                        <a class="catalog-toggle" href="#">CATALOG</a>
-                    </h5>
-                    <ul class="catalog-body"></ul>
-                </div>
-            </div>
-            
-
-            
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                
-                
-                <section>
-                    <hr class="hidden-sm hidden-xs">
-                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
-                    <div class="tags">
-                        
-                        
-                        
-                        <a href="/tags/ansible" title="ansible">
-                            ansible
-                        </a>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        <a href="/tags/fast-api" title="fast-api">
-                            fast-api
-                        </a>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        <a href="/tags/python" title="python">
-                            python
-                        </a>
-                        
-                        
-                        
-                        
-                        
-                        <a href="/tags/test" title="test">
-                            test
-                        </a>
-                        
-                        
-                        
-                        <a href="/tags/tool" title="tool">
-                            tool
-                        </a>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        <a href="/tags/wsgi" title="wsgi">
-                            wsgi
-                        </a>
-                        
-                        
-                    </div>
-                </section>
-                
-
-                
-                
-            </div>
-        </div>
-    </div>
-</article>
-
-
-
-
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">                  
-                    
-                    <li>
-                        <a href="mailto:youremail@gmail.com">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-		           
-                    
-                    
-                    
-                    
-
-		            
-                    
-                    <li>
-                        <a target="_blank" href="/your%20wechat%20qr%20code%20image">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-weixin fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-		            
-                    
-                    <li>
-                        <a target="_blank" href="https://github.com/yourgithub">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-		            
-                    
-                    
-                    
-                    <li>
-                        <a target="_blank" href="https://www.linkedin.com/in/yourlinkedinid">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-		           
-                    
-                    
-                    <li>
-                        <a target="_blank" href="https://stackoverflow.com/users/yourstackoverflowid">
-                            <span class="fa-stack fa-lg">
-                                <i class="fas fa-circle fa-stack-2x"></i>
-                                <i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i>
-                            </span>
-                        </a>
-                    </li>
-                    
-                    
-                    
-                    
-                    
-            
-            
-            
-           
-                   <li>
-                       <a href='' rel="alternate" type="application/rss+xml" title="MingLun Blog" >
-                           <span class="fa-stack fa-lg">
-                               <i class="fas fa-circle fa-stack-2x"></i>
-                               <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
-                           </span>
-                       </a>
-                   </li>
-            
-             </ul>
-		<p class="copyright text-muted">
-                    Copyright &copy; MingLun Blog 2023
-                    <br>
-                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
-                    <iframe
-                        style="margin-left: 2px; margin-bottom:-5px;"
-                        frameborder="0" scrolling="0" width="100px" height="20px"
-                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
-                    </iframe>
-                </p>
-            </div>
-        </div>
-    </div>
-</footer>
-
-
-
-
-<script>
-    function loadAsync(u, c) {
-      var d = document, t = 'script',
-          o = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      o.src = u;
-      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-      s.parentNode.insertBefore(o, s);
-    }
-</script>
-
-
-
-
-
-
-<script>
-    
-    if($('#tag_cloud').length !== 0){
-        loadAsync("/js/jquery.tagcloud.js",function(){
-            $.fn.tagcloud.defaults = {
-                
-                color: {start: '#bbbbee', end: '#0085a1'},
-            };
-            $('#tag_cloud a').tagcloud();
-        })
-    }
-</script>
-
-
-<script>
-    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
-        var $nav = document.querySelector("nav");
-        if($nav) FastClick.attach($nav);
-    })
-</script>
-
-
-
-
-
-
-<script type="text/javascript">
-    function generateCatalog(selector) {
-
-        
-        
-        
-        
-            _containerSelector = 'div.post-container'
-        
-
-        
-        var P = $(_containerSelector), a, n, t, l, i, c;
-        a = P.find('h1,h2,h3,h4,h5,h6');
-
-        
-        $(selector).html('')
-
-        
-        a.each(function () {
-            n = $(this).prop('tagName').toLowerCase();
-            i = "#" + $(this).prop('id');
-            t = $(this).text();
-            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
-            l = $('<li class="' + n + '_nav"></li>').append(c);
-            $(selector).append(l);
-        });
-        return true;
-    }
-
-    generateCatalog(".catalog-body");
-
-    
-    $(".catalog-toggle").click((function (e) {
-        e.preventDefault();
-        $('.side-catalog').toggleClass("fold")
-    }))
-
-    
-
-
-    loadAsync("\/js\/jquery.nav.js", function () {
-        $('.catalog-body').onePageNav({
-            currentClass: "active",
-            changeHash: !1,
-            easing: "swing",
-            filter: "",
-            scrollSpeed: 700,
-            scrollOffset: 0,
-            scrollThreshold: .2,
-            begin: null,
-            end: null,
-            scrollChange: null,
-            padding: 80
-        });
-    });
-</script>
-
-
-
-
-
-
-</body>
-</html>
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:site_name" content="MingLun Blog"><meta property="og:type" content="article"><meta property="og:image" content="https://images.unsplash.com/reserve/oGLumRxPRmemKujIVuEG_LongExposure_i84.jpeg?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1353&q=80"><meta property="twitter:image" content="https://images.unsplash.com/reserve/oGLumRxPRmemKujIVuEG_LongExposure_i84.jpeg?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1353&q=80"><meta name=title content="Fast API 入門筆記 (三) - Query Parameter & Path Parameter"><meta property="og:title" content="Fast API 入門筆記 (三) - Query Parameter & Path Parameter"><meta property="twitter:title" content="Fast API 入門筆記 (三) - Query Parameter & Path Parameter"><meta name=description content><meta property="og:description" content><meta property="twitter:description" content><meta property="twitter:card" content="本篇筆記試著說明 `FastAPI` 的 `Path Parameters`、`Query Parameters` 的區別，以及適用的情境。"><meta name=keyword content="吳明倫, MingLun, minglunwu"><link rel="shortcut icon" href=/img/favicon.ico><title>Fast API 入門筆記 (三) - Query Parameter & Path Parameter | MingLun Blog</title><link rel=canonical href=/notes/2022/fast_api_note_3/><link rel=stylesheet href=/css/bootstrap.min.css><link rel=stylesheet href=/css/hugo-theme-cleanwhite.min.css><link rel=stylesheet href=/css/zanshang.css><link rel=stylesheet href=/css/font-awesome.all.min.css><script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js></script>
+<script src=/js/hux-blog.min.js></script>
+<script src=/js/lazysizes.min.js></script></head><nav class="navbar navbar-default navbar-custom navbar-fixed-top"><div class=container-fluid><div class="navbar-header page-scroll"><button type=button class=navbar-toggle>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span></button>
+<a class=navbar-brand href=/>MingLun Blog</a></div><div id=huxblog_navbar><div class=navbar-collapse><ul class="nav navbar-nav navbar-right"><li><a href=/>All Posts</a></li><li><a href=/archive//>ARCHIVE</a></li><li><a href=/notes//>NOTES</a></li><li><a href=/about//>ABOUT</a></li><li><a href=/search><i class="fa fa-search"></i></a></li></ul></div></div></div></nav><script>var $body=document.body,$toggle=document.querySelector(".navbar-toggle"),$navbar=document.querySelector("#huxblog_navbar"),$collapse=document.querySelector(".navbar-collapse");$toggle.addEventListener("click",handleMagic);function handleMagic(){$navbar.className.indexOf("in")>0?($navbar.className=" ",setTimeout(function(){$navbar.className.indexOf("in")<0&&($collapse.style.height="0px")},400)):($collapse.style.height="auto",$navbar.className+=" in")}</script><style type=text/css>header.intro-header{background-image:url(https://images.unsplash.com/reserve/oGLumRxPRmemKujIVuEG_LongExposure_i84.jpeg?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1353&q=80)}</style><header class=intro-header><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><div class=tags><a class=tag href=/tags/fast-api title="Fast API">Fast API</a>
+<a class=tag href=/tags/python title=Python>Python</a></div><h1>Fast API 入門筆記 (三) - Query Parameter & Path Parameter</h1><h2 class=subheading></h2><span class=meta>Posted by
+MingLun Allen Wu
+on
+Friday, January 7, 2022</span></div></div></div></div></header><article><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2
+col-md-10 col-md-offset-1
+post-container"><p><strong>重溫舊夢：</strong></p><ul><li><a href=https://minglunwu.github.io/notes/2021/fast_api_note_1.html>Fast API 入門筆記(一) - 基本介紹</a></li><li><a href=https://minglunwu.github.io/notes/2021/fast_api_note_2.html>Fast API 入門筆記(二) - Typing Hint & Async</a></li></ul><h1 id=tl-dr>TL; DR</h1><p>做為一個 API 框架， <code>FastAPI</code> 需要以多種方式接受外部傳送的變數(例如 <em>GET</em>、<em>POST</em>)。</p><p>本篇筆記試著說明 <code>FastAPI</code> 的 <code>Path Parameters</code>、<code>Query Parameters</code> 的區別，以及適用的情境。</p><h2 id=path-parameter>Path Parameter</h2><blockquote><p>透過預先定義好的「位置」來接受參數</p></blockquote><h3 id=基本操作>基本操作</h3><p>使用 <code>Path Parameter</code> 時，使用<code>{}</code>在路徑中設定一個參數，舉例來說：</p><p>我們希望建立一個 GET 的 API，可以接受使用者的名字 <code>user_name</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>from</span> fastapi <span style=color:#ff79c6>import</span> FastAPI
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>app <span style=color:#ff79c6>=</span> FastAPI()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@app.get(<span style=color:#f1fa8c>&#34;/users/</span><span style=color:#f1fa8c>{user_name}</span><span style=color:#f1fa8c>&#34;</span>) <span style=color:#6272a4># 透過{user_name} 設定參數位置</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>async</span> <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>read_user</span>(user_name):
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#34;user_name&#34;</span>: user_name}
+</span></span></code></pre></div><p>在 <code>read_user(user_name)</code> 中定義了 <code>user_name</code> 參數後， <code>FastAPI</code> 會自動去註冊的路徑中尋找 <code>{user_name}</code> 的位置。</p><p>當<code>FastAPI</code>接收到符合條件的 Request(/users/{user_name})時，會自動將 <code>{user_name}</code> 位置的值當成<code>read_user()</code>的<code>user_name</code>參數送入。</p><ol><li><p>當 API 運行後，在瀏覽器輸入: http://127.0.0.1:8000/users/MingLun</p></li><li><p>由於註冊了 <code>users/{user_name}</code> 規則，<code>FastAPI</code> 識別到該規則，因此將<code>{user_name}</code> 位置的值(MingLun)當作參數送入 <code>read_user()</code></p></li><li><p>根據函式的運行邏輯，將會得到下列的回傳值:</p></li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>{<span style=color:#f1fa8c>&#34;user_name&#34;</span>: <span style=color:#f1fa8c>&#34;MingLun&#34;</span>}
+</span></span></code></pre></div><h3 id=預先設定型態>預先設定型態</h3><blockquote><p>在設定參數時，可以預先定義變數型態，<code>FastAPI</code>會協助進行轉換及驗證。</p></blockquote><p>了解 <code>Path Variable</code> 的基本使用方式後，可以在函式設定參數時，加入 Python 的 <code>Typing Hint</code>:</p><p><strong>重溫舊夢 - <a href=https://minglunwu.github.io/notes/2021/fast_api_note_2.html>Fast API 入門筆記(二) - Typing Hint & Async</a></strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>from</span> fastapi <span style=color:#ff79c6>import</span> FastAPI
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>app <span style=color:#ff79c6>=</span> FastAPI()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@app.get(<span style=color:#f1fa8c>&#34;/get_number/</span><span style=color:#f1fa8c>{number}</span><span style=color:#f1fa8c>&#34;</span>) 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>async</span> <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>read_number</span>(number: <span style=color:#8be9fd;font-style:italic>int</span>):
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#34;number&#34;</span>: number}
+</span></span></code></pre></div><p>此時如果在瀏覽器輸入: <a href>http://127.0.0.1:8000/get_number/1313</a></p><p><code>FastAPI</code>執行時會以<strong>str</strong>的格式將<code>"1313"</code>當成參數送入函式，但由於在 <code>read_number()</code> 中定義的 <code>number</code> 參數已經定義了型態 <strong>int</strong>，<code>FastAPI</code>處理時會嘗試將 <code>"1313"</code> 轉換為 <strong>int</strong> 格式，因此你將會得到:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>{<span style=color:#f1fa8c>&#34;number&#34;</span>: <span style=color:#bd93f9>1313</span>}
+</span></span></code></pre></div><p>而非:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>{<span style=color:#f1fa8c>&#34;number&#34;</span>: <span style=color:#f1fa8c>&#34;1313&#34;</span>}
+</span></span></code></pre></div><p><strong>例外情況: 如果出現無法轉換的情況</strong></p><p>接續上述的情境，倘若此時我們在瀏覽器輸入: <a href>http://127.0.0.1/get_number/MingLun</a></p><p>此時 <code>FastAPI</code> 同樣會試著將 <code>{number}</code> 位置的參數轉換為 <strong>int</strong> 格式，也就是將 <code>MingLun</code> 轉換為 <strong>int</strong>，可預見此時會發生錯誤。</p><p>有趣的是，當出現這種意外情境時， <code>FastAPI</code>不會直接噴出 <strong>500 Internal Server Error</strong>，而是會有固定的 HTTP Error 範本，提供使用者基本的錯誤資訊:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#f1fa8c>&#34;detail&#34;</span>: [
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#f1fa8c>&#34;loc&#34;</span>: [
+</span></span><span style=display:flex><span>                <span style=color:#f1fa8c>&#34;path&#34;</span>,
+</span></span><span style=display:flex><span>                <span style=color:#f1fa8c>&#34;number&#34;</span>
+</span></span><span style=display:flex><span>            ],
+</span></span><span style=display:flex><span>            <span style=color:#f1fa8c>&#34;msg&#34;</span>: <span style=color:#f1fa8c>&#34;value is not a valid interger&#34;</span>,
+</span></span><span style=display:flex><span>            <span style=color:#f1fa8c>&#34;type&#34;</span>: <span style=color:#f1fa8c>&#34;type_error.integer&#34;</span>
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    ]
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=順序帶來的影響>順序帶來的影響</h2><blockquote><p>在使用 <code>Path Parameter</code> 時，多個 EndPoint 的順序是會有影響的</p></blockquote><p>由於 <code>FastAPI</code> 可定義多層路徑 (Ex: <code>/A/B/C</code>)，所以有時候會發生多個 EndPoint 路徑重疊的情況，此時 <code>FastAPI</code> 將會依照註冊的順序查找。</p><p>舉例來說，我們設計一個 API Endpoint (<code>get_info</code>)，可以根據使用者的<code>pID</code> 來取得相關資訊。 同時如果提供了一個保留字 (<code>SUPERUSER</code>)，則回傳不一樣的資訊。</p><p><strong>(實際上沒有人會這樣設計，這只是個範例)</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>from</span> fastapi <span style=color:#ff79c6>import</span> FastAPI
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>app <span style=color:#ff79c6>=</span> FastAPI()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@app.get(<span style=color:#f1fa8c>&#34;/get_info/SUPERUSER&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#ff79c6>async</span> <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>get_info_super_user</span>():
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#34;user&#34;</span>: <span style=color:#f1fa8c>&#34;YOU ARE SUPER USER!&#34;</span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@app.get(<span style=color:#f1fa8c>&#34;/get_info/</span><span style=color:#f1fa8c>{pID}</span><span style=color:#f1fa8c>&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#ff79c6>async</span> <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>get_info</span>(pID: <span style=color:#8be9fd;font-style:italic>str</span>):
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#34;user&#34;</span>: pID}
+</span></span></code></pre></div><p>當<code>FastAPI</code>接收到: <a href>http://127.0.0.1/get_info/SUPERUSER</a>時，會從上至下檢查各個註冊的路徑。</p><p>以上述範例來說，會進入 <code>get_info_super_user()</code>函式，得到特殊的回應。</p><p>接著看看錯誤的情境，我們將兩個路徑對調:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>from</span> fastapi <span style=color:#ff79c6>import</span> FastAPI
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>app <span style=color:#ff79c6>=</span> FastAPI()
+</span></span><span style=display:flex><span>@app.get(<span style=color:#f1fa8c>&#34;/get_info/</span><span style=color:#f1fa8c>{pID}</span><span style=color:#f1fa8c>&#34;</span>) <span style=color:#6272a4># 原本在下方</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>async</span> <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>get_info</span>(pID: <span style=color:#8be9fd;font-style:italic>str</span>):
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#34;user&#34;</span>: pID}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@app.get(<span style=color:#f1fa8c>&#34;/get_info/SUPERUSER&#34;</span>) <span style=color:#6272a4># 原本在上方</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>async</span> <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>get_info_super_user</span>():
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#34;user&#34;</span>: <span style=color:#f1fa8c>&#34;YOU ARE SUPER USER!&#34;</span>}
+</span></span></code></pre></div><p>此時再次發送 <a href>http://127.0.0.1/get_info/SUPERUSER</a>
+會發生什麼事情？</p><p><code>FastAPI</code> 接受到請求後，由上而下判斷規則，當判斷到第一個規則(也就是 <code>get_info()</code>)時，會直接進入執行，回傳:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>{<span style=color:#f1fa8c>&#34;user&#34;</span>: <span style=color:#f1fa8c>&#34;SUPERUSER&#34;</span>}
+</span></span></code></pre></div><p>順序擺放錯誤時，永遠無法進入 <code>get_info_super_user()</code> 的 Endpoint.</p><blockquote><p><strong>設計時，條件較為嚴格的EndPoint，要放在較上方</strong></p></blockquote><h2 id=query-parameter>Query Parameter</h2><blockquote><p>用來接受URL所附加的參數，與 <code>Path Parameter</code> 最大的差別在於沒有預先定義位置</p></blockquote><p>透過 GET 請求傳送多個參數時，常會附加在URL上，例如:</p><p><a href>http://xxx.example.com/target?param1=a&param2=b</a></p><p>接收這些變數並進行處理，就是 <code>Query Parameter</code> 所負責的任務。</p><h3 id=基本操作-1>基本操作</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>from</span> fastapi <span style=color:#ff79c6>import</span> FastAPI
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>app <span style=color:#ff79c6>=</span> FastAPI()
+</span></span><span style=display:flex><span>@app.get(<span style=color:#f1fa8c>&#34;/path_param_example/</span><span style=color:#f1fa8c>{pID}</span><span style=color:#f1fa8c>&#34;</span>) <span style=color:#6272a4># 路徑中包含參數，屬於 Path Parameter</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>async</span> <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>path_param_example</span>(pID: <span style=color:#8be9fd;font-style:italic>str</span>):
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#34;user&#34;</span>: pID}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@app.get(<span style=color:#f1fa8c>&#34;/query_param_example&#34;</span>) <span style=color:#6272a4># 路徑中不包含參數，屬於 Query Parameter</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>async</span> <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>query_param_example</span>(pID: <span style=color:#8be9fd;font-style:italic>str</span>):
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#34;user&#34;</span>: pID}
+</span></span></code></pre></div><p>從上述範例中，我們可以區別 <code>Query Parameter</code> 與 <code>Path Parameter</code> 的最大差異是 : <strong>路徑中是否有預留參數的位置</strong>。</p><p>以 <code>Query Parameter</code> 來說，由於沒有在路徑中預留參數的位置，參數會掛載在URL後。</p><p>以上方案例來說，傳送的方式會如下:</p><p><a href>http://127.0.0.1/query_param_example?pID=abc01</a></p><h3 id=預先設定型態-1>預先設定型態</h3><p>與 <code>Path Parameter</code> 相同，使用 <code>Query Parameter</code> 時也能透過預先定義參數型態，來觸發 <code>FastAPI</code> 自動檢驗、轉換的功能:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>from</span> fastapi <span style=color:#ff79c6>import</span> FastAPI
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>app <span style=color:#ff79c6>=</span> FastAPI()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@app.get(<span style=color:#f1fa8c>&#34;/query_param_str&#34;</span>) 
+</span></span><span style=display:flex><span><span style=color:#ff79c6>async</span> <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>query_param_str</span>(pID: <span style=color:#8be9fd;font-style:italic>str</span>): <span style=color:#6272a4># 轉換成字串</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#34;user&#34;</span>: pID}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>@app.get(<span style=color:#f1fa8c>&#34;/query_param_int&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#ff79c6>async</span> <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>query_param_int</span>(pID: <span style=color:#8be9fd;font-style:italic>int</span>): <span style=color:#6272a4># 轉換成整數</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#34;user&#34;</span>: pID}
+</span></span></code></pre></div><p>在上述的例子中，我們定義了兩個EndPoint，差別在於設定參數時，分別指定了 <code>str</code> 和 <code>int</code> 格式。</p><p>當我們同時傳送:</p><ul><li><p><a href>http://127.0.0.1/query_param_str?pID=1234</a></p><p>由於 <code>pID</code> 被預設為 <code>str</code>，將會收到:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>{<span style=color:#f1fa8c>&#34;user&#34;</span>: <span style=color:#f1fa8c>&#34;1234&#34;</span>} <span style=color:#6272a4># 字串型態</span>
+</span></span></code></pre></div></li><li><p><a href>http://127.0.0.1/query_param_int?pID=1234</a></p><p>由於 <code>pID</code> 被預設為 <code>int</code>，將會收到:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>{<span style=color:#f1fa8c>&#34;user&#34;</span>: <span style=color:#bd93f9>1234</span>} <span style=color:#6272a4># 整數型態</span>
+</span></span></code></pre></div></li></ul><p><code>FastAPI</code> 會根據參數所指定的型態，自動轉換收到的值，當轉換失敗時，同樣會回傳結構化的錯誤訊息。</p><h2 id=透過參數的設置來決定行為>透過參數的設置來決定行為</h2><p>在上述筆記中，透過參數的設置，能夠設定 <code>FastAPI</code> 在接收外部傳送的值時，如何進行型態的轉換。</p><p>實際上，透過參數設置，還能做到更多的行為:</p><h3 id=1-設定預設值>1. 設定預設值</h3><p>在參數上設定預設值時，使用者呼叫 API Endpoint 時，如果沒有夾帶該參數，會自動以預設值帶入:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>@app.get(<span style=color:#f1fa8c>&#34;/default_param&#34;</span>) 
+</span></span><span style=display:flex><span><span style=color:#ff79c6>async</span> <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>query_param_str</span>(param_a: <span style=color:#8be9fd;font-style:italic>str</span>, param_b: <span style=color:#8be9fd;font-style:italic>str</span><span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;example&#34;</span>): <span style=color:#6272a4># 轉換成字串</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#34;param_a&#34;</span>: param_a, <span style=color:#f1fa8c>&#34;param_b&#34;</span>: param_b}
+</span></span></code></pre></div><p>當使用者輸入: <a href>http://127.0.0.1/default_param&param_a=abc</a></p><p>將會收到:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>    {<span style=color:#f1fa8c>&#34;param_a&#34;</span>: <span style=color:#f1fa8c>&#34;abc&#34;</span>, <span style=color:#f1fa8c>&#34;param_b&#34;</span>: <span style=color:#f1fa8c>&#34;example&#34;</span>}
+</span></span></code></pre></div><h3 id=2-選擇性參數>2. 選擇性參數</h3><p>在建立 Endpoint 時，有些參數是 Optional ，不見得每次都要攜帶，例如建立一個 Endpoint 有下列條件:</p><ul><li>必須要提供 <code>user_name</code></li><li>不一定要提供 <code>gender</code></li></ul><p>此時我們可以透過 Typing Hint 來讓 <code>gender</code> 欄位可以是 <code>str</code> 或是 <code>None</code>(不存在):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>from</span> typing <span style=color:#ff79c6>import</span> Union
+</span></span><span style=display:flex><span><span style=color:#ff79c6>def</span> <span style=color:#50fa7b>optional_example</span>(user_name:<span style=color:#8be9fd;font-style:italic>str</span>, gender: Union[<span style=color:#8be9fd;font-style:italic>str</span>, <span style=color:#ff79c6>None</span>]):
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#34;user_name&#34;</span>: user_name, <span style=color:#f1fa8c>&#34;gender&#34;</span>: gender}
+</span></span></code></pre></div><p>除了使用 <code>Union</code> 額外指定 <code>None</code> 型態外，還可以使用更簡潔的語法 <code>Optional</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>from</span> typing <span style=color:#ff79c6>import</span> Optional
+</span></span><span style=display:flex><span><span style=color:#ff79c6>def</span> <span style=color:#50fa7b>optional_example</span>(user_name:<span style=color:#8be9fd;font-style:italic>str</span>, gender: Optional[<span style=color:#8be9fd;font-style:italic>str</span>]):
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#34;user_name&#34;</span>: user_name, <span style=color:#f1fa8c>&#34;gender&#34;</span>: gender}
+</span></span></code></pre></div><blockquote><p><code>Optional[str]</code> 與 <code>Union[str, None]</code> 是完全等價的</p></blockquote><h2 id=結論>結論</h2><p>本篇筆記介紹了 <code>FastAPI</code> 的 <code>Path Parameter</code> 和 <code>Query Parameter</code>，除了比較兩者的差別，也介紹 <code>FastAPI</code> 如何透過參數的設定來達到「型態轉換」、「結構化錯誤訊息」。</p><p><code>Path Parameter</code>是接受特定位置的參數，而<code>Query Parameter</code> 則是接受 「GET 請求掛載在URL後面的參數」。</p><p>在下一篇筆記，我們會更進一步介紹如何使用 <code>FastAPI</code> 的 <code>BaseModel</code> 來定義「參數物件」，接受 POST 請求所傳送的多項參數。</p><p>我們下次見!</p><p>&lt;未完待續></p><hr><ul class=pager><li class=previous><a href=/notes/2021/data_quality/ data-toggle=tooltip data-placement=top title=監控資料品質的旅程>&larr;
+Previous Post</a></li><li class=next><a href=/notes/2022/pytest_101/ data-toggle=tooltip data-placement=top title="Pytest 101 - 給 Python 開發者的測試入門">Next
+Post &rarr;</a></li></ul></div><div class="col-lg-2 col-lg-offset-0
+visible-lg-block
+sidebar-container
+catalog-container"><div class=side-catalog><hr class="hidden-sm hidden-xs"><h5><a class=catalog-toggle href=#>CATALOG</a></h5><ul class=catalog-body></ul></div></div><div class="col-lg-8 col-lg-offset-2
+col-md-10 col-md-offset-1
+sidebar-container"><section><hr class="hidden-sm hidden-xs"><h5><a href=/tags/>FEATURED TAGS</a></h5><div class=tags><a href=/tags/ansible title=ansible>ansible</a>
+<a href=/tags/fast-api title=fast-api>fast-api</a>
+<a href=/tags/python title=python>python</a>
+<a href=/tags/test title=test>test</a>
+<a href=/tags/tool title=tool>tool</a>
+<a href=/tags/wsgi title=wsgi>wsgi</a></div></section></div></div></div></article><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center"><li><a href=mailto:youremail@gmail.com><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=/your%20wechat%20qr%20code%20image><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-weixin fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://github.com/yourgithub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://www.linkedin.com/in/yourlinkedinid><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://stackoverflow.com/users/yourstackoverflowid><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i></span></a></li><li><a href rel=alternate type=application/rss+xml title="MingLun Blog"><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-rss fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="copyright text-muted">Copyright &copy; MingLun Blog 2023<br><a href=https://themes.gohugo.io/hugo-theme-cleanwhite>CleanWhite Hugo Theme</a> by <a href=https://zhaohuabing.com>Huabing</a> |
+<iframe style=margin-left:2px;margin-bottom:-5px frameborder=0 scrolling=0 width=100px height=20px src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true"></iframe></p></div></div></div></footer><script>function loadAsync(e,t){var s=document,o="script",n=s.createElement(o),i=s.getElementsByTagName(o)[0];n.src=e,t&&n.addEventListener("load",function(e){t(null,e)},!1),i.parentNode.insertBefore(n,i)}</script><script>$("#tag_cloud").length!==0&&loadAsync("/js/jquery.tagcloud.js",function(){$.fn.tagcloud.defaults={color:{start:"#bbbbee",end:"#0085a1"}},$("#tag_cloud a").tagcloud()})</script><script>loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js",function(){var e=document.querySelector("nav");e&&FastClick.attach(e)})</script><script type=text/javascript>function generateCatalog(e){_containerSelector="div.post-container";var t,n,s,o,i,a=$(_containerSelector),r=a.find("h1,h2,h3,h4,h5,h6");return $(e).html(""),r.each(function(){t=$(this).prop("tagName").toLowerCase(),o="#"+$(this).prop("id"),n=$(this).text(),i=$('<a href="'+o+'" rel="nofollow">'+n+"</a>"),s=$('<li class="'+t+'_nav"></li>').append(i),$(e).append(s)}),!0}generateCatalog(".catalog-body"),$(".catalog-toggle").click(function(e){e.preventDefault(),$(".side-catalog").toggleClass("fold")}),loadAsync("/js/jquery.nav.js",function(){$(".catalog-body").onePageNav({currentClass:"active",changeHash:!1,easing:"swing",filter:"",scrollSpeed:700,scrollOffset:0,scrollThreshold:.2,begin:null,end:null,scrollChange:null,padding:80})})</script></body></html>
