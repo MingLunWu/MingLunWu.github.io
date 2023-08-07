@@ -1,0 +1,65 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:site_name" content="MingLun Blog"><meta property="og:type" content="article"><meta property="og:image" content="https://images.unsplash.com/photo-1555488205-d5e67846cf40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGxpZ2h0fGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=900&q=60"><meta property="twitter:image" content="https://images.unsplash.com/photo-1555488205-d5e67846cf40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGxpZ2h0fGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=900&q=60"><meta name=title content="Fast API 入門筆記 (一) - 基本介紹"><meta property="og:title" content="Fast API 入門筆記 (一) - 基本介紹"><meta property="twitter:title" content="Fast API 入門筆記 (一) - 基本介紹"><meta name=description content><meta property="og:description" content><meta property="twitter:description" content><meta property="twitter:card" content="Fast API 是近期 Python受到矚目的網頁框架，執行速度快、語法簡單。"><meta name=keyword content="吳明倫, MingLun, minglunwu"><link rel="shortcut icon" href=/img/favicon.ico><title>Fast API 入門筆記 (一) - 基本介紹 | MingLun Blog</title><link rel=canonical href=/notes/2021/fast_api_note_1.html/><link rel=stylesheet href=/css/bootstrap.min.css><link rel=stylesheet href=/css/hugo-theme-cleanwhite.min.css><link rel=stylesheet href=/css/zanshang.css><link rel=stylesheet href=/css/font-awesome.all.min.css><script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js></script>
+<script src=/js/hux-blog.min.js></script>
+<script src=/js/lazysizes.min.js></script></head><nav class="navbar navbar-default navbar-custom navbar-fixed-top"><div class=container-fluid><div class="navbar-header page-scroll"><button type=button class=navbar-toggle>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span></button>
+<a class=navbar-brand href=/>MingLun Blog</a></div><div id=huxblog_navbar><div class=navbar-collapse><ul class="nav navbar-nav navbar-right"><li><a href=/>All Posts</a></li><li><a href=/archive//>ARCHIVE</a></li><li><a href=/notes//>NOTES</a></li><li><a href=/about//>ABOUT</a></li><li><a href=/search><i class="fa fa-search"></i></a></li></ul></div></div></div></nav><script>var $body=document.body,$toggle=document.querySelector(".navbar-toggle"),$navbar=document.querySelector("#huxblog_navbar"),$collapse=document.querySelector(".navbar-collapse");$toggle.addEventListener("click",handleMagic);function handleMagic(){$navbar.className.indexOf("in")>0?($navbar.className=" ",setTimeout(function(){$navbar.className.indexOf("in")<0&&($collapse.style.height="0px")},400)):($collapse.style.height="auto",$navbar.className+=" in")}</script><style type=text/css>header.intro-header{background-image:url(https://images.unsplash.com/photo-1555488205-d5e67846cf40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGxpZ2h0fGVufDB8MHwwfHx8MA%3D%3D&auto=format&fit=crop&w=900&q=60)}</style><header class=intro-header><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><div class=tags><a class=tag href=/tags/fast-api title="Fast API">Fast API</a></div><h1>Fast API 入門筆記 (一) - 基本介紹</h1><h2 class=subheading></h2><span class=meta>Posted by
+MingLun Allen Wu
+on
+Thursday, January 21, 2021</span></div></div></div></div></header><article><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2
+col-md-10 col-md-offset-1
+post-container"><ul><li><a href=#tldr>TL;DR</a></li><li><a href=#requirements--installation>Requirements & Installation</a></li><li><a href=#%E6%92%B0%E5%AF%AB%E7%AC%AC%E4%B8%80%E6%94%AFapi>撰寫第一支API</a><ul><li><a href=#%E5%9F%BA%E6%9C%AC%E7%B5%90%E6%A7%8B>基本結構</a></li><li><a href=#%E5%95%9F%E5%8B%95%E6%9C%8D%E5%8B%99>啟動服務</a></li><li><a href=#%E5%9E%8B%E6%85%8B%E6%8F%90%E7%A4%BAtyping-hints>型態提示(Typing Hints)</a><ul><li><a href=#1-fastapi-%E5%9C%A8%E6%94%B6%E5%88%B0%E8%AB%8B%E6%B1%82%E6%99%82%E6%9C%83%E8%87%AA%E5%8B%95%E6%AA%A2%E6%9F%A5%E5%8F%83%E6%95%B8%E7%9A%84%E6%A0%BC%E5%BC%8F%E6%98%AF%E5%90%A6%E7%AC%A6%E5%90%88%E6%A2%9D%E4%BB%B6>1. FastAPI 在收到請求時，會自動檢查參數的格式是否符合條件</a></li><li><a href=#2-%E8%87%AA%E5%8B%95%E8%BD%89%E6%8F%9B%E6%96%87%E4%BB%B6>2. 自動轉換文件</a></li></ul></li></ul></li></ul><ul><li><strong>快速</strong>： 如同它的名字，執行速度相當快速，是<strong>當前最快的Python框架</strong></li><li><strong>直覺</strong>： <code>FastAPI</code> 使用 <code>OpenAPI</code> 的開源標準，所以在開發時，能夠套用 auto complete</li><li><strong>自動產生文件</strong>: API撰寫完成後，<code>FastAPI</code>會自動產生對應的文件。</li><li><strong>簡單</strong>: 語法上與 <code>Flask</code> 相差不大，轉換陣痛並不高。</li></ul><ul><li><p>Python 環境 : Python 3.6 +</p></li><li><p>基本套件:
+(bash script)</p><pre><code>  :::bash
+  pip install fastapi # FastAPI
+  pip install uvicorn[standard] # ASGI Server
+</code></pre></li></ul><p>與 <code>Flask</code> 的 <code>run.py</code> 類似， 可以將所有程式碼放在 <code>main.py</code> 中，快速建立第一個 <code>FastAPI</code>。</p><p>在語法結構上，與<code>Flask</code>大同小異，,也是透過 <code>@app</code> 裝飾子來定義API路徑。</p><p>不過<code>FastAPI</code>在定義路徑時，會透過裝飾子<strong>一併定義API可提供的HTTP Method</strong>:</p><ul><li><code>@app.post()</code> : Post 方法</li><li><code>@app.get()</code> : Get 方法</li><li><code>@app.put()</code> : Put 方法</li><li><code>@app.delete()</code> : Delete 方法</li></ul><p>了解裝飾子的概念後，參考<a href=https://fastapi.tiangolo.com/#example>官方文件</a>的範例，在<code>main.py</code>中輸入:</p><pre><code>:::python
+from typing import Optional
+
+from fastapi import FastAPI
+
+app = FastAPI() # 建立一個 Fast API application
+
+@app.get(&quot;/&quot;) # 指定 api 路徑 (get方法)
+def read_root():
+    return {&quot;Hello&quot;: &quot;World&quot;}
+
+
+@app.get(&quot;/users/{user_id}&quot;) # 指定 api 路徑 (get方法)
+def read_user(user_id: int, q: Optional[str] = None):
+    return {&quot;user_id&quot;: user_id, &quot;q&quot;: q}
+</code></pre><p>與 <code>Flask</code> 不同的是，如果直接執行此 <code>main.py</code> <strong>不會啟動服務</strong>。</p><p>需要透過 ASGI Server <code>gvicorn</code> 來啟用：</p><pre><code>:::bash
+(bash script)
+uvicorn main:app --reload
+# uvicorn &lt;檔名&gt;:&lt;app名稱&gt;
+# --reload 在專案更新時，自動重新載入，類似Flask的debug模式
+</code></pre><p>啟用後在瀏覽器輸入 <code>127.0.0.1:8000/users/8?q=minglunwu</code>，將會得到如下的回傳結果:</p><pre><code>:::json
+{&quot;user_id&quot;:8,&quot;q&quot;:&quot;minglunwu&quot;}
+</code></pre><p>當我們鍵入 <code>127.0.0.1:8000/users/8?q=minglunwu</code>時， <code>FastAPI</code>會在定義好的裝飾子中，尋找符合路徑前綴: <code>/users</code> 的 function，也就是 <code>read_user()</code>。 這部分的機制與<code>Flask</code>相當類似。</p><p><code>FastAPI</code> 與 <code>Flask</code>不同的地方在於：</p><blockquote><p>FastAPI 在建立API時，需要以 <strong>型態提示 (Typing Hints)</strong> 來定義參數的型態</p></blockquote><p>舉例來說： 在上圖的 <code>read_user()</code> 中，我們定義了以下的格式：</p><pre><code>:::bash
+@app.get(&quot;/users/{user_id}&quot;) # 指定 api 路徑 (get方法)
+def read_user(user_id: int, q: Optional[str] = None):
+    return {&quot;user_id&quot;: user_id, &quot;q&quot;: q}
+</code></pre><p>在定義function的參數時，使用Python內建的型態檢查語法，指定<strong>各參數的型態</strong>，以上圖的Function來看，我們分別設定了下列的參數及型態:</p><ul><li><code>user_id</code>: <code>int</code>格式</li><li><code>q</code>: <code>str</code>格式（Optional)</li></ul><p>使用 <code>Typing Hint</code> 有兩項優點：</p><p>當<code>FastAPI</code>收到 Request時，會先檢查URL，尋找符合 <code>@app</code> 所定義的路徑規則。</p><p>在解析 Request 所攜帶的參數時，將比對定義的變數型態，如果有不符合的，將會回傳錯誤訊息，舉例來說：</p><p>如果我們嘗試在瀏覽器中輸入 <strong>不符合規則的URL</strong>:</p><p><code>127.0.0.1:8000/users/error_type?q=minglunwu</code></p><p>(將原本的整數 <code>8</code> 換成字串 <code>error_type</code>)</p><p>此時因為收到的參數 <code>error_type?q=minglunwu</code> 因為參數 <code>error_type</code> 並不符合預先定義好的參數型態: <code>int</code>，此次Request無效。</p><p>不像 <code>Flask</code> 會回傳驚心動魄的錯誤訊息， <code>FastAPI</code> 會自動將錯誤訊息轉換成下列「有用」且「清楚」的錯誤訊息後，進行回傳:</p><pre><code>:::json
+{&quot;detail&quot;:[{&quot;loc&quot;:[&quot;path&quot;,&quot;user_id&quot;],&quot;msg&quot;:&quot;value is not a valid integer&quot;,&quot;type&quot;:&quot;type_error.integer&quot;}]}
+</code></pre><blockquote><p>自動生成 API 文件</p></blockquote><p>完成了第一支 API 後，在瀏覽器輸入: <code>http://127.0.0.1:8000/docs</code>:</p><p>可以看到在畫面中，除了API的名稱外，參數的型態及Response的結果都包含在自動產生的文件中！</p><p>除了方便使用者閱讀外，這些文件也有提供即時互動功能，能夠即時測試:</p><p>撰寫API是一件費力耗神的工作，我曾傻傻地使用 <code>Markdown</code> 手刻文件，大概寫到十來個函式時就崩潰放棄 Orz</p><p>後來嘗試使用 <a href=https://www.sphinx-doc.org/en/master/><code>Sphinx</code></a> 工具，能直接將註解轉換為文件，不過在使用時還需要再多進行一次轉換，稍嫌麻煩。</p><p>個人蠻喜歡<code>FastAPI</code> 內建的轉換功能，在撰寫好API的同時就自動產生完整的文件。</p><hr><p>前往下集:</p><p><a href=https://minglunwu.github.io/notes/2021/fast_api_note_2.html>Fast API 入門筆記 (二) - Typing Hint & Async</a></p><hr><ul class=pager><li class=previous><a href=/notes/2021/mongodb_plus_express.html/ data-toggle=tooltip data-placement=top title="使用Docker，快速佈建MongoDB + Mongo Express">&larr;
+Previous Post</a></li><li class=next><a href=/notes/2021/flask_plus_wsgi.html/ data-toggle=tooltip data-placement=top title="Flask想上線? 你還需要一些酷東西">Next
+Post &rarr;</a></li></ul></div><div class="col-lg-2 col-lg-offset-0
+visible-lg-block
+sidebar-container
+catalog-container"><div class=side-catalog><hr class="hidden-sm hidden-xs"><h5><a class=catalog-toggle href=#>CATALOG</a></h5><ul class=catalog-body></ul></div></div><div class="col-lg-8 col-lg-offset-2
+col-md-10 col-md-offset-1
+sidebar-container"><section><hr class="hidden-sm hidden-xs"><h5><a href=/tags/>FEATURED TAGS</a></h5><div class=tags><a href=/tags/ansible title=ansible>ansible</a>
+<a href=/tags/fast-api title=fast-api>fast-api</a>
+<a href=/tags/python title=python>python</a>
+<a href=/tags/test title=test>test</a>
+<a href=/tags/tool title=tool>tool</a>
+<a href=/tags/wsgi title=wsgi>wsgi</a></div></section></div></div></div></article><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center"><li><a href=mailto:youremail@gmail.com><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=/your%20wechat%20qr%20code%20image><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-weixin fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://github.com/yourgithub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://www.linkedin.com/in/yourlinkedinid><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://stackoverflow.com/users/yourstackoverflowid><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i></span></a></li><li><a href rel=alternate type=application/rss+xml title="MingLun Blog"><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-rss fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="copyright text-muted">Copyright &copy; MingLun Blog 2023<br><a href=https://themes.gohugo.io/hugo-theme-cleanwhite>CleanWhite Hugo Theme</a> by <a href=https://zhaohuabing.com>Huabing</a> |
+<iframe style=margin-left:2px;margin-bottom:-5px frameborder=0 scrolling=0 width=100px height=20px src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true"></iframe></p></div></div></div></footer><script>function loadAsync(e,t){var s=document,o="script",n=s.createElement(o),i=s.getElementsByTagName(o)[0];n.src=e,t&&n.addEventListener("load",function(e){t(null,e)},!1),i.parentNode.insertBefore(n,i)}</script><script>$("#tag_cloud").length!==0&&loadAsync("/js/jquery.tagcloud.js",function(){$.fn.tagcloud.defaults={color:{start:"#bbbbee",end:"#0085a1"}},$("#tag_cloud a").tagcloud()})</script><script>loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js",function(){var e=document.querySelector("nav");e&&FastClick.attach(e)})</script><script type=text/javascript>function generateCatalog(e){_containerSelector="div.post-container";var t,n,s,o,i,a=$(_containerSelector),r=a.find("h1,h2,h3,h4,h5,h6");return $(e).html(""),r.each(function(){t=$(this).prop("tagName").toLowerCase(),o="#"+$(this).prop("id"),n=$(this).text(),i=$('<a href="'+o+'" rel="nofollow">'+n+"</a>"),s=$('<li class="'+t+'_nav"></li>').append(i),$(e).append(s)}),!0}generateCatalog(".catalog-body"),$(".catalog-toggle").click(function(e){e.preventDefault(),$(".side-catalog").toggleClass("fold")}),loadAsync("/js/jquery.nav.js",function(){$(".catalog-body").onePageNav({currentClass:"active",changeHash:!1,easing:"swing",filter:"",scrollSpeed:700,scrollOffset:0,scrollThreshold:.2,begin:null,end:null,scrollChange:null,padding:80})})</script></body></html>

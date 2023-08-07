@@ -1,0 +1,115 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:site_name" content="MingLun Blog"><meta property="og:type" content="article"><meta property="og:image" content="https://images.unsplash.com/photo-1554631995-6c22c6e729fe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=733&q=80"><meta property="twitter:image" content="https://images.unsplash.com/photo-1554631995-6c22c6e729fe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=733&q=80"><meta name=title content="NLP深度學習不能不用的套件 - Transformers"><meta property="og:title" content="NLP深度學習不能不用的套件 - Transformers"><meta property="twitter:title" content="NLP深度學習不能不用的套件 - Transformers"><meta name=description content><meta property="og:description" content><meta property="twitter:description" content><meta property="twitter:card" content="透過Transformers套件使用多種Pre-trained Language Model，並且實作Text Feature Extraction."><meta name=keyword content="吳明倫, MingLun, minglunwu"><link rel="shortcut icon" href=/img/favicon.ico><title>NLP深度學習不能不用的套件 - Transformers | MingLun Blog</title><link rel=canonical href=/notes/2020/transformers-tutorial.html/><link rel=stylesheet href=/css/bootstrap.min.css><link rel=stylesheet href=/css/hugo-theme-cleanwhite.min.css><link rel=stylesheet href=/css/zanshang.css><link rel=stylesheet href=/css/font-awesome.all.min.css><script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js></script>
+<script src=/js/hux-blog.min.js></script>
+<script src=/js/lazysizes.min.js></script></head><nav class="navbar navbar-default navbar-custom navbar-fixed-top"><div class=container-fluid><div class="navbar-header page-scroll"><button type=button class=navbar-toggle>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span></button>
+<a class=navbar-brand href=/>MingLun Blog</a></div><div id=huxblog_navbar><div class=navbar-collapse><ul class="nav navbar-nav navbar-right"><li><a href=/>All Posts</a></li><li><a href=/archive//>ARCHIVE</a></li><li><a href=/notes//>NOTES</a></li><li><a href=/about//>ABOUT</a></li><li><a href=/search><i class="fa fa-search"></i></a></li></ul></div></div></div></nav><script>var $body=document.body,$toggle=document.querySelector(".navbar-toggle"),$navbar=document.querySelector("#huxblog_navbar"),$collapse=document.querySelector(".navbar-collapse");$toggle.addEventListener("click",handleMagic);function handleMagic(){$navbar.className.indexOf("in")>0?($navbar.className=" ",setTimeout(function(){$navbar.className.indexOf("in")<0&&($collapse.style.height="0px")},400)):($collapse.style.height="auto",$navbar.className+=" in")}</script><style type=text/css>header.intro-header{background-image:url(https://images.unsplash.com/photo-1554631995-6c22c6e729fe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=733&q=80)}</style><header class=intro-header><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><div class=tags><a class=tag href=/tags/transformers title=transformers>transformers</a></div><h1>NLP深度學習不能不用的套件 - Transformers</h1><h2 class=subheading></h2><span class=meta>Posted by
+MingLun Allen Wu
+on
+Thursday, June 18, 2020</span></div></div></div></div></header><article><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2
+col-md-10 col-md-offset-1
+post-container"><ul><li><a href=#%E5%89%8D%E8%A8%80>前言</a></li><li><a href=#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8transformers>如何使用Transformers</a><ul><li><a href=#tokenizer>Tokenizer</a><ul><li><a href=#1-%E5%88%9D%E5%A7%8B%E5%8C%96>1. 初始化</a></li><li><a href=#2-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8>2. 基本使用</a></li></ul></li><li><a href=#pre-trained-language-model>Pre-trained Language Model</a><ul><li><a href=#1-%E5%88%9D%E5%A7%8B%E5%8C%96-1>1. 初始化</a></li><li><a href=#2-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-1>2. 基本使用</a></li></ul></li></ul></li><li><a href=#transformers-%E7%9A%84%E5%84%AA%E5%8B%A2>Transformers 的優勢</a></li><li><a href=#%E5%BE%8C%E8%A8%98>後記</a></li></ul><p>本篇筆記所紀錄的 Transformers 並不是 Attention 論文中所提到的 &ldquo;Transformer"模型，而是由Higginface團隊所開發的 <code>Transformers</code> 套件。</p><p>這則筆記的重點在於:</p><ol><li>為什麼要使用 Transformers</li><li>Transformers 的兩大元件:<ul><li>Tokenizer</li><li>Model</li></ul></li><li>使用 Transformers 實作 Feature Extraction.</li></ol><p>近年來 NLP 在 Attention 概念提出以後，各種模型如同雨後春筍般噴發：
+(圖片來源: <a href=https://medium.com/@hamdan.hussam/from-bert-to-albert-pre-trained-langaug-models-5865aa5c3762>https://medium.com/@hamdan.hussam/from-bert-to-albert-pre-trained-langaug-models-5865aa5c3762</a>)</p><p>然而在使用不同的模型時，每個模型的架構、參數的載入方式都不相同，大大的提高了模型間的轉換成本。舉例來說： 進行假新聞分類任務時，可能會想要嘗試從「BERT」轉換到「XLNet」，在其餘架構不變的前提下，光是進行 Pre-train Language Model 的更換可能就會花費不少時間。</p><p>透過 <code>Transformers</code> 這個套件，能夠將轉換成本降到最低！ 使用這套框架能夠直接對多種模型進行操作，各種模型的架構及參數都已經被封裝在套件中，只需要了解此框架的機制，即可快速套用到數十種不同的模型！</p><blockquote><p>直白的說：學習這個套件，就能同時學會使用多種主流的語言模型。</p></blockquote><p>附上 <code>Transfomers</code> 的 官方網站:</p><p><a href=https://huggingface.co/transformers/>Hugging Face - Transformers</a></p><p>以及 <code>Transformers</code> 當前所支援的模型清單:</p><p><a href=https://huggingface.co/models>Hugging Face - On a mission to solve NLP, one commit at a time.</a></p><hr><p>我將 <code>Transformers</code> 套件分成兩個部分:</p><ol><li><strong>Tokenizer</strong> : 將文字斷詞後轉換為 Index.</li><li><strong>Pre-trained Model</strong> : 接受轉換的 Index， 輸出 Word Representation.</li></ol><p>下面這張流程圖，是從文字轉換成 Word Representation的過程，我們藉此來了解這兩個元件的作用(反黃)到底是什麼 :</p><p>Tokenizer 的功用是將文字進行斷詞及轉換為Index，不同的 Pre-trained Language Model 所使用的斷詞方式以及 Index 也不盡相同，所以在使用前需要先進行「初始化」。</p><pre><code>:::python
+from transformers import AutoTokenizer, BertTokenizer
+
+# 常見模型具有自己的Tokenizer
+tokenizer_bert = BertTokenizer.from_pretrained(&quot;bert-base-cased&quot;)
+
+# AutoTokenizer 則是通用型
+tokenizer_other = AutoTokenizer.from_pretrained(&quot;emilyalsentzer/Bio_ClinicalBERT&quot;)
+</code></pre><p>針對較常見的語言模型 (BERT, GPT2, XLM, XLNet&mldr;)， <code>Transformers</code>有提供專屬的 Tokenizer可以使用。</p><p>除此之外，還有額外定義一個 <code>AutoTokenizer</code>，可以讓使用者互相分享、使用訓練好的模型。 透過 <code>tokenizer.from_pretrained(&lt;model_name>)</code>即可下載並且載入該模型的相關設定。</p><p>在初次使用模型時， <code>transformers</code>會自動下載該模型的權重及相關設定，需要花費一點時間 (時間長度端看模型的大小)，下載完成後，往後的執行將會從本地端的快取資料夾載入，就不需要再進行下載了。</p><pre><code>:::python
+tokenizer_bert = BertTokenizer.from_pretrained(&quot;bert-base-cased&quot;)
+test_input = &quot;I don't want to work.&quot;
+
+encode_result = tokenizer.encode(test_input)  # 使用 encode() 來對文字進行斷詞、編碼。
+print(encode_result)
+# [101, 146, 1274, 112, 189, 1328, 1106, 1250, 119, 102]
+
+decode_result = tokenizer.decode(encode_result) # 使用 decode() 來將 id 轉換回文字。
+print(decode_result)
+# &quot;[CLS] I don't want to work. [SEP]&quot;
+</code></pre><p>從中我們觀察到兩件事情：</p><ol><li><p><code>encode_result</code> 的長度好像跟 <code>test_input</code> 的長度不相同！:</p><p>這是因為有些模型會使用 Word Piece Tokenizer，也就是在斷詞過程中將詞彙進行拆解，所以會導致Encode過的結果長度與原始Input不同！</p></li><li><p>Decode後的結果好像跟原本的不太一樣&mldr;:</p><p>因為在 <code>tokenizer.encode()</code>過程中會自動加入 [CLS]、[SEP]等特殊標記，這是由於 BERT 模型的機制而自動產生，其餘模型的 Tokenizer 不一定會有，也可以在encode過程中加入參數來移除:</p><pre><code>:::python
+encode_result = tokenizer.encode(test_input, add_special_tokens=False) # 編碼過程中，移除特殊符號
+print(encode_result) 
+# [146, 1274, 112, 189, 1328, 1106, 1250, 119]
+
+decode_result = tokenizer.decode(encode_result) # 使用 decode() 來將 id 轉換回文字。
+print(decode_result)
+# &quot;I don't want to work.&quot;
+</code></pre></li></ol><p>除此之外，在進行資料前處理時，另外一個麻煩的問題是在產生 &ldquo;batch"時，必須要讓每一筆資料的長度相同(也就是要進行"Padding&rdquo;)，假設最大長度設定為 <code>64</code>:</p><ul><li>長度不足的句子需要補齊 &ldquo;[PAD]&ldquo;符號，使長度達到 64。</li><li>長度過長的句子需要只保留前64個字，超過的部分捨棄不用。</li></ul><p>這件事情如果自己處理，會有點小麻煩，幸好 Tokenizer 都幫忙做好了.</p><pre><code>:::python
+test_input = &quot;I don't want to work.&quot;
+
+encode_result = tokenizer.encode(test_input, max_length=64, pad_to_max_length=True)
+print(encode_result)
+# [101, 146, 1274, 112, 189, 1328, 1106, 1250, 119, 102, 0, 0, 0,.... 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+decode_result = tokenizer.decode(encode_result)
+print(decode_result)
+# &quot;[CLS] I don't want to work. [SEP] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD] [PAD]...[PAD]&quot;
+</code></pre><p>透過 Tokenizer 進行斷詞及編碼後，我們就能將其送入 Pre-trained Model 中取得 Representation了！</p><hr><pre><code>:::python
+from transformers import AutoModel, BertModel
+
+model_bert = BertModel.from_pretrained(&quot;bert-base-cased&quot;)
+model_other = AutoModel.from_pretrained(&quot;emilyalsentzer/Bio_ClinicalBERT&quot;)
+</code></pre><p>與 <code>Tokenizer</code>的機制相同， <code>Transformers</code>中也包含了各種預先定義好的 Model (例如 <code>BertModel</code>)，以及方便使用其他開源模型的泛用Model (<code>AutoModel</code>)。</p><p>在使用前也需要透過 <code>model.from_pretrained(&lt;model_name>)</code>來指定要載入的模型。</p><p>與 <code>Tokenizer</code>相同，初次使用模型時會需要進行下載，所以需要等待一段時間，以<code>xlnet-large-cased</code>為例，大約有3.3G需要進行下載。</p><p>值得注意的是：<code>Tokenizer</code> 及 <code>Model</code> 是有先後關係的：</p><ol><li>文字進入<code>Tokenizer</code>轉換。</li><li>轉換後的Index送入<code>Model</code>中取得Word Representation。</li></ol><p>所以 <code>Tokenizer</code> 及 <code>Model</code> 的 <code>&lt;model_name></code>必需要一致，以免發生錯誤。</p><pre><code>:::python
+tokenizer_bert = BertTokenizer.from_pretrained(&quot;bert-base-cased&quot;)
+test_input = &quot;I don't want to work.&quot;
+
+encode_result = tokenizer.encode(test_input, max_length=64, pad_to_max_length=True)  # 使用 encode() 來對文字進行斷詞、編碼。
+print(encode_result)
+# [101, 146, 1274, 112, 189, 1328, 1106, 1250, 119, 102, 0, 0, ..., 0]
+
+model_bert = BertModel.from_pretrained(&quot;bert-base-cased&quot;)
+
+output = model_bert(encode_result) # 等同於將 encode_result 送入 model 中進行 forward propagation.
+last_hidden_layer = output[0] # 這就是 “test_input&quot; 的 word representation.
+
+print(last_hidden_layer.shape)
+# (1, 64, 768)   =&gt; (batch, words, word vector dimension)
+</code></pre><p><code>transformers</code>中的所有 <code>model</code> 都是繼承 <code>torch.nn.Module</code>而來，在使用上其實跟 Pytorch 的 Model 相當類似！ 所以在上述的語法中將 <code>encode_result</code> 送入 <code>model_bert</code>中，就等同於將 <code>encode_result</code>送入 <code>model</code> 中進行 Forward Propagation，最後即可得到 Word Representation.</p><p>至於為什麼 <code>last_hidden_layer = output[0]</code>，可以參考 BertModel 的 Return 欄位，回傳的結果有許多內容，而第一個就是「最後一層的 Hidden States」也就是我們要的 Word Representation.</p><p>附上 <code>BertModel</code>的官方文件連結：
+<a href=https://huggingface.co/transformers/model_doc/bert.html#transformers.BertModel.forward>BERT - transformers 2.11.0 documentation</a></p><hr><p>了解 <code>Transformers</code>的基本運作原理後，再回頭強調一次它的優勢！:</p><ol><li><p><strong>可視為封裝好的 Language Model :</strong></p><p>Transformers 的 Model 繼承了 <code>torch.nn.Module</code>，也就是說在設計整個任務的過程中，不需要自己去定義 &ldquo;Pre-trained Language Model&rdquo; 的結構、也不需要自行載入權重，**只需要將其視為一個Pytorch 預先定義好的 Model ：**實作一個 <code>Transformers</code>的Model、載入相關權重，接下來只需要組裝就好了！</p><pre><code> :::python
+ model_bert = BertModel.from_pretrained(&quot;bert-base-cased&quot;)
+ model_ln1 = nn.Linear(768, 3) 
+
+ output = model_bert(encode_result) # 等同於將 encode_result 送入 model 中進行 forward propagation.
+ last_hidden_layer = output[0]
+ output = model_ln1(last_hidden_layer) # 可以直接再將 BertModel 的 Output送入其他自定義的結構。
+</code></pre><p>了解到如何組裝、如何使用後，除了將其拿來做 Feature Extraction外，也可以用相同的概念組裝成 Transfer Learning 的模型架構！不過這超出這則筆記想要紀錄的範圍了～</p><p>另外，習慣使用 Tensorflow 的朋友也別傷心， <code>transformers</code>也有提供 tensorflow版本的 Model (例如 <code>tfBertModel</code>)!</p></li><li><p><strong>同樣的架構能使用多種模型 → 方便抽換</strong></p><p>由於 <code>Transformers</code> 中包含許多模型：有部分是官方持續新增，有些則是使用者互相釋出，導致使用這套架構就能快速切換多種模型。</p><pre><code> :::python
+ MODEL = &quot;bert-base-cased&quot;
+ model_language = AutoModel.from_pretrained(MODEL)
+ model_ln1 = nn.Linear(768, 3) 
+
+ output = model_language(encode_result) # 等同於將 encode_result 送入 model 中進行 forward propagation.
+ last_hidden_layer = output[0]
+ output = model_ln1(last_hidden_layer) # 可以直接再將 model_language 的 Output送入其他自定義的結構。
+</code></pre><p>相同的程式碼，只需要更換模型變數即可達到「抽換底層 Pre-trained Langauge Model的效果」</p><pre><code> :::python
+ MODEL = &quot;xlnet-large-cased&quot;
+ model_language = AutoModel.from_pretrained(MODEL)
+ model_ln1 = nn.Linear(768, 3) 
+
+ output = model_language(encode_result) # 等同於將 encode_result 送入 model 中進行 forward propagation.
+ last_hidden_layer = output[0]
+ output = model_ln1(last_hidden_layer) # 可以直接再將 model_language 的 Output送入其他自定義的結構。
+</code></pre></li></ol><hr><p>此外，在Survey新的Language Model時，如果在Github上面看到它支援 <code>transformers</code>，會備感欣慰QQ，頓時感到世界的美好～</p><p>感謝你的閱讀，希望你也能跟我一起感受世界的美好！XD</p><p>有任何問題歡迎一起交流！ 下次見！</p><hr><ul class=pager><li class=previous><a href=/notes/2020/20200527.html/ data-toggle=tooltip data-placement=top title=不再被大量超參數及模型表現淹沒！使用MLFlow進行實驗管理>&larr;
+Previous Post</a></li><li class=next><a href=/notes/2020/gitlab-ci-cd.html/ data-toggle=tooltip data-placement=top title="進職場學到的Git - (1) Gitlab CI/CD">Next
+Post &rarr;</a></li></ul></div><div class="col-lg-2 col-lg-offset-0
+visible-lg-block
+sidebar-container
+catalog-container"><div class=side-catalog><hr class="hidden-sm hidden-xs"><h5><a class=catalog-toggle href=#>CATALOG</a></h5><ul class=catalog-body></ul></div></div><div class="col-lg-8 col-lg-offset-2
+col-md-10 col-md-offset-1
+sidebar-container"><section><hr class="hidden-sm hidden-xs"><h5><a href=/tags/>FEATURED TAGS</a></h5><div class=tags><a href=/tags/ansible title=ansible>ansible</a>
+<a href=/tags/fast-api title=fast-api>fast-api</a>
+<a href=/tags/python title=python>python</a>
+<a href=/tags/test title=test>test</a>
+<a href=/tags/tool title=tool>tool</a>
+<a href=/tags/wsgi title=wsgi>wsgi</a></div></section></div></div></div></article><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center"><li><a href=mailto:youremail@gmail.com><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=/your%20wechat%20qr%20code%20image><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-weixin fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://github.com/yourgithub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://www.linkedin.com/in/yourlinkedinid><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://stackoverflow.com/users/yourstackoverflowid><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i></span></a></li><li><a href rel=alternate type=application/rss+xml title="MingLun Blog"><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-rss fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="copyright text-muted">Copyright &copy; MingLun Blog 2023<br><a href=https://themes.gohugo.io/hugo-theme-cleanwhite>CleanWhite Hugo Theme</a> by <a href=https://zhaohuabing.com>Huabing</a> |
+<iframe style=margin-left:2px;margin-bottom:-5px frameborder=0 scrolling=0 width=100px height=20px src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true"></iframe></p></div></div></div></footer><script>function loadAsync(e,t){var s=document,o="script",n=s.createElement(o),i=s.getElementsByTagName(o)[0];n.src=e,t&&n.addEventListener("load",function(e){t(null,e)},!1),i.parentNode.insertBefore(n,i)}</script><script>$("#tag_cloud").length!==0&&loadAsync("/js/jquery.tagcloud.js",function(){$.fn.tagcloud.defaults={color:{start:"#bbbbee",end:"#0085a1"}},$("#tag_cloud a").tagcloud()})</script><script>loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js",function(){var e=document.querySelector("nav");e&&FastClick.attach(e)})</script><script type=text/javascript>function generateCatalog(e){_containerSelector="div.post-container";var t,n,s,o,i,a=$(_containerSelector),r=a.find("h1,h2,h3,h4,h5,h6");return $(e).html(""),r.each(function(){t=$(this).prop("tagName").toLowerCase(),o="#"+$(this).prop("id"),n=$(this).text(),i=$('<a href="'+o+'" rel="nofollow">'+n+"</a>"),s=$('<li class="'+t+'_nav"></li>').append(i),$(e).append(s)}),!0}generateCatalog(".catalog-body"),$(".catalog-toggle").click(function(e){e.preventDefault(),$(".side-catalog").toggleClass("fold")}),loadAsync("/js/jquery.nav.js",function(){$(".catalog-body").onePageNav({currentClass:"active",changeHash:!1,easing:"swing",filter:"",scrollSpeed:700,scrollOffset:0,scrollThreshold:.2,begin:null,end:null,scrollChange:null,padding:80})})</script></body></html>

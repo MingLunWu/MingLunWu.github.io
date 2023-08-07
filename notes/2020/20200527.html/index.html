@@ -1,0 +1,167 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><meta property="og:site_name" content="MingLun Blog"><meta property="og:type" content="article"><meta property="og:image" content="https://minglunwu.com/img/home-bg-night.webp"><meta property="twitter:image" content="https://minglunwu.com/img/home-bg-night.webp"><meta name=title content="不再被大量超參數及模型表現淹沒！使用MLFlow進行實驗管理"><meta property="og:title" content="不再被大量超參數及模型表現淹沒！使用MLFlow進行實驗管理"><meta property="twitter:title" content="不再被大量超參數及模型表現淹沒！使用MLFlow進行實驗管理"><meta name=description content><meta property="og:description" content><meta property="twitter:description" content><meta property="twitter:card" content="使用itertools搭配MLFlow Tracking 來進行多種參數組合的實驗管控。"><meta name=keyword content="吳明倫, MingLun, minglunwu"><link rel="shortcut icon" href=/img/favicon.ico><title>不再被大量超參數及模型表現淹沒！使用MLFlow進行實驗管理 | MingLun Blog</title><link rel=canonical href=/notes/2020/20200527.html/><link rel=stylesheet href=/css/bootstrap.min.css><link rel=stylesheet href=/css/hugo-theme-cleanwhite.min.css><link rel=stylesheet href=/css/zanshang.css><link rel=stylesheet href=/css/font-awesome.all.min.css><script src=/js/jquery.min.js></script>
+<script src=/js/bootstrap.min.js></script>
+<script src=/js/hux-blog.min.js></script>
+<script src=/js/lazysizes.min.js></script></head><nav class="navbar navbar-default navbar-custom navbar-fixed-top"><div class=container-fluid><div class="navbar-header page-scroll"><button type=button class=navbar-toggle>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span></button>
+<a class=navbar-brand href=/>MingLun Blog</a></div><div id=huxblog_navbar><div class=navbar-collapse><ul class="nav navbar-nav navbar-right"><li><a href=/>All Posts</a></li><li><a href=/archive//>ARCHIVE</a></li><li><a href=/notes//>NOTES</a></li><li><a href=/about//>ABOUT</a></li><li><a href=/search><i class="fa fa-search"></i></a></li></ul></div></div></div></nav><script>var $body=document.body,$toggle=document.querySelector(".navbar-toggle"),$navbar=document.querySelector("#huxblog_navbar"),$collapse=document.querySelector(".navbar-collapse");$toggle.addEventListener("click",handleMagic);function handleMagic(){$navbar.className.indexOf("in")>0?($navbar.className=" ",setTimeout(function(){$navbar.className.indexOf("in")<0&&($collapse.style.height="0px")},400)):($collapse.style.height="auto",$navbar.className+=" in")}</script><style type=text/css>header.intro-header{background-image:url(/img/home-bg-night.webp)}</style><header class=intro-header><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><div class=tags><a class=tag href=/tags/mlflow title=MLFlow>MLFlow</a></div><h1>不再被大量超參數及模型表現淹沒！使用MLFlow進行實驗管理</h1><h2 class=subheading></h2><span class=meta>Posted by
+MingLun Allen Wu
+on
+Wednesday, May 27, 2020</span></div></div></div></div></header><article><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2
+col-md-10 col-md-offset-1
+post-container"><ul><li><a href=#%E5%89%8D%E8%A8%80>前言</a></li><li><a href=#%E9%87%8D%E9%BB%9E%E6%91%98%E8%A6%81>重點摘要</a></li><li><a href=#%E4%BD%BF%E7%94%A8-itertools-%E7%B0%A1%E5%8C%96%E5%A4%9A%E5%B1%A4%E8%BF%B4%E5%9C%88>使用 itertools 簡化多層迴圈</a></li><li><a href=#introduction-to-mlflow>Introduction to MLFlow</a></li><li><a href=#%E7%A4%BA%E7%AF%84%E6%A1%88%E4%BE%8B---%E5%82%B3%E7%B5%B1%E6%96%B9%E5%BC%8F>示範案例 - 傳統方式</a></li><li><a href=#%E4%BD%BF%E7%94%A8-mlflow-tracking%E9%80%B2%E8%A1%8C%E7%AE%A1%E7%90%86>使用 MLFlow Tracking進行管理</a><ul><li><a href=#%E5%AE%89%E8%A3%9D>安裝</a></li><li><a href=#%E5%9F%BA%E6%9C%AC%E8%AA%9E%E6%B3%95%E4%BD%BF%E7%94%A8>基本語法使用</a></li><li><a href=#%E5%95%9F%E5%8B%95-ui-dashboard>啟動 UI (Dashboard)</a></li></ul></li><li><a href=#%E5%BE%8C%E8%A8%98>後記</a></li></ul><hr><p>在訓練模型時，常需要使用不同的：</p><ol><li>超參數 (Learning Rate、Epoch、Batch_size&mldr;)</li><li>資料配置 (資料欄位、資料前處理方式的不同)</li><li>模型架構 (Ex: 使用特定層數的Layer進行Fine-tune)</li></ol><p>我原先是透過 <code>Notion.so</code>的表格來簡單紀錄：</p><p>然而每次模型訓練完成後，手動將結果填到表格上會遇到兩個心態上的掙扎:</p><ol><li>號稱在做人工智慧，居然還要手動將資料Key到表格中 xD</li><li>回顧結果時，都會擔心有沒有因為恍神而紀錄錯誤</li></ol><p>這些不同的組合將會產生大量的模型及指標，對這些資料進行妥善的管理，能夠節省許多心力，可以很方便的整理出超參數間的 Pattern，也較不會因為個人疏忽而漏記某些數據。</p><hr><p>本篇筆記的重點 :</p><ol><li>在產生多種超參數的組合時，使用 <code>itertools</code> 套件來取代 <code>多層迴圈</code>，讓程式碼的執行能更簡潔。</li><li>使用 <code>MLFlow</code>的 <code>tracking</code>功能取代原先的<code>手動紀錄</code>，協助管理：<ul><li>訓練前的參數配置</li><li>訓練過程的資訊</li><li>訓練後的各項指標</li></ul></li></ol><p>原先在做實驗時，如果有下列兩種參數選項:</p><pre><code>:::python
+max_depth = [1,2,3,4,5]
+min_leaf = [1,2,3]
+</code></pre><p>早期我會透過<code>兩個迴圈</code>來進行實驗，然後把 <code>結果 print</code>出來 （或是寫到CSV檔)</p><pre><code>:::python
+for a_max_depth in max_depth:
+    for a_min_leaf in min_leaf:
+        model = SomeModel(a_max_depth, a_min_leaf)
+        # 下面進行訓練及驗證
+        # .....
+        # .....
+        # .....
+        print(&quot;Max Depth: {} | Min Leaf: {} | Acc: {}&quot;.format(a_max_depth, a_min_leaf, acc))
+</code></pre><p>當參數種類過多時，會需要過多層迴圈來進行參數組合。</p><p>而使用print方式列印模型結果，對於模型表現的管理相當不方便。</p><p>透過MLFlow Tracking 管理後，可以透過 UI 介面得到下圖結果:</p><p>此介面統整了所有的指標及超參數，所有實驗過程都一目了然。</p><p>除此之外，還能針對特定項目進行篩選 (例如我想找所有 <code>testing accuracy > 0.75</code>的訓練)。</p><hr><p>有多個超參數，需要比較各項組合時，常見的做法是使用巢狀迴圈:</p><pre><code>:::python
+param_a = [1,2,3,4,5]
+param_b = [1,2,3]
+param_c = [1, 0.5, 0.25, 0]
+
+for a in param_a:
+    for b in param_b:
+        for c in param_c:
+            # 實際訓練的程式碼
+            doSomething(a, b, c)
+</code></pre><p>當參數的種類有很多時，需要使用相當多層的巢狀迴圈，使用 <code>itertools</code>可以得到較為簡潔的程式碼：</p><pre><code>:::python
+import itertools 
+
+param_a = [1,2,3,4,5]
+param_b = [1,2,3]
+param_c = [1, 0.5, 0.25, 0]
+
+# 透過 itertools.product 產生所有的變數組合
+all_combinations = list(itertools.product(param_a, param_b, param_c))
+
+print(all_combinations)
+# [(1,1,1), (1,1,0.5), (1,1,0.25), (1,1,0),......,(5,3,0.25), (5,3,0)]
+
+for (a,b,c) in all_combinations:
+    # 實際訓練的程式碼
+    doSomething(a,b,c)
+</code></pre><hr><p><code>MLFlow</code>是一個Open Source 的平台，主要用來管理 Machine Learning 相關的流程，優勢在與「深度學習的框架」是獨立的，不論使用哪一種深度學習框架(<code>Tensorflow</code>、<code>Pytorch</code>)，都能很方便地與<code>MLFlow</code>進行整合。</p><p>MLFlow可以分為四項獨立的功能:</p><p><strong>1. MLFlow Tracking</strong></p><p><strong>2. MLFlow Projects</strong></p><p><strong>3. MLFlow Models</strong></p><p><strong>4. Model Registry</strong></p><p>各項功能是各自獨立的，你可以單獨使用其中一項功能，也能組合使用，本篇筆記將使用 <code>MLFlow Tracking</code>的功能來進行訓練指標的管理。</p><hr><p>我們舉一個實際例子來說明傳統方式與MLflow的差別:</p><ul><li>使用 <code>sklearn</code>的 <code>DecisionTreeClassifier</code> 來進行分類任務</li><li>Training Set 跟 Testing Set 透過 Numpy 來隨機產生。</li><li>此項任務的超參數有兩項: (不知道是什麼意思也無所謂，反正就是我們想要監控的超參數）<ol><li><p>max_depth : 決定決策樹的深度。</p></li><li><p>min_leaf : 決定樹的葉節點容納個數。</p><pre><code> :::python
+ import pandas as pd
+ import numpy as np
+ import mlflow
+ from sklearn.tree import DecisionTreeClassifier
+ import itertools
+
+ # 隨機產生資料
+ train_x = np.random.rand(500, 3)
+ train_y = np.random.choice(a=[False,True], size=(500,), p=[0.5,0.5])
+
+ test_x = np.random.rand(100, 3)
+ test_y = np.random.choice(a=[False,True], size=(100,), p=[0.5,0.5])
+
+ # 候選的超參數
+ max_depth = [1,2,3,4,5]
+ min_leaf = [1,2,3]
+
+ # 使用 itertools 產生所有超參數的組合
+ all_combination = list(itertools.product(max_depth, min_leaf))
+
+ for a_max_depth, a_min_leaf in all_combination:
+     # 使用特定參數組合訓練模型
+     model = DecisionTreeClassifier(max_depth=a_max_depth, min_samples_leaf=a_min_leaf)
+     model.fit(train_x, train_y)
+
+     # 驗證模型結果 (將結果以print方式呈現)
+     train_pred = model.predict(train_x)
+     train_acc = sum(train_pred==train_y) / train_y.shape[0]
+     print(&quot;Max Depth:{} | Min Leaf:{} | Training Accuracy:{}&quot;.format(a_max_depth, a_min_leaf, train_acc))
+
+     test_pred = model.predict(test_x)
+     test_acc = sum(test_pred==test_y) / test_y.shape[0]
+     print(&quot;Max Depth:{} | Min Leaf:{} | Testing Accuracy:{}&quot;.format(a_max_depth, a_min_leaf, test_acc))
+</code></pre></li></ol></li></ul><hr><pre><code>:::bash
+pip install mlflow
+</code></pre><p>與上一小節同樣的情境，但此次使用 MLFlow Tracking 功能進行管理，有以下幾個重點：</p><ul><li><p>使用MLFlow的功能時，需要將寫入指令放置在 <code>with mlflow.start_run():</code>的範圍中，常用的寫入指令包含：</p><ul><li><p><code>mlflow.log_param("參數名稱", "參數值")</code>: 寫入特定參數的值。</p></li><li><p><code>mlflow.log_metric("指標名稱", "指標值")</code>: 寫入特定指標的值。</p><pre><code>  :::python
+  import mlflow
+
+  with mlflow.start_run(): # 所有的mlflow寫入指令必須放置在 mlflow.start_run 範圍中. 
+      mlflow.log_param(&quot;batch_size&quot;, 16) # 寫入超參數
+      mlflow.log_param(&quot;learning_rate&quot;, 2e-5)
+      # ... 驗證程式碼 
+      # ...
+      # ...
+      mlflow.log_metric(&quot;train_acc&quot;, train_acc) # 寫入指標
+</code></pre></li></ul></li><li><p>我們可以將 <code>with mlflow.start_run()</code>視為一次「嘗試」，所以在此範圍內:</p><ul><li><p>參數只能被設定一次。(你無法先設定 <code>batch_size=4</code> 接著又設定 <code>batch_size=8</code>，這並不合邏輯)</p></li><li><p>指標可以重複被更新. (例如 <code>training loss</code>就會根據訓練的 Step 持續更動），可以在寫入時加入 <code>step</code>參數來紀錄變動的過程:</p><pre><code>  :::python
+  import mlflow
+
+  with mlflow.start_run():
+      # 參數只能被寫入一次
+      mlflow.log_param(&quot;batch_size&quot;,4) #ok
+      mlflow.log_param(&quot;learning_rate&quot;, 2e-5) #ok
+      mlflow.log_param(&quot;batch_size&quot;, 8) # 會噴錯，因為參數在一個 `start_run()`中只能紀錄一次.
+
+      for step in range(50000):
+          mlflow.log_metric(&quot;training_loss&quot;, loss, step=step) # metric 是可以持續被更新的.
+</code></pre><p>使用 <code>step</code>參數紀錄後，可以在 <code>tracking UI</code> 看到該指標的變化:</p></li></ul></li></ul><p>看到這裏，發現 mlflow的優點了嗎？ 其實只是使用 <code>mlflow</code>套件的 method進行寫入，就能達到Tracking的效果，跟使用什麼樣的深度學習框架完全無關。 你可以透過 <code>mlflow</code>很方便的「監控你有興趣的指標」。</p><p>現在我們嘗試將剛剛的示範情境，透過 <code>mlflow</code>進行管理:</p><pre><code>:::python hl_lines=&quot;22 23 24 29 33&quot;
+import pandas as pd
+import numpy as np
+import mlflow
+from sklearn.tree import DecisionTreeClassifier
+import itertools
+
+# 隨機產生資料
+train_x = np.random.rand(500, 3)
+train_y = np.random.choice(a=[False,True], size=(500,), p=[0.5,0.5])
+
+test_x = np.random.rand(100, 3)
+test_y = np.random.choice(a=[False,True], size=(100,), p=[0.5,0.5])
+
+# 候選的超參數
+max_depth = [1,2,3,4,5]
+min_leaf = [1,2,3]
+
+# 使用 itertools 產生所有超參數的組合
+all_combination = list(itertools.product(max_depth, min_leaf))
+
+for a_max_depth, a_min_leaf in all_combination:
+    with mlflow.start_run(): # 新增的程式碼
+        mlflow.log_param(&quot;max_depth&quot;, a_max_depth) # 新增的程式碼
+        mlflow.log_param(&quot;min_leaf&quot;, a_min_leaf) # 新增的程式碼
+        model = DecisionTreeClassifier(max_depth=a_max_depth, min_samples_leaf=a_min_leaf)
+        model.fit(train_x, train_y)
+
+        train_pred = model.predict(train_x)
+        train_acc = sum(train_pred==train_y) / train_y.shape[0]
+        mlflow.log_metric(&quot;train_acc&quot;,train_acc) # 新增的程式碼
+
+        test_pred = model.predict(test_x)
+        test_acc = sum(test_pred==test_y) / test_y.shape[0]
+        mlflow.log_metric(&quot;test_acc&quot;, test_acc) # 新增的程式碼
+</code></pre><p>只需要加入五行程式碼，就能在接下來的章節中透過 <code>mlflow UI</code>進行視覺化的管理，整合十分方便！</p><hr><p>當你在 python script 中執行 <code>mlflow</code>寫入功能後，預設會在當前資料夾產生 <code>mlruns</code>資料夾，你所寫入的資訊會儲存在其中。 你可以透過下列指令啟動 <code>mlflow UI</code>:</p><pre><code>:::bash
+cd &quot;Your project folder&quot;
+mlflow ui # 啟動 mlflow tracking dashboard
+</code></pre><p>執行成功後， <code>mlflow UI</code>預設會在 <code>127.0.0.1:5000</code>執行，進入後就能看到剛剛寫入的指標一目了然的以表格形式呈現:</p><p>除了呈現清楚外，還能進行 filter，例如我想要 「min_leaf = 3」且 「test_acc > 0.44」的結果:</p><p>或者是選定幾種不同的嘗試進行 compare ，內建有幾種簡單的圖表能讓你進行初步的視覺化:</p><p>這些基本功能對於管理、比較大量的模型很有幫助，能夠針對自己的需求篩選出所需要的參數設置、甚至是透過基本的視覺化來找到一些特別的Pattern。</p><hr><ol><li>更有效率的組合各種超參數</li><li>使用MLFlow Tracking 來進行模型的管理</li></ol><p>在進行資料分析相關任務時，找尋最佳模型這個階段，程式碼的架構其實不會有太大的變動，只是某些「超參數」會有調整。
+過去只知道使用Git來管理程式碼，卻疏忽「超參數」跟「模型」的管理也是相當重要的，畢竟<strong>這些變動的超參數只佔程式碼的一小部分，卻影響了我們真正在乎的結果。</strong></p><p>我認為使用這種管理模型及超參數的工具是有必要的，能夠省下許多整理結果、解讀結果的時間。很希望當時研究所時期在做論文實驗時能看到這種工具的介紹，所以寫下了這則筆記。</p><p>當然，MLFlow Tracking的功能遠遠不止這則筆記所提到的，我正開始將其整合進我個人的工作習慣中，也持續在摸索怎麼更有效率的使用它，不過希望透過這則筆記能讓你稍微了解有這種類型的工具在協助管理模型，甚至能真的幫助到你～</p><p>接下來會再慢慢摸索 MLFlow的其他功能，希望能分享更多的功能！ 附上MLFlow的官方網站～</p><p>MLFlow 官方網站連結</p><p>如果有任何經驗上的分享交流，請直接聯絡我吧！我很期待！ 下次見！</p><hr><ul class=pager><li class=previous><a href=/notes/2020/20200520.html/ data-toggle=tooltip data-placement=top title="Python 平行化運算 - Multi-Processing">&larr;
+Previous Post</a></li><li class=next><a href=/notes/2020/transformers-tutorial.html/ data-toggle=tooltip data-placement=top title="NLP深度學習不能不用的套件 - Transformers">Next
+Post &rarr;</a></li></ul></div><div class="col-lg-2 col-lg-offset-0
+visible-lg-block
+sidebar-container
+catalog-container"><div class=side-catalog><hr class="hidden-sm hidden-xs"><h5><a class=catalog-toggle href=#>CATALOG</a></h5><ul class=catalog-body></ul></div></div><div class="col-lg-8 col-lg-offset-2
+col-md-10 col-md-offset-1
+sidebar-container"><section><hr class="hidden-sm hidden-xs"><h5><a href=/tags/>FEATURED TAGS</a></h5><div class=tags><a href=/tags/ansible title=ansible>ansible</a>
+<a href=/tags/fast-api title=fast-api>fast-api</a>
+<a href=/tags/python title=python>python</a>
+<a href=/tags/test title=test>test</a>
+<a href=/tags/tool title=tool>tool</a>
+<a href=/tags/wsgi title=wsgi>wsgi</a></div></section></div></div></div></article><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center"><li><a href=mailto:youremail@gmail.com><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=/your%20wechat%20qr%20code%20image><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-weixin fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://github.com/yourgithub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://www.linkedin.com/in/yourlinkedinid><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li><li><a target=_blank href=https://stackoverflow.com/users/yourstackoverflowid><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-stack-overflow fa-stack-1x fa-inverse"></i></span></a></li><li><a href rel=alternate type=application/rss+xml title="MingLun Blog"><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-rss fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="copyright text-muted">Copyright &copy; MingLun Blog 2023<br><a href=https://themes.gohugo.io/hugo-theme-cleanwhite>CleanWhite Hugo Theme</a> by <a href=https://zhaohuabing.com>Huabing</a> |
+<iframe style=margin-left:2px;margin-bottom:-5px frameborder=0 scrolling=0 width=100px height=20px src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true"></iframe></p></div></div></div></footer><script>function loadAsync(e,t){var s=document,o="script",n=s.createElement(o),i=s.getElementsByTagName(o)[0];n.src=e,t&&n.addEventListener("load",function(e){t(null,e)},!1),i.parentNode.insertBefore(n,i)}</script><script>$("#tag_cloud").length!==0&&loadAsync("/js/jquery.tagcloud.js",function(){$.fn.tagcloud.defaults={color:{start:"#bbbbee",end:"#0085a1"}},$("#tag_cloud a").tagcloud()})</script><script>loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js",function(){var e=document.querySelector("nav");e&&FastClick.attach(e)})</script><script type=text/javascript>function generateCatalog(e){_containerSelector="div.post-container";var t,n,s,o,i,a=$(_containerSelector),r=a.find("h1,h2,h3,h4,h5,h6");return $(e).html(""),r.each(function(){t=$(this).prop("tagName").toLowerCase(),o="#"+$(this).prop("id"),n=$(this).text(),i=$('<a href="'+o+'" rel="nofollow">'+n+"</a>"),s=$('<li class="'+t+'_nav"></li>').append(i),$(e).append(s)}),!0}generateCatalog(".catalog-body"),$(".catalog-toggle").click(function(e){e.preventDefault(),$(".side-catalog").toggleClass("fold")}),loadAsync("/js/jquery.nav.js",function(){$(".catalog-body").onePageNav({currentClass:"active",changeHash:!1,easing:"swing",filter:"",scrollSpeed:700,scrollOffset:0,scrollThreshold:.2,begin:null,end:null,scrollChange:null,padding:80})})</script></body></html>
