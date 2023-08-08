@@ -12,142 +12,131 @@ MingLun Allen Wu
 on
 Thursday, April 16, 2020</span></div></div></div></div></header><article><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2
 col-md-10 col-md-offset-1
-post-container"><ul><li><a href=#%E5%89%8D%E8%A8%80>前言</a><ul><li><a href=#%E5%BE%9E%E9%9B%B6%E9%96%8B%E5%A7%8B---pytorch%E5%85%A5%E9%96%80%E6%87%B6%E4%BA%BA%E5%8C%85>從零開始 - Pytorch入門懶人包</a></li></ul></li><li><a href=#%E7%B0%A1%E4%BB%8B>簡介</a></li><li><a href=#%E4%B8%80%E5%AE%89%E8%A3%9D>一、安裝</a></li><li><a href=#%E4%BA%8C%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5>二、基本概念</a></li><li><a href=#%E4%B8%89-research-code>三、 Research Code</a></li><li><a href=#%E5%9B%9B%E9%80%8F%E9%81%8Etrainer%E8%87%AA%E5%8B%95%E8%A8%93%E7%B7%B4>四、透過Trainer自動訓練</a><ul><li><a href=#training>Training</a></li><li><a href=#evaluation--inference>Evaluation / Inference</a></li></ul></li><li><a href=#%E4%BA%94%E5%BE%8C%E8%A8%98>五、後記</a></li></ul><hr><h2 id=從零開始---pytorch入門懶人包httpsminglunwugithubionotes202020200324html><a href=https://minglunwu.github.io/notes/2020/20200324.html>從零開始 - Pytorch入門懶人包</a></h2><p>透過Pytorch撰寫Deep Learning相關程式碼時，程式碼大致可分成兩種類型:</p><ol><li><p><strong>依照專案有所不同</strong>: 這類程式碼會根據開發的需求而改變，例如「資料的前處理」、「模型的架構」。</p></li><li><p><strong>跨專案重複使用</strong>: 這類程式碼在每一個應用中都會存在，且相似性非常高，例如「將資料送入DataLoader」、「計算Loss」、「透過Optimizer更新模型的weight」。</p></li></ol><hr><p><code>Pytorch Lightning</code>希望替使用者簡化的就是「<strong>跨專案重複使用</strong>」這部分的程式碼，讓使用者能省下精力及時間去處理更為重要的核心模型部分。</p><p>你可以將其視為是一種「樣式指南」(類似Python的PEP8)，透過一定規則將訓練過程中的幾個重要步驟封裝起來(Train, 計算Loss, Optimizer, 更新參數)。</p><p>你可能很好奇這樣做的用意是什麼？ 你將可以透過特別的 <code>Trainer</code> Class來進行操作，不再需要花費時間撰寫 Evaluation的Loss、或是在每一個Epoch結束時顯示Loss、固定幾個Step要顯示當前訓練狀態、儲存Validation表現最好的Checkpoint。 <strong>只要你先按照Pytorch Lightning的格式封裝程式碼，在訓練時的瑣碎細節它會幫你處理好。</strong></p><p>下面這張圖則是Pytorch Lightning 官網的例子，用來說明Pytorch Lightning 想要簡化的部分。
-<img src=https://pytorch-lightning.readthedocs.io/en/latest/_images/pt_trainer.png alt></p><p>我們來看個較為實際的例子:</p><pre><code>:::python
-model = SomeModel() # 假設這是你按照Pytorch Lightning封裝好的Model.
-# 透過GPU訓練
-trainer = Trainer(gpus=1, precision=16)
-trainer.fit(model) 
-
-# 透過CPU訓練
-trainer = Trainer(gpus=0)
-trainer.fit(model)
-
-# 進行Evaluation
-trainer.test()
-</code></pre><p>從上面的範例中可以看到，原先冗長的訓練過程現在只需要透過短短的幾行程式碼即可實現。將訓練時的細節按照特定規則封裝好後，就可直接透過 <code>Trainer</code> Class來進行訓練。</p><hr><pre><code>:::bash
-pip install pytorch-lightning==0.7.1
-</code></pre><hr><ol><li><p><strong>Research Code</strong>:
-整個應用的核心架構，可能會根據任務的內容進行調整、或是在開發過程中加入自己的想法。通常可能會包含幾個核心元件:</p><ul><li>模型架構定義</li><li>Train/Val/Test資料切分</li><li>Optimizer定義</li><li>Train/Val/Test Step Computation.</li></ul></li><li><p><strong>Engineer Code</strong>:</p><p>「EarlyStopping」, 「將資料送入GPU」等常見且不同專案使用方式都類似的程式碼。這部分的程式碼是 <code>Pytorch Lightning</code>最希望能簡化的。</p></li><li><p><strong>Non-Essential Code</strong>:</p><p>檢查梯度、視覺化等偏向輔助性質的功能。</p></li></ol><p><code>Pytorch Lightning</code>希望使用者只需要定義<strong>Research Code</strong>，而<strong>Engineer Code</strong>由它來代為處理、<strong>Non-Essential</strong>則是根據使用者的需要自行選用，由於不會影響正常使用，接下來我們著重探討如何重新將<strong>Research Code</strong>組織為<code>Pytorch Lightning</code>的格式。</p><hr><p>針對模型開發中最為重要的就是 Research Code了，在 <code>Pytorch Lightning</code>中透過 <code>pl.LightningModule</code>模組來實現，這個模組繼承了<code>torch.nn.Module</code>的功能，所以使用上其實跟使用原生Pytorch是相當類似的。</p><p>實作時只需在定義的Class上繼承pl.LightningModule即可。</p><pre><code>:::python
-import pytorch_lightning as pl
-
-class YourOwnNet(pl.LightningModule):
-
-    def somemethod(self):
-        pass
-</code></pre><p>在繼承 <code>pl.LightingModule</code>後，有幾項重要的Method必須被Override，未來 <code>Pytorch Lightning</code>才能自動地進行訓練，以下將這些方法及目的條列出來:</p><ul><li><h4 id=prepare_data><strong>prepare_data()</strong>:</h4><p>負責資料的載入(包含Training Set, Evaluation Set, Test)都撰寫在方法中。 自動訓練時會優先執行此Method以獲取資料。</p></li><li><h4 id=configure_optimizerself><strong>configure_optimizer(self)</strong>:</h4><ul><li><p><strong>回傳特定的優化器</strong> (torch.nn.optimizer)</p></li><li><p>如果對於優化的參數有任何設定(例如只想對特定參數進行調整)，也是在這個地方調整。</p></li><li><p>在自動訓練時，會呼叫此方法來取得Optimizer。</p><pre><code>  :::python
-  def configure_optimizers(self):
-          return Adam(self.parameters(), lr=1e-3)
-</code></pre></li></ul></li><li><h4 id=train_dataloaderself--val_dataloaderself--test_dataloaderself><strong>train_dataloader(self)</strong> / <strong>val_dataloader(self)</strong> / <strong>test_dataloader(self)</strong>:</h4><ul><li><p><strong>回傳<code>Pytorch</code>的 <code>DataLoader</code> Object</strong>，</p></li><li><p>這三個方法定義了training/ validation/ test時使用的DataLoader。其中會使用到的資料可以透過 <code>prepare_data()</code>先行取得。</p></li><li><p>在自動訓練的過程中，會呼叫這邊定義的Function來取得不同時期(Train/Validation/Test)的DataLoader。</p><pre><code>  :::python
-  def train_dataloader(self):
-      # self.train_dataset 通常由 self.prepare_data()產生.
-      return DataLoader(self.train_dataset, batch_size= self.batch_size, shuffle=True) 
-</code></pre></li></ul></li><li><h4 id=forwardself-args><strong>forward(self, args)</strong>:</h4><ul><li><p>定義當前這個模型forward propagation時所要進行的動作。</p></li><li><p>特別注意在建立instance時，直接將參數傳入instance等同於呼叫forward function。來個具體例子。</p><pre><code>  :::python
-  model = TestModel()
-  x = torch.Tensor([1, 2, 3])
-  output1 = model(x)
-  output2 = model.forward(x)
-  output1 == output2  # 實際上這兩個是相同的.
-</code></pre></li></ul></li><li><h4 id=training_stepval_steptest_stepself-batch-batch_idx><strong>training_step/val_step/test_step(self, batch, batch_idx)</strong>:</h4><ul><li><p>分別定義了traing/ validation/ test時的每一個Step所要進行的任務，其中較特別的是參數<code>batch</code>, <code>batch_idx</code>，這是會自動從<code>train/val/test_dataloader()</code>中的<code>DataLoader</code>取出一個batch。具體使用方式請見下方範例。</p></li><li><p>此類型方法的回傳值有一定的格式，需要回傳一個Python的Dictionary，其中包含:</p><ul><li><p>loss: 當前Step計算出來的Training Loss. 用於接下來的Backward Propagation及參數調校。</p></li><li><p>log: 包含當前訓練的狀況，在訓練時會自動回傳成進度條。 如下圖所示:
-<img src=https://minglunwu.github.io/theme/images/20200414.png alt></p><pre><code>  :::python
-  def training_step(self, batch, batch_idx):
-      x, y = batch  # 這裡的batch會對應到 self.train_dataloader()所回傳的DataLoader Object，對其取用一個batch.
-
-      output = self.forward(x) # 將Input進行 forward propagation.
-      criterion = nn.CrossEntropyLoss()
-      loss = criterion(output, y)
-      logs = {&quot;loss&quot;: loss}
-      return {&quot;loss&quot;: loss, &quot;log&quot;: logs}
-</code></pre></li></ul></li></ul></li><li><h4 id=trainingvalidationtest_epoch_endself-outputs><strong>(training/validation/test)_epoch_end(self, outputs)</strong>:</h4><ul><li><p>定義了「不同時期訓練完一個epoch時需要執行的事項」，舉例來說可能會在Validation的一個Epoch結束時計算所有Step平均的Loss是多少。</p></li><li><p><code>outputs</code> 參數為「當前Epoch中所有Step的{&ldquo;loss&rdquo;: loss, &ldquo;logs&rdquo;: logs}」(也就是每一個self.training_step()的回傳值)。</p></li><li><p>以下範例示範了在「每一個Validation Epoch結束後計算Average Loss」。</p><pre><code>  :::python
-  def validation_epoch_end(self, outputs):
-          avg_loss = torch.stack([x['val_loss'] for x in outputs]).mean()
-          avg_val_acc = torch.stack([x['val_acc'] for x in outputs]).mean()
-
-          tensorboard_logs = {'val_loss': avg_loss, 'avg_val_acc': avg_val_acc}
-          return {'avg_val_loss': avg_loss, 'progress_bar': tensorboard_logs}
-</code></pre></li></ul></li><li><h4 id=統整版本>統整版本:</h4><pre><code>  :::python
-  class PytorchLightningModel(pl.LightningModule): # 這邊一定要繼承pl.LightningModule
-      def __init__(self): # 初始化時可以將基本設定傳入。
-          super().__init__()
-          self.ln1 = nn.Linear(768, 256)
-          self.ln2 = nn.Linear(256, 3)
-
-      def prepare_data(self): # 此方法會在初始化後優先執行。 所以可以在此方法中先將會用到的資料都讀取進來.
-          self.train_set = read_data(&quot;train&quot;) # read_data是自定義的讀取資料Method. 可以按照自己需求調整
-          self.test_set = read_data(&quot;test&quot;)
-          self.val_set = read_data(&quot;validation&quot;)
-          logging.info(&quot;===== Data is ready... =====&quot;)
-
-      def configure_optimizer(self): # 自動訓練時會呼叫此方法來獲取Optimizer.
-          return Adam(self.parameters(), lr=1e-3) # 這邊注意要調整的參數是`self.parameters()`
-
-      # 以下三個方法則是設定進行訓練及驗證時所要使用的Data Loader格式。
-      def train_dataloader(self):
-          return DataLoader(self.train_set, batch_size= self.batch_size, shuffle=True) 
-
-      def val_dataloader(self):
-          return DataLoader(self.val_set, batch_size= self.batch_size, shuffle=True) 
-
-      def test_dataloader(self):
-          return DataLoader(self.test_set, batch_size= self.batch_size, shuffle=True) 
-
-      def forward(self, x): # 定義模型在forward propagation時如何進行.
-          output = self.ln1(x)
-          output = self.ln2(x)
-          return output
-
-      def training_step(self, batch, batch_idx): # 定義訓練過程的Step要如何進行
-          x, y = batch # 從self.train_dataloader()的Data Loader取一個batch出來。
-          output = self.forward(x)
-          criterion = nn.CrossEntropyLoss()
-          loss = criterion(output, y)
-          logs = {'loss': loss}
-          return {'loss':loss, 'log':logs}
-
-      def validation_step(self, batch, batch_idx): # 定義Validation如何進行，以這邊為例就再加上了計算Acc.
-          x, y = batch
-          logits = self.forward(x)
-          loss = F.cross_entropy(logits, y)
-
-          # acc
-          a, y_hat = torch.max(logits, dim=1)
-          val_acc = accuracy_score(y_hat.cpu(), y.cpu())
-          val_acc = torch.tensor(val_acc)
-
-          return {'val_loss': loss, 'val_acc': val_acc}
-
-      def validation_epoch_end(self, outputs): # 在Validation的一個Epoch結束後，計算平均的Loss及Acc.
-          avg_loss = torch.stack([x['val_loss'] for x in outputs]).mean()
-          avg_val_acc = torch.stack([x['val_acc'] for x in outputs]).mean()
-
-          tensorboard_logs = {'val_loss': avg_loss, 'avg_val_acc': avg_val_acc}
-          return {'avg_val_loss': avg_loss, 'progress_bar': tensorboard_logs}
-
-      def test_step(self, batch, batch_idx): #定義 Test 階段
-          x, y = batch
-          logits = self.forward(x)
-          loss = F.cross_entropy(logits, y)
-
-          # acc
-          a, y_hat = torch.max(logits, dim=1)
-          val_acc = accuracy_score(y_hat.cpu(), y.cpu())
-          val_acc = torch.tensor(val_acc)
-
-          return {'test_acc': val_acc}
-</code></pre></li></ul><hr><pre><code>:::python
-model = PytorchLightningModel(param1=768, param2=5) # 自行封裝成Pytorch Lightning的模型
-
-# Trainer 有不同的參數可以調整訓練時的行為
-trainer = pl.Trainer() # 使用CPU
-trainer = pl.Trainer(gpus=1) # 使用GPU
-trainer = pl.Trainer(fast_dev_run=True) #訓練時，使用單一個batch作為ㄧ個Epoch，目的是快速的確認當前的模型設置有無結構上的問題(快速地跑完Train -&gt; Validation -&gt; Test)。
-
-trainer.fit(model) # 呼叫.fit() 就會自動進行Model的training step及validation step.
-</code></pre><p>原先從CPU切換為GPU，可能需要針對所有的變數、模型進行裝置的變更。<strong>但現在只需要調整Trainer的<code>gpus</code>參數即可</strong>。</p><p>而訓練時如果需要以dry-run的方式，確定Model從頭到尾的結構沒有問題，現在也只需要設定<code>fast_dev_run</code>即可。</p><p>另外Trainer Class也針對了「使用多張GPU」、「accumulate_grad_batches」提供參數進行調整，細節的部分可以參考官方網站。 <a href=https://pytorch-lightning.readthedocs.io/en/latest/trainer.html>連結在此</a></p><pre><code>:::python
-model = PytorchLightningModel(param1=768, param2=5) # 自行封裝成Pytorch Lightning的模型
-trainer = Trainer(resume_from_checkpoint=&quot;PATH&quot;, gpus=1)
-trainer.test(model)
-</code></pre><hr><hr><ul class=pager><li class=previous><a href=/notes/2020/20200324.html/ data-toggle=tooltip data-placement=top title="從零開始 - Pytorch 入門懶人包">&larr;
+post-container"><h1 id=前言>前言</h1><p>在了解 <code>Pytorch</code> 的基本使用後，透過 <code>Pytorch Lightning</code> 框架能夠讓我們更有效率的進行開發。如果對於 Pytorch 的基本使用還不熟悉的讀者，可以先看看我先前寫的文章:</p><h2 id=從零開始---pytorch入門懶人包httpsminglunwugithubionotes202020200324html><a href=https://minglunwu.github.io/notes/2020/20200324.html>從零開始 - Pytorch入門懶人包</a></h2><h1 id=簡介>簡介</h1><p>透過 <code>Pytorch</code> 撰寫 Deep Learning 相關程式碼時，程式碼大致可分成兩種類型:</p><ol><li><p><strong>依照專案有所不同</strong>: 這類程式碼會根據開發的需求而改變，例如「資料的前處理」、「模型的架構」。</p></li><li><p><strong>跨專案重複使用</strong>: 這類程式碼在每一個應用中都會存在，且相似性非常高，例如「將資料送入 DataLoader」、「計算 Loss」、「透過 Optimizer 更新模型的 weight」。</p></li></ol><hr><p><code>Pytorch Lightning</code> 希望替使用者簡化的就是「<strong>跨專案重複使用</strong>」這部分的程式碼，讓使用者能省下精力及時間去處理更為重要的核心模型部分。</p><p>你可以將其視為是一種「樣式指南」(類似 Python 的 PEP8)，透過一定規則將訓練過程中的幾個重要步驟封裝起來(Train, 計算Loss, Optimizer, 更新參數)。</p><p>你可能很好奇這樣做的用意是什麼？ 你將可以透過特別的 <code>Trainer</code> Class 來進行操作，不再需要花費時間撰寫 Evaluation 的 Loss、或是在每一個 Epoch 結束時顯示 Loss、固定幾個 Step 要顯示當前訓練狀態、儲存 Validation表現最好的 Checkpoint。 <strong>只要你先按照 <code>Pytorch Lightning</code> 的格式封裝程式碼，在訓練時的瑣碎細節它會幫你處理好。</strong></p><p>下面這張圖則是 <code>Pytorch Lightning</code> 官網的例子，用來說明 <code>Pytorch Lightning</code> 想要簡化的部分。
+<img src=https://pytorch-lightning.readthedocs.io/en/latest/_images/pt_trainer.png alt></p><p>我們來看個較為實際的例子:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>model <span style=color:#ff79c6>=</span> SomeModel() <span style=color:#6272a4># 假設這是你按照Pytorch Lightning封裝好的Model.</span>
+</span></span><span style=display:flex><span><span style=color:#6272a4># 透過GPU訓練</span>
+</span></span><span style=display:flex><span>trainer <span style=color:#ff79c6>=</span> Trainer(gpus<span style=color:#ff79c6>=</span><span style=color:#bd93f9>1</span>, precision<span style=color:#ff79c6>=</span><span style=color:#bd93f9>16</span>)
+</span></span><span style=display:flex><span>trainer<span style=color:#ff79c6>.</span>fit(model) 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4># 透過CPU訓練</span>
+</span></span><span style=display:flex><span>trainer <span style=color:#ff79c6>=</span> Trainer(gpus<span style=color:#ff79c6>=</span><span style=color:#bd93f9>0</span>)
+</span></span><span style=display:flex><span>trainer<span style=color:#ff79c6>.</span>fit(model)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4># 進行Evaluation</span>
+</span></span><span style=display:flex><span>trainer<span style=color:#ff79c6>.</span>test()
+</span></span></code></pre></div><h2 id=從上面的範例中可以看到原先冗長的訓練過程現在只需要透過短短的幾行程式碼即可實現將訓練時的細節按照特定規則封裝好後就可直接透過-trainer-class-來進行訓練>從上面的範例中可以看到，原先冗長的訓練過程現在只需要透過短短的幾行程式碼即可實現。將訓練時的細節按照特定規則封裝好後，就可直接透過 <code>Trainer</code> Class 來進行訓練。</h2><h1 id=一安裝>一、安裝</h1><p>透過pip即可進行安裝:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>pip install pytorch-lightning<span style=color:#ff79c6>==</span>0.7.1
+</span></span></code></pre></div><hr><h1 id=二基本概念>二、基本概念</h1><p><code>Pytorch Lightning</code> 將深度學習的程式碼分成三種類型:</p><ol><li><p><strong>Research Code</strong>:
+整個應用的核心架構，可能會根據任務的內容進行調整、或是在開發過程中加入自己的想法。通常可能會包含幾個核心元件:</p><ul><li>模型架構定義</li><li>Train/Val/Test資料切分</li><li>Optimizer定義</li><li>Train/Val/Test Step Computation.</li></ul></li><li><p><strong>Engineer Code</strong>:</p><p>「EarlyStopping」, 「將資料送入GPU」等常見且不同專案使用方式都類似的程式碼。這部分的程式碼是 <code>Pytorch Lightning</code> 最希望能簡化的。</p></li><li><p><strong>Non-Essential Code</strong>:</p><p>檢查梯度、視覺化等偏向輔助性質的功能。</p></li></ol><p><code>Pytorch Lightning</code> 希望使用者只需要定義 <strong>Research Code</strong>，而 <strong>Engineer Code</strong> 由它來代為處理、<strong>Non-Essential</strong> 則是根據使用者的需要自行選用，由於不會影響正常使用，接下來我們著重探討如何重新將<strong>Research Code</strong> 組織為 <code>Pytorch Lightning</code> 的格式。</p><hr><h1 id=三-research-code>三、 Research Code</h1><p>針對模型開發中最為重要的就是 Research Code了，在 <code>Pytorch Lightning</code> 中透過 <code>pl.LightningModule</code> 模組來實現，這個模組繼承了 <code>torch.nn.Module</code> 的功能，所以使用上其實跟使用原生 <code>Pytorch</code> 是相當類似的。</p><p>實作時只需在定義的 Class 上繼承 pl.LightningModule 即可。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>import</span> pytorch_lightning <span style=color:#ff79c6>as</span> pl
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>class</span> <span style=color:#50fa7b>YourOwnNet</span>(pl<span style=color:#ff79c6>.</span>LightningModule):
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>somemethod</span>(self):
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>pass</span>
+</span></span></code></pre></div><p>在繼承 <code>pl.LightingModule</code> 後，有幾項重要的 Method 必須被 Override，未來 <code>Pytorch Lightning</code> 才能自動地進行訓練，以下將這些方法及目的條列出來:</p><ul><li><h4 id=prepare_data><strong>prepare_data()</strong>:</h4><p>負責資料的載入(包含 Training Set, Evaluation Set, Test)都撰寫在方法中。 自動訓練時會優先執行此 Method 以獲取資料。</p></li><li><h4 id=configure_optimizerself><strong>configure_optimizer(self)</strong>:</h4><ul><li><strong>回傳特定的優化器</strong> (<code>torch.nn.optimizer</code>)</li><li>如果對於優化的參數有任何設定(例如只想對特定參數進行調整)，也是在這個地方調整。</li><li>在自動訓練時，會呼叫此方法來取得 Optimizer。<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>def</span> <span style=color:#50fa7b>configure_optimizers</span>(self):
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> Adam(self<span style=color:#ff79c6>.</span>parameters(), lr<span style=color:#ff79c6>=</span><span style=color:#bd93f9>1e-3</span>)
+</span></span></code></pre></div></li></ul></li><li><h4 id=train_dataloaderself--val_dataloaderself--test_dataloaderself><strong>train_dataloader(self)</strong> / <strong>val_dataloader(self)</strong> / <strong>test_dataloader(self)</strong>:</h4><ul><li><p><strong>回傳 <code>Pytorch</code> 的 <code>DataLoader</code> Object</strong>，</p></li><li><p>這三個方法定義了 training/ validation/ test 時使用的 DataLoader。其中會使用到的資料可以透過 <code>prepare_data()</code> 先行取得。</p></li><li><p>在自動訓練的過程中，會呼叫這邊定義的 Function 來取得不同時期(Train/Validation/Test)的 DataLoader。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>def</span> <span style=color:#50fa7b>train_dataloader</span>(self):
+</span></span><span style=display:flex><span>    <span style=color:#6272a4># self.train_dataset 通常由 self.prepare_data()產生.</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> DataLoader(self<span style=color:#ff79c6>.</span>train_dataset, batch_size<span style=color:#ff79c6>=</span> self<span style=color:#ff79c6>.</span>batch_size, shuffle<span style=color:#ff79c6>=</span><span style=color:#ff79c6>True</span>)
+</span></span></code></pre></div></li></ul></li><li><h4 id=forwardself-args><strong>forward(self, args)</strong>:</h4><ul><li><p>定義當前這個模型 forward propagation 時所要進行的動作。</p></li><li><p>特別注意在建立 instance 時，直接將參數傳入 instance 等同於呼叫 forward function。來個具體例子。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>model <span style=color:#ff79c6>=</span> TestModel()
+</span></span><span style=display:flex><span>x <span style=color:#ff79c6>=</span> torch<span style=color:#ff79c6>.</span>Tensor([<span style=color:#bd93f9>1</span>, <span style=color:#bd93f9>2</span>, <span style=color:#bd93f9>3</span>])
+</span></span><span style=display:flex><span>output1 <span style=color:#ff79c6>=</span> model(x)
+</span></span><span style=display:flex><span>output2 <span style=color:#ff79c6>=</span> model<span style=color:#ff79c6>.</span>forward(x)
+</span></span><span style=display:flex><span>output1 <span style=color:#ff79c6>==</span> output2  <span style=color:#6272a4># 實際上這兩個是相同的.</span>
+</span></span></code></pre></div></li></ul></li><li><h4 id=training_stepval_steptest_stepself-batch-batch_idx><strong>training_step/val_step/test_step(self, batch, batch_idx)</strong>:</h4><ul><li><p>分別定義了 traing/ validation/ test 時的每一個 Step 所要進行的任務，其中較特別的是參數<code>batch</code>, <code>batch_idx</code>，這是會自動從 <code>train/val/test_dataloader()</code> 中的 <code>DataLoader</code> 取出一個 batch。具體使用方式請見下方範例。</p></li><li><p>此類型方法的回傳值有一定的格式，需要回傳一個 Python 的 Dictionary，其中包含:</p><ul><li><p>loss: 當前 Step 計算出來的 Training Loss. 用於接下來的 Backward Propagation 及參數調校。</p></li><li><p>log: 包含當前訓練的狀況，在訓練時會自動回傳成進度條。 如下圖所示:
+<img src=https://minglunwu.github.io/theme/images/20200414.png alt></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>def</span> <span style=color:#50fa7b>training_step</span>(self, batch, batch_idx):
+</span></span><span style=display:flex><span>    x, y <span style=color:#ff79c6>=</span> batch  <span style=color:#6272a4># 這裡的batch會對應到 self.train_dataloader()所回傳的DataLoader Object，對其取用一個batch.</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    output <span style=color:#ff79c6>=</span> self<span style=color:#ff79c6>.</span>forward(x) <span style=color:#6272a4># 將Input進行 forward propagation.</span>
+</span></span><span style=display:flex><span>    criterion <span style=color:#ff79c6>=</span> nn<span style=color:#ff79c6>.</span>CrossEntropyLoss()
+</span></span><span style=display:flex><span>    loss <span style=color:#ff79c6>=</span> criterion(output, y)
+</span></span><span style=display:flex><span>    logs <span style=color:#ff79c6>=</span> {<span style=color:#f1fa8c>&#34;loss&#34;</span>: loss}
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#34;loss&#34;</span>: loss, <span style=color:#f1fa8c>&#34;log&#34;</span>: logs}
+</span></span></code></pre></div></li></ul></li></ul></li><li><h4 id=trainingvalidationtest_epoch_endself-outputs><strong>(training/validation/test)_epoch_end(self, outputs)</strong>:</h4><ul><li><p>定義了「不同時期訓練完一個epoch時需要執行的事項」，舉例來說可能會在 Validation 的一個 Epoch 結束時計算所有 Step 平均的 Loss 是多少。</p></li><li><p><code>outputs</code> 參數為「當前 Epoch 中所有 Step 的{&ldquo;loss&rdquo;: loss, &ldquo;logs&rdquo;: logs}」(也就是每一個 <code>self.training_step()</code> 的回傳值)。</p></li><li><p>以下範例示範了在「每一個 Validation Epoch 結束後計算 Average Loss」。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>def</span> <span style=color:#50fa7b>validation_epoch_end</span>(self, outputs):
+</span></span><span style=display:flex><span>    avg_loss <span style=color:#ff79c6>=</span> torch<span style=color:#ff79c6>.</span>stack([x[<span style=color:#f1fa8c>&#39;val_loss&#39;</span>] <span style=color:#ff79c6>for</span> x <span style=color:#ff79c6>in</span> outputs])<span style=color:#ff79c6>.</span>mean()
+</span></span><span style=display:flex><span>    avg_val_acc <span style=color:#ff79c6>=</span> torch<span style=color:#ff79c6>.</span>stack([x[<span style=color:#f1fa8c>&#39;val_acc&#39;</span>] <span style=color:#ff79c6>for</span> x <span style=color:#ff79c6>in</span> outputs])<span style=color:#ff79c6>.</span>mean()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    tensorboard_logs <span style=color:#ff79c6>=</span> {<span style=color:#f1fa8c>&#39;val_loss&#39;</span>: avg_loss, <span style=color:#f1fa8c>&#39;avg_val_acc&#39;</span>: avg_val_acc}
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#39;avg_val_loss&#39;</span>: avg_loss, <span style=color:#f1fa8c>&#39;progress_bar&#39;</span>: tensorboard_logs}
+</span></span></code></pre></div></li></ul></li><li><h4 id=統整版本>統整版本:</h4></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>class</span> <span style=color:#50fa7b>PytorchLightningModel</span>(pl<span style=color:#ff79c6>.</span>LightningModule): <span style=color:#6272a4># 這邊一定要繼承pl.LightningModule</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>def</span> __init__(self): <span style=color:#6272a4># 初始化時可以將基本設定傳入。</span>
+</span></span><span style=display:flex><span>        <span style=color:#8be9fd;font-style:italic>super</span>()<span style=color:#ff79c6>.</span>__init__()
+</span></span><span style=display:flex><span>        self<span style=color:#ff79c6>.</span>ln1 <span style=color:#ff79c6>=</span> nn<span style=color:#ff79c6>.</span>Linear(<span style=color:#bd93f9>768</span>, <span style=color:#bd93f9>256</span>)
+</span></span><span style=display:flex><span>        self<span style=color:#ff79c6>.</span>ln2 <span style=color:#ff79c6>=</span> nn<span style=color:#ff79c6>.</span>Linear(<span style=color:#bd93f9>256</span>, <span style=color:#bd93f9>3</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>prepare_data</span>(self): <span style=color:#6272a4># 此方法會在初始化後優先執行。 所以可以在此方法中先將會用到的資料都讀取進來.</span>
+</span></span><span style=display:flex><span>        self<span style=color:#ff79c6>.</span>train_set <span style=color:#ff79c6>=</span> read_data(<span style=color:#f1fa8c>&#34;train&#34;</span>) <span style=color:#6272a4># read_data是自定義的讀取資料Method. 可以按照自己需求調整</span>
+</span></span><span style=display:flex><span>        self<span style=color:#ff79c6>.</span>test_set <span style=color:#ff79c6>=</span> read_data(<span style=color:#f1fa8c>&#34;test&#34;</span>)
+</span></span><span style=display:flex><span>        self<span style=color:#ff79c6>.</span>val_set <span style=color:#ff79c6>=</span> read_data(<span style=color:#f1fa8c>&#34;validation&#34;</span>)
+</span></span><span style=display:flex><span>        logging<span style=color:#ff79c6>.</span>info(<span style=color:#f1fa8c>&#34;===== Data is ready... =====&#34;</span>)
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>configure_optimizer</span>(self): <span style=color:#6272a4># 自動訓練時會呼叫此方法來獲取Optimizer.</span>
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> Adam(self<span style=color:#ff79c6>.</span>parameters(), lr<span style=color:#ff79c6>=</span><span style=color:#bd93f9>1e-3</span>) <span style=color:#6272a4># 這邊注意要調整的參數是`self.parameters()`</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#6272a4># 以下三個方法則是設定進行訓練及驗證時所要使用的Data Loader格式。</span>
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>train_dataloader</span>(self):
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> DataLoader(self<span style=color:#ff79c6>.</span>train_set, batch_size<span style=color:#ff79c6>=</span> self<span style=color:#ff79c6>.</span>batch_size, shuffle<span style=color:#ff79c6>=</span><span style=color:#ff79c6>True</span>) 
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>val_dataloader</span>(self):
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> DataLoader(self<span style=color:#ff79c6>.</span>val_set, batch_size<span style=color:#ff79c6>=</span> self<span style=color:#ff79c6>.</span>batch_size, shuffle<span style=color:#ff79c6>=</span><span style=color:#ff79c6>True</span>) 
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>test_dataloader</span>(self):
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> DataLoader(self<span style=color:#ff79c6>.</span>test_set, batch_size<span style=color:#ff79c6>=</span> self<span style=color:#ff79c6>.</span>batch_size, shuffle<span style=color:#ff79c6>=</span><span style=color:#ff79c6>True</span>) 
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>forward</span>(self, x): <span style=color:#6272a4># 定義模型在forward propagation時如何進行.</span>
+</span></span><span style=display:flex><span>        output <span style=color:#ff79c6>=</span> self<span style=color:#ff79c6>.</span>ln1(x)
+</span></span><span style=display:flex><span>        output <span style=color:#ff79c6>=</span> self<span style=color:#ff79c6>.</span>ln2(x)
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> output
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>training_step</span>(self, batch, batch_idx): <span style=color:#6272a4># 定義訓練過程的Step要如何進行</span>
+</span></span><span style=display:flex><span>        x, y <span style=color:#ff79c6>=</span> batch <span style=color:#6272a4># 從self.train_dataloader()的Data Loader取一個batch出來。</span>
+</span></span><span style=display:flex><span>        output <span style=color:#ff79c6>=</span> self<span style=color:#ff79c6>.</span>forward(x)
+</span></span><span style=display:flex><span>        criterion <span style=color:#ff79c6>=</span> nn<span style=color:#ff79c6>.</span>CrossEntropyLoss()
+</span></span><span style=display:flex><span>        loss <span style=color:#ff79c6>=</span> criterion(output, y)
+</span></span><span style=display:flex><span>        logs <span style=color:#ff79c6>=</span> {<span style=color:#f1fa8c>&#39;loss&#39;</span>: loss}
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#39;loss&#39;</span>:loss, <span style=color:#f1fa8c>&#39;log&#39;</span>:logs}
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>validation_step</span>(self, batch, batch_idx): <span style=color:#6272a4># 定義Validation如何進行，以這邊為例就再加上了計算Acc.</span>
+</span></span><span style=display:flex><span>        x, y <span style=color:#ff79c6>=</span> batch
+</span></span><span style=display:flex><span>        logits <span style=color:#ff79c6>=</span> self<span style=color:#ff79c6>.</span>forward(x)
+</span></span><span style=display:flex><span>        loss <span style=color:#ff79c6>=</span> F<span style=color:#ff79c6>.</span>cross_entropy(logits, y)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#6272a4># acc</span>
+</span></span><span style=display:flex><span>        a, y_hat <span style=color:#ff79c6>=</span> torch<span style=color:#ff79c6>.</span>max(logits, dim<span style=color:#ff79c6>=</span><span style=color:#bd93f9>1</span>)
+</span></span><span style=display:flex><span>        val_acc <span style=color:#ff79c6>=</span> accuracy_score(y_hat<span style=color:#ff79c6>.</span>cpu(), y<span style=color:#ff79c6>.</span>cpu())
+</span></span><span style=display:flex><span>        val_acc <span style=color:#ff79c6>=</span> torch<span style=color:#ff79c6>.</span>tensor(val_acc)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#39;val_loss&#39;</span>: loss, <span style=color:#f1fa8c>&#39;val_acc&#39;</span>: val_acc}
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>validation_epoch_end</span>(self, outputs): <span style=color:#6272a4># 在Validation的一個Epoch結束後，計算平均的Loss及Acc.</span>
+</span></span><span style=display:flex><span>        avg_loss <span style=color:#ff79c6>=</span> torch<span style=color:#ff79c6>.</span>stack([x[<span style=color:#f1fa8c>&#39;val_loss&#39;</span>] <span style=color:#ff79c6>for</span> x <span style=color:#ff79c6>in</span> outputs])<span style=color:#ff79c6>.</span>mean()
+</span></span><span style=display:flex><span>        avg_val_acc <span style=color:#ff79c6>=</span> torch<span style=color:#ff79c6>.</span>stack([x[<span style=color:#f1fa8c>&#39;val_acc&#39;</span>] <span style=color:#ff79c6>for</span> x <span style=color:#ff79c6>in</span> outputs])<span style=color:#ff79c6>.</span>mean()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        tensorboard_logs <span style=color:#ff79c6>=</span> {<span style=color:#f1fa8c>&#39;val_loss&#39;</span>: avg_loss, <span style=color:#f1fa8c>&#39;avg_val_acc&#39;</span>: avg_val_acc}
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#39;avg_val_loss&#39;</span>: avg_loss, <span style=color:#f1fa8c>&#39;progress_bar&#39;</span>: tensorboard_logs}
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#ff79c6>def</span> <span style=color:#50fa7b>test_step</span>(self, batch, batch_idx): <span style=color:#6272a4>#定義 Test 階段</span>
+</span></span><span style=display:flex><span>        x, y <span style=color:#ff79c6>=</span> batch
+</span></span><span style=display:flex><span>        logits <span style=color:#ff79c6>=</span> self<span style=color:#ff79c6>.</span>forward(x)
+</span></span><span style=display:flex><span>        loss <span style=color:#ff79c6>=</span> F<span style=color:#ff79c6>.</span>cross_entropy(logits, y)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#6272a4># acc</span>
+</span></span><span style=display:flex><span>        a, y_hat <span style=color:#ff79c6>=</span> torch<span style=color:#ff79c6>.</span>max(logits, dim<span style=color:#ff79c6>=</span><span style=color:#bd93f9>1</span>)
+</span></span><span style=display:flex><span>        val_acc <span style=color:#ff79c6>=</span> accuracy_score(y_hat<span style=color:#ff79c6>.</span>cpu(), y<span style=color:#ff79c6>.</span>cpu())
+</span></span><span style=display:flex><span>        val_acc <span style=color:#ff79c6>=</span> torch<span style=color:#ff79c6>.</span>tensor(val_acc)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#ff79c6>return</span> {<span style=color:#f1fa8c>&#39;test_acc&#39;</span>: val_acc}
+</span></span></code></pre></div><hr><h1 id=四透過trainer自動訓練>四、透過Trainer自動訓練</h1><h2 id=training>Training</h2><p>在你重新將程式碼改寫為 <code>Pytorch Lightning</code> 格式後，輕鬆的部分來了！接下來我們只需要透過 <code>Trainer</code> Class即可自動處理訓練。我們看看以下的範例:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>model <span style=color:#ff79c6>=</span> PytorchLightningModel(param1<span style=color:#ff79c6>=</span><span style=color:#bd93f9>768</span>, param2<span style=color:#ff79c6>=</span><span style=color:#bd93f9>5</span>) <span style=color:#6272a4># 自行封裝成Pytorch Lightning的模型</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4># Trainer 有不同的參數可以調整訓練時的行為</span>
+</span></span><span style=display:flex><span>trainer <span style=color:#ff79c6>=</span> pl<span style=color:#ff79c6>.</span>Trainer() <span style=color:#6272a4># 使用CPU</span>
+</span></span><span style=display:flex><span>trainer <span style=color:#ff79c6>=</span> pl<span style=color:#ff79c6>.</span>Trainer(gpus<span style=color:#ff79c6>=</span><span style=color:#bd93f9>1</span>) <span style=color:#6272a4># 使用GPU</span>
+</span></span><span style=display:flex><span>trainer <span style=color:#ff79c6>=</span> pl<span style=color:#ff79c6>.</span>Trainer(fast_dev_run<span style=color:#ff79c6>=</span><span style=color:#ff79c6>True</span>) <span style=color:#6272a4>#訓練時，使用單一個batch作為ㄧ個Epoch，目的是快速的確認當前的模型設置有無結構上的問題(快速地跑完Train -&gt; Validation -&gt; Test)。</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>trainer<span style=color:#ff79c6>.</span>fit(model) <span style=color:#6272a4># 呼叫.fit() 就會自動進行Model的training step及validation step.</span>
+</span></span></code></pre></div><p>原先從 CPU 切換為 GPU，可能需要針對所有的變數、模型進行裝置的變更。<strong>但現在只需要調整 Trainer 的 <code>gpus</code> 參數即可</strong>。</p><p>而訓練時如果需要以 dry-run 的方式，確定 Model 從頭到尾的結構沒有問題，現在也只需要設定 <code>fast_dev_run</code> 即可。</p><p>另外 Trainer Class 也針對了「使用多張GPU」、「accumulate_grad_batches」提供參數進行調整，細節的部分可以參考官方網站。 <a href=https://pytorch-lightning.readthedocs.io/en/latest/trainer.html>連結在此</a></p><h2 id=evaluation--inference>Evaluation / Inference</h2><p>在訓練完模型後，你也能夠載入先前訓練好的 Checkpoint File 並且重新進行 Evaluation/Inference.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span>model <span style=color:#ff79c6>=</span> PytorchLightningModel(param1<span style=color:#ff79c6>=</span><span style=color:#bd93f9>768</span>, param2<span style=color:#ff79c6>=</span><span style=color:#bd93f9>5</span>) <span style=color:#6272a4># 自行封裝成Pytorch Lightning的模型</span>
+</span></span><span style=display:flex><span>trainer <span style=color:#ff79c6>=</span> Trainer(resume_from_checkpoint<span style=color:#ff79c6>=</span><span style=color:#f1fa8c>&#34;PATH&#34;</span>, gpus<span style=color:#ff79c6>=</span><span style=color:#bd93f9>1</span>)
+</span></span><span style=display:flex><span>trainer<span style=color:#ff79c6>.</span>test(model)
+</span></span></code></pre></div><hr><h1 id=五後記>五、後記</h1><p>從原生 <code>Pytorch</code> 轉移到 <code>Pytorch Lightning</code> 並不需要花費過多成本來學習新的語法，其概念只是將程式碼「重新組織」，將對應的程式碼放置到特定的 Method 中，如此一來在進行訓練時，將能省下許多工程面的實作時間、程式碼也會變得簡潔許多。</p><hr><ul class=pager><li class=previous><a href=/notes/2020/20200324.html/ data-toggle=tooltip data-placement=top title="從零開始 - Pytorch 入門懶人包">&larr;
 Previous Post</a></li><li class=next><a href=/notes/2020/20200520.html/ data-toggle=tooltip data-placement=top title="Python 平行化運算 - Multi-Processing">Next
 Post &rarr;</a></li></ul></div><div class="col-lg-2 col-lg-offset-0
 visible-lg-block

@@ -22,27 +22,33 @@ from module_a import function_a
 
 if __name__ == &quot;__main__&quot;:
     function_a()
-</code></pre><h2 id=package>Package</h2><p><code>Package</code> 則是將<strong>一群 <code>Module</code> 的集合</strong>，使用特別的方法將數個 <code>Module</code> 封裝起來:</p><ul><li>將一至多個 <code>Module</code> 放入相同的資料夾.</li><li>在資料夾中加入一個空白的 <code>__init__.py</code></li></ul><p>假設我們想將三個 <code>Module</code> 封裝成一個 <code>Package</code>:</p><ol><li>module_a.py</li><li>module_b.py</li><li>module_c.py</li></ol><p>根據上面兩個原則，我們需要調整為以下結構:</p><p>當上述條件皆滿足，這個資料夾就會被視為一個 <code>Package</code>，可以被執行檔載入 :</p><pre><code>:::python
-# main.py
-from my_package.module_a import xxx
-</code></pre><hr><h1 id=absolute-import-vs-relative-import>Absolute Import VS Relative Import</h1><p>Python在 Import 檔案時有兩種不同的方式：</p><h2 id=absolute-import>Absolute Import</h2><p>上述的兩個例子</p><pre><code>:::python
-    # main.py
-    from module_a import function_a # 例子(1)
-    from my_package.module_a import function_a  # 例子(2)
-</code></pre><p>其實都是屬於 <code>Absolute Import</code>，所謂的 <code>Absolute Import</code> 指的是</p><blockquote><p>從<code>系統路徑</code>中嘗試讀取 <code>Package</code> 或 <code>Module</code></p></blockquote><p><code>系統路徑</code>是一連串的路徑，在Python執行下列指令，會得到一包含許多路徑的 List.</p><pre><code>:::python
-import sys
-
-print(sys.path) # 印出系統路徑
-</code></pre><p>其中值得注意的是: <strong>在執行時，當下的路徑會被自動加入sys.path中</strong></p><p>在下列情境中:</p><p>如果執行 <code>main.py</code> 是可以運行的:</p><pre><code>:::
-from module_a import function_a
-if __name__ == &quot;__main__&quot;:
-    function_a()
-</code></pre><p>當 <code>main.py</code> 被執行時，會自動將 <code>main.py</code> 當前的資料夾路徑插入 <code>sys.path</code>(系統路徑)中的第一個位置。</p><p>Import <code>Module</code> 或 <code>Package</code> 時會依序檢查 <code>sys.path</code> 的路徑，此時排在 <code>sys.path</code>首位的路徑就是 <code>main.py</code> 當前的位置(也正是 <code>module_a.py</code> 所在的位置)，所以可以正確 import.</p><p>然而 <code>Absolute Import</code> 有一個限制 : <strong>名稱必須要是Unique</strong></p><p>來個極端的例子，假設現在的 <code>sys.path</code> 長這樣:</p><p>["/home/minglun/", &ldquo;/home/minglun/project&rdquo;]</p><p>如果我們執行下列程式碼:</p><pre><code>:::python
-from module_a import function_a
-</code></pre><p>結果在 <code>/home/minglun</code> 及 <code>/home/minglun/project</code> 兩個位置中都有一個 <code>module_a.py</code>，那Python怎麼知道要使用哪一個檔案呢？</p><p>它無從得知，此時就會發生錯誤！</p><p>此時我們就需要 <code>Relative Import</code></p><h2 id=relative-import>Relative Import</h2><blockquote><p>從檔案當前位置為基準，尋找對應的檔案</p></blockquote><p>相同 <code>Package</code> 中的 <code>module</code> 如果需要互相引用，例如 <code>module_a.py</code> 要引用 <code>module_b.py</code></p><pre><code>:::
-# module_a.py
-from .module_b import function_b # 使用相對路徑指定當前的module_b.py
-</code></pre><p>同一個 <code>Package</code> 中的 <code>Module</code> 如果需要互相引用，使用 Relative Import 可以避免路徑混淆。</p><h2 id=幾個重要原則>幾個重要原則</h2><ul><li>避免在<code>Module</code>中放置定義以外的東西: <code>Module</code>是用來被Import後執行的，執行的程式碼最好放在外部(上述案例中的 <code>main.py</code>)，否則容易發生執行上的混亂。</li><li>同一個 <code>Package</code> 中的 <code>Module</code> 互相引用 : 使用 <code>Relative Import</code></li><li>不同 <code>Package</code>中的 <code>Module</code> 互相引用 : 使用 <code>Absolute Import</code></li><li>執行檔(<code>main.py</code>)引用模組: 使用 <code>Absolute Import</code></li></ul><blockquote><p>只有同一個<code>Package</code>中的 <code>Module</code> 要互相引用，才用 <code>Relative Import</code>，否則都用 <code>Absolute Import</code></p></blockquote><hr><ul class=pager><li class=previous><a href=/notes/2021/fast_api_note_2.html/ data-toggle=tooltip data-placement=top title="Fast API 入門筆記 (二) - Typing Hint & Async">&larr;
+</code></pre><h2 id=package>Package</h2><p><code>Package</code> 則是將<strong>一群 <code>Module</code> 的集合</strong>，使用特別的方法將數個 <code>Module</code> 封裝起來:</p><ul><li>將一至多個 <code>Module</code> 放入相同的資料夾.</li><li>在資料夾中加入一個空白的 <code>__init__.py</code></li></ul><p>假設我們想將三個 <code>Module</code> 封裝成一個 <code>Package</code>:</p><ol><li>module_a.py</li><li>module_b.py</li><li>module_c.py</li></ol><p>根據上面兩個原則，我們需要調整為以下結構:</p><p><img src=https://minglunwu.github.io/images/20210818/package.png alt></p><p>當上述條件皆滿足，這個資料夾就會被視為一個 <code>Package</code>，可以被執行檔載入 :</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#6272a4># main.py</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>from</span> my_package.module_a <span style=color:#ff79c6>import</span> xxx
+</span></span><span style=display:flex><span>    ```
+</span></span><span style=display:flex><span><span style=color:#ff79c6>---</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4># Absolute Import VS Relative Import</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Python在 Import 檔案時有兩種不同的方式：
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#6272a4>## Absolute Import</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>上述的兩個例子
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>```python
+</span></span><span style=display:flex><span><span style=color:#6272a4># main.py</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>from</span> module_a <span style=color:#ff79c6>import</span> function_a <span style=color:#6272a4># 例子(1)</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>from</span> my_package.module_a <span style=color:#ff79c6>import</span> function_a  <span style=color:#6272a4># 例子(2)</span>
+</span></span></code></pre></div><p>其實都是屬於 <code>Absolute Import</code>，所謂的 <code>Absolute Import</code> 指的是</p><blockquote><p>從<code>系統路徑</code>中嘗試讀取 <code>Package</code> 或 <code>Module</code></p></blockquote><p><code>系統路徑</code>是一連串的路徑，在Python執行下列指令，會得到一包含許多路徑的 List.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>import</span> sys
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#8be9fd;font-style:italic>print</span>(sys<span style=color:#ff79c6>.</span>path) <span style=color:#6272a4># 印出系統路徑</span>
+</span></span></code></pre></div><p>其中值得注意的是: <strong>在執行時，當下的路徑會被自動加入sys.path中</strong></p><p>在下列情境中:</p><p><img src=https://minglunwu.github.io/images/20210818/only_module.png alt></p><p>如果執行 <code>main.py</code> 是可以運行的:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>from</span> module_a <span style=color:#ff79c6>import</span> function_a
+</span></span><span style=display:flex><span><span style=color:#ff79c6>if</span> __name__ <span style=color:#ff79c6>==</span> <span style=color:#f1fa8c>&#34;__main__&#34;</span>:
+</span></span><span style=display:flex><span>    function_a()
+</span></span></code></pre></div><p>當 <code>main.py</code> 被執行時，會自動將 <code>main.py</code> 當前的資料夾路徑插入 <code>sys.path</code>(系統路徑)中的第一個位置。</p><p>Import <code>Module</code> 或 <code>Package</code> 時會依序檢查 <code>sys.path</code> 的路徑，此時排在 <code>sys.path</code>首位的路徑就是 <code>main.py</code> 當前的位置(也正是 <code>module_a.py</code> 所在的位置)，所以可以正確 import.</p><p>然而 <code>Absolute Import</code> 有一個限制 : <strong>名稱必須要是Unique</strong></p><p>來個極端的例子，假設現在的 <code>sys.path</code> 長這樣:</p><p>["/home/minglun/", &ldquo;/home/minglun/project&rdquo;]</p><p>如果我們執行下列程式碼:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#ff79c6>from</span> module_a <span style=color:#ff79c6>import</span> function_a
+</span></span></code></pre></div><p>結果在 <code>/home/minglun</code> 及 <code>/home/minglun/project</code> 兩個位置中都有一個 <code>module_a.py</code>，那Python怎麼知道要使用哪一個檔案呢？</p><p>它無從得知，此時就會發生錯誤！</p><p>此時我們就需要 <code>Relative Import</code></p><h2 id=relative-import>Relative Import</h2><blockquote><p>從檔案當前位置為基準，尋找對應的檔案</p></blockquote><p><img src=https://minglunwu.github.io/images/20210818/full_module.png alt></p><p>相同 <code>Package</code> 中的 <code>module</code> 如果需要互相引用，例如 <code>module_a.py</code> 要引用 <code>module_b.py</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#6272a4># module_a.py</span>
+</span></span><span style=display:flex><span><span style=color:#ff79c6>from</span> .module_b <span style=color:#ff79c6>import</span> function_b <span style=color:#6272a4># 使用相對路徑指定當前的module_b.py</span>
+</span></span></code></pre></div><p>同一個 <code>Package</code> 中的 <code>Module</code> 如果需要互相引用，使用 Relative Import 可以避免路徑混淆。</p><h2 id=幾個重要原則>幾個重要原則</h2><ul><li>避免在<code>Module</code>中放置定義以外的東西: <code>Module</code>是用來被Import後執行的，執行的程式碼最好放在外部(上述案例中的 <code>main.py</code>)，否則容易發生執行上的混亂。</li><li>同一個 <code>Package</code> 中的 <code>Module</code> 互相引用 : 使用 <code>Relative Import</code></li><li>不同 <code>Package</code>中的 <code>Module</code> 互相引用 : 使用 <code>Absolute Import</code></li><li>執行檔(<code>main.py</code>)引用模組: 使用 <code>Absolute Import</code></li></ul><blockquote><p>只有同一個<code>Package</code>中的 <code>Module</code> 要互相引用，才用 <code>Relative Import</code>，否則都用 <code>Absolute Import</code></p></blockquote><hr><ul class=pager><li class=previous><a href=/notes/2021/fast_api_note_2.html/ data-toggle=tooltip data-placement=top title="Fast API 入門筆記 (二) - Typing Hint & Async">&larr;
 Previous Post</a></li><li class=next><a href=/notes/2021/ansible_note.html/ data-toggle=tooltip data-placement=top title="Ansible 入門筆記(ㄧ) - 核心概念及架構">Next
 Post &rarr;</a></li></ul></div><div class="col-lg-2 col-lg-offset-0
 visible-lg-block
