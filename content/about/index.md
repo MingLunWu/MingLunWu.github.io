@@ -23,6 +23,6 @@ Hi! 我是吳明倫，一個熱愛筆記的工程師。
 ---
 
 
-| 年份 | 城市 | 會議 | 分享主題 |
-| :---: | :---: | :--: | :--: |
-| 2023 | 台北 | [DevOps Day Taipei 2023](https://devopsdays.tw/2023/) | [以產品思維驅動的 DevOps 策略：金融業 AI 團隊的實踐之旅](https://devopsdays.tw/2023/session-page/2283) |
+| 年份 | 會議 | 分享主題 |
+| :---: | :--: | :--: |
+| 2023 | [DevOps Day Taipei 2023](https://devopsdays.tw/2023/) | [以產品思維驅動的 DevOps 策略：金融業 AI 團隊的實踐之旅](https://devopsdays.tw/2023/session-page/2283) |
