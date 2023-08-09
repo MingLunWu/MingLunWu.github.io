@@ -36,7 +36,7 @@ home = ["HTML", "RSS", "Algolia"]
 
   # Sidebar settings
   # sidebar_about_description = "Software Developer, Open Source Enthusiast and Life Adventurer"
-  sidebar_about_description = "Software Developer, 攝影者, 喜歡用筆記提高自己忽高忽低的生產力"
+  sidebar_about_description = "MLOps Engineer @ E.Sun F.H.C, 攝影者, 喜歡用筆記提高自己忽高忽低的生產力"
   sidebar_avatar = "img/minglunwu.jpg"      # use absolute URL, seeing it's used in both `/` and `/about/`
 
   featured_tags = true 
@@ -109,9 +109,9 @@ home = ["HTML", "RSS", "Algolia"]
   #[[params.addtional_menus]]
   #title =  "NOTES"
   #href =  "/notes/"
-  # [[params.addtional_menus]]
-  # title =  "ABOUT"
-  # href =  "/"
+  [[params.addtional_menus]]
+  title =  "ABOUT"
+  href =  "/about"
 
 [outputFormats.Algolia]
 baseName = "algolia"
