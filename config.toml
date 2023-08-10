@@ -30,9 +30,9 @@ home = ["HTML", "RSS", "Algolia"]
 
   # algolia site search
   algolia_search = true
-  algolia_appId = ""
-  algolia_indexName = ""
-  algolia_apiKey = ""
+  algolia_appId = "QJ0MQXUBUH"
+  algolia_indexName = "MingLun Blog"
+  algolia_apiKey = "1cdf1d518491fce28fa102d86e105282"
 
   # Sidebar settings
   # sidebar_about_description = "Software Developer, Open Source Enthusiast and Life Adventurer"
