@@ -3,11 +3,11 @@ layout: page
 ---
 # About Me
 
-Hi! 我是吳明倫，一個熱愛筆記的工程師。
+Hi! 我是明倫，一個熱愛筆記的工程師。
 
-我目前在[玉山金控](https://www.esunfhc.com/zh-tw/)擔任 MLOps Engineer，規劃並設計機器學習領域的 CI/CD Pipeline，透過雲原生技術提供穩健的容器化服務。
+目前在[玉山金控](https://www.esunfhc.com/zh-tw/)擔任 MLOps Engineer，規劃並開發機器學習領域的 CI/CD Pipeline，透過雲原生技術提供穩健的容器化服務。
 
-我出身於文字探勘實驗室，曾經在[緯創資通](https://www.wistron.com)擔任 Data Scientist，專注於 NLP 領域，在醫療場域實現機器學習的解決方案。為了瞭解機器學習如何落地服務，決定從建模工作轉換至機器學習的其他面向，累積不同角度的經驗。
+我出身於[文字探勘實驗室](https://31lab.cm.nsysu.edu.tw/web/home)，曾經在[緯創資通](https://www.wistron.com)擔任 Data Scientist，專注於 NLP 領域，在醫療場域實現機器學習的解決方案。為了瞭解機器學習如何落地服務，決定從建模工作轉換至機器學習的其他面向，累積不同角度的經驗。
 
 在工作之外，我喜歡透過寫作分享新知，除了在此分享技術相關筆記外，也會在 [Medium](https://medium.com/@minglun-wu) 分享關於「職涯心得」、「筆記」。
 
