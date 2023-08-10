@@ -12,11 +12,11 @@ Hi! 我是吳明倫，一個熱愛筆記的工程師。
 在工作之外，我喜歡透過寫作分享新知，除了在此分享技術相關筆記外，也會在 [Medium](https://medium.com/@minglun-wu) 分享關於「職涯心得」、「筆記」。
 
 
-| 標題 | 類型 | Link |
-| :---: | :---: | :--: |
-| [每個月和主管 1 on 1，半年後帶給我什麼樣的啟發？](https://medium.com/@minglun-wu/每個月和主管-1-on-1-半年後帶給我什麼樣的啟發-de62a7f96b2f) | 職涯心得 | [點此前往](https://medium.com/@minglun-wu/每個月和主管-1-on-1-半年後帶給我什麼樣的啟發-de62a7f96b2f) |
-| [系列文章 - 筆記術士的秘密訓練所](https://medium.com/notability-center) | 筆記術 | [點此前往](https://medium.com/notability-center) |
-| [邁向資深工程師之路 - 凝練自己的觀點](https://medium.com/@minglun-wu/邁向資深工程師之路-凝練自己的觀點-863a95075551) | 職涯心得 | [點此前往](https://medium.com/@minglun-wu/邁向資深工程師之路-凝練自己的觀點-863a95075551) |
+| 標題 | 類型 |
+| :---: | :---: |
+| [每個月和主管 1 on 1，半年後帶給我什麼樣的啟發？](https://medium.com/@minglun-wu/每個月和主管-1-on-1-半年後帶給我什麼樣的啟發-de62a7f96b2f) | 職涯心得 |
+| [系列文章 - 筆記術士的秘密訓練所](https://medium.com/notability-center) | 筆記術 |
+| [邁向資深工程師之路 - 凝練自己的觀點](https://medium.com/@minglun-wu/邁向資深工程師之路-凝練自己的觀點-863a95075551) | 職涯心得 |
 
 ---
 # 演講分享
