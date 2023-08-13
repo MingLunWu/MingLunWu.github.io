@@ -129,3 +129,16 @@ params = ["categories", "tags"]
     startLevel = 1
   [markup.highlight]
     style = "dracula"
+
+[related]
+    threshold = 80
+    includeNewer = true
+    toLower = true
+
+    [[related.indices]]
+        name = "tags"
+        weight = 100
+
+    [[related.indices]]
+        name = "date"
+        weight = 10
