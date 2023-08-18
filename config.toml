@@ -21,7 +21,7 @@ home = ["HTML", "RSS", "Algolia"]
 
   image_404 = "img/404-bg.jpg"
   title_404 = "你走到了知識的天涯海角 :("
-  omit_categories = true
+  omit_categories = false
 
   # leancloud storage for page view counter
   page_view_conter = false 
