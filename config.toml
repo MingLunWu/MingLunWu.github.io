@@ -131,7 +131,7 @@ params = ["categories", "tags"]
     style = "dracula"
 
 [related]
-    threshold = 80
+    threshold = 1
     includeNewer = true
     toLower = true
 
