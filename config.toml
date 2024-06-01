@@ -1,5 +1,5 @@
 baseurl = "https://minglunwu.com"
-title = "MingLun Blog"
+title = "Byte and Ink"
 theme = "hugo-theme-cleanwhite"
 languageCode = "en-us"
 # Enable comments by entering your Disqus shortname
@@ -14,7 +14,7 @@ home = ["HTML", "RSS", "Algolia"]
 
 [params]
   header_image = "img/home-bg-night.webp"
-  SEOTitle = "MingLun Blog"
+  SEOTitle = "Byte and Ink"
   description = ""
   keyword = "吳明倫, MingLun, minglunwu"
   slogan = ""
