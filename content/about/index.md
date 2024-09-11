@@ -22,8 +22,8 @@ Hi! 我是明倫，一位對「筆記」充滿熱情的軟體工程師，專精�
 
 # 演講分享
 
-
 | 年份 | 會議 | 分享主題 |
 | :---: | :--: | :--: |
-| 2024 | [DevOps Day Taipei 2024](https://devopsdays.tw/2023/) | [以開發者資料驅動的 CI/CD 優化策略](https://devopsdays.tw/2024/speaker-page/1149) |
-| 2023 | [DevOps Day Taipei 2023](https://devopsdays.tw/2023/) | [以產品思維驅動的 DevOps 策略：金融業 AI 團隊的實踐之旅](https://devopsdays.tw/2023/session-page/2283) |
+| 2024 | [Hello World Dev Conference](https://hwdc.ithome.com.tw/2024) | [Centralized CI/CD 策略的探索與實踐](https://hwdc.ithome.com.tw/2024/session-page/3212) |
+| 2024 | [DevOps Day Taipei](https://devopsdays.tw/2023/) | [以開發者資料驅動的 CI/CD 優化策略](https://devopsdays.tw/2024/speaker-page/1149) |
+| 2023 | [DevOps Day Taipei](https://devopsdays.tw/2023/) | [以產品思維驅動的 DevOps 策略：金融業 AI 團隊的實踐之旅](https://devopsdays.tw/2023/session-page/2283) |
