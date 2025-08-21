@@ -134,7 +134,7 @@ params = ["categories", "tags"]
       unsafe = true
 
 [related]
-    threshold = 1
+    threshold = 50
     includeNewer = true
     toLower = true
 
@@ -143,5 +143,13 @@ params = ["categories", "tags"]
         weight = 100
 
     [[related.indices]]
+        name = "categories"
+        weight = 80
+
+    [[related.indices]]
         name = "date"
         weight = 10
+
+    [[related.indices]]
+        name   = "title"
+        weight = 30
