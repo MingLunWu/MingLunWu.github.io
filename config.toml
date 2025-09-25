@@ -2,6 +2,7 @@ baseurl = "https://minglunwu.com"
 title = "Byte and Ink"
 theme = "hugo-theme-cleanwhite"
 languageCode = "en-us"
+timeZone = "Asia/Taipei"
 # Enable comments by entering your Disqus shortname
 disqusShortname = ""
 googleAnalytics = "G-NC508K3RBY"
@@ -65,7 +66,8 @@ home = ["HTML", "RSS", "Algolia"]
   # Include any custom CSS and/or JS files, url or relative to /static folder
   #custom_css = ["css/lightbox.css", "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css", "css/main.css"]
   #custom_js = ["js/lightbox.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js", "js/main.js"]
-
+  customCSS = ["css/custom.css"]
+  
   [params.social]
   rss            = true 
   email          = "alen6997535@gmail.com"
