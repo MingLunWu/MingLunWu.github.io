@@ -24,6 +24,7 @@ Hi! 我是明倫，一位對「筆記」充滿熱情的軟體工程師，專精�
 
 | 年份 | 活動 | 分享主題 |
 | :---: | :--: | :--: |
+| 2025 | [DevOps Taiwan Meetup](https://devops.kktix.cc/) | [從混亂到有效治理: Policy as Code 在跨團隊 CI/CD 的實踐與應用](https://devops.kktix.cc/events/meetup-72-policy-as-code) |
 | 2025 | [DevOpsDays Taipei](https://devopsdays.tw/2024/) | [從混亂到有效治理: Policy as Code 在跨團隊 CI/CD 的實踐與應用](https://devopsdays.tw/2025/session-page/3757) |
 | 2025 | [Taipei DBT Meetup](https://www.meetup.com/taipei-dbt-meetup) | [跨域新視界：從 Data 到其他領域的經驗及趨勢洞察](https://www.meetup.com/taipei-dbt-meetup/events/307317858/?eventOrigin=group_calendar) (與談人之一) |
 | 2024 | [Hello World Dev Conference](https://hwdc.ithome.com.tw/2024) | [Centralized CI/CD 策略的探索與實踐](https://hwdc.ithome.com.tw/2024/session-page/3212) |
