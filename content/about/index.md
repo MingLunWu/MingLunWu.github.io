@@ -13,7 +13,7 @@ Hi! 我是明倫，一位對「筆記」充滿熱情的軟體工程師，專精�
 
 | 標題 | 類型 |
 | :---: | :---: |
-| [每個月和主管 1 on 1，半年後帶給我什麼樣的啟發？](https://medium.com/@minglun-wu/每個月和主管-1-on-1-半年後帶給我什麼樣的啟發-de62a7f96b2f) | 職涯心得 |
+| [每個月和主管 1 on 1，半年後帶給我什麼樣的啟發？](https://minglunwu.com/notes/2022/how_to_1_on_1/) | 職涯心得 |
 | [系列文章 - 筆記術士的秘密訓練所](https://medium.com/notability-center) | 筆記術 |
 | [邁向資深工程師之路 - 凝練自己的觀點](https://medium.com/@minglun-wu/邁向資深工程師之路-凝練自己的觀點-863a95075551) | 職涯心得 |
 | [系列文章 - Obsidian 入坑指南](https://minglunwu.com/tags/note/) | 筆記軟體 |
