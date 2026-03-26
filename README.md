@@ -33,3 +33,11 @@ The current workflow is:
 Site-specific style customizations should live in `static/css/custom.css`.
 
 The theme loads extra styles through `params.custom_css` in `config.toml`, so prefer changing files in this repository instead of editing the theme submodule directly.
+
+Article-page structure customizations should live in `layouts/_default/single.html` and local partials in `layouts/partials/`.
+
+Current article-specific partials:
+
+1. `layouts/partials/post-related-notes.html`
+2. `layouts/partials/post-comments.html`
+3. `layouts/partials/post-newsletter.html`
