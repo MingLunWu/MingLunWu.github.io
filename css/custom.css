@@ -1,4 +1,5 @@
-body,
+@import url("https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC&display=swap");
+
 h1,
 h2,
 h3,
@@ -7,4 +8,52 @@ h5,
 h6 {
   font-family: "LXGW WenKai TC", -apple-system, "Helvetica Neue", Arial, "PingFang TC",
     "Microsoft JhengHei", sans-serif;
+  font-weight: 700;
+}
+
+body {
+  font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+  font-size: 1.2em;
+  line-height: 1.85;
+}
+
+.post-container,
+.post-container p,
+.post-container li,
+.post-container blockquote,
+.post-container .post-content-preview,
+.post-preview > a > .post-subtitle {
+  font-size: 1.2em;
+}
+
+.post-container p,
+.post-container li,
+.post-container blockquote {
+  line-height: 1.9;
+}
+
+.post-container p {
+  margin: 1.3em 0;
+}
+
+.post-container ul,
+.post-container ol {
+  margin-top: 1.1em;
+  margin-bottom: 1.1em;
+}
+
+.post-container li + li {
+  margin-top: 0.35em;
+}
+
+.post-container h1,
+.post-container h2,
+.post-container h3,
+.post-container h4,
+.post-container h5,
+.post-container h6 {
+  font-weight: 700;
+  line-height: 1.45;
+  margin-top: 1.7em;
+  margin-bottom: 0.75em;
 }
