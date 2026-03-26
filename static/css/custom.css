@@ -82,3 +82,59 @@ body {
   font-size: 1.24em;
   line-height: 1.55;
 }
+
+.post-container table {
+  width: 100%;
+  margin: 1.8em 0 2.2em;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #e5dfd4;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fcfaf5;
+  box-shadow: 0 10px 30px rgba(55, 41, 23, 0.04);
+}
+
+.post-container thead {
+  background: #e8dcc3;
+}
+
+.post-container th,
+.post-container td {
+  padding: 0.95em 1.1em;
+  border: 0;
+  border-bottom: 1px solid #e9e1d4 !important;
+  font-family: "LXGW WenKai TC", -apple-system, "Helvetica Neue", Arial, "PingFang TC",
+    "Microsoft JhengHei", sans-serif;
+  font-size: 0.92em;
+  line-height: 1.75;
+  vertical-align: top;
+}
+
+.post-container th {
+  color: #2d2418;
+  font-weight: 700;
+}
+
+.post-container td {
+  color: #4a4033;
+  font-weight: 500;
+}
+
+.post-container tbody tr:last-child td {
+  border-bottom: 0 !important;
+}
+
+.post-container table a {
+  color: #2f6aa3;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.12em;
+  font-weight: 700;
+}
+
+.post-container table a:hover,
+.post-container table a:focus {
+  color: #184e7a;
+  text-decoration: underline;
+}
