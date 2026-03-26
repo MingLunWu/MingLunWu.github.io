@@ -41,3 +41,8 @@ Current article-specific partials:
 1. `layouts/partials/post-related-notes.html`
 2. `layouts/partials/post-comments.html`
 3. `layouts/partials/post-newsletter.html`
+
+Article-page integrations are configured in `config.toml`:
+
+1. `params.utterances`
+2. `params.newsletter`
