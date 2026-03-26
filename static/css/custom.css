@@ -57,3 +57,12 @@ body {
   margin-top: 1.7em;
   margin-bottom: 0.75em;
 }
+
+.post-preview > a > .post-title {
+  font-weight: 800;
+}
+
+.post-preview > a > .post-subtitle {
+  color: #444;
+  font-weight: 400;
+}
