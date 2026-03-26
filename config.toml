@@ -67,6 +67,15 @@ home = ["HTML", "RSS", "Algolia"]
   #custom_css = ["css/lightbox.css", "https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css", "css/main.css"]
   #custom_js = ["js/lightbox.js", "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js", "js/main.js"]
   custom_css = ["css/custom.css"]
+
+  [params.utterances]
+  repo = "MingLunWu/MingLunWu.github.io"
+  issue_term = "title"
+  theme = "github-light"
+  crossorigin = "anonymous"
+
+  [params.newsletter]
+  substack_embed_url = "https://minglunwu.substack.com/embed"
   
   [params.social]
   rss            = true 

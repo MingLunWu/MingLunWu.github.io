@@ -1,9 +1,11 @@
+{{ with .Site.Params.utterances }}
 <hr>
 <script src="https://utteranc.es/client.js"
-    repo="MingLunWu/MingLunWu.github.io"
-    issue-term="title"
-    theme="github-light"
-    crossorigin="anonymous"
+    repo="{{ .repo }}"
+    issue-term="{{ .issue_term }}"
+    theme="{{ .theme }}"
+    crossorigin="{{ .crossorigin }}"
     async>
 </script>
+{{ end }}
 {{ partial "comments.html" . }}
