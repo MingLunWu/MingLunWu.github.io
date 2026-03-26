@@ -138,3 +138,50 @@ body {
   color: #184e7a;
   text-decoration: underline;
 }
+
+@media (max-width: 767px) {
+  body {
+    font-size: 1.18em;
+    line-height: 1.85;
+  }
+
+  .post-container,
+  .post-container p,
+  .post-container li,
+  .post-container blockquote,
+  .post-container .post-content-preview,
+  .post-preview > a > .post-subtitle {
+    font-size: 1.18em;
+  }
+
+  .post-container p,
+  .post-container li {
+    line-height: 1.9;
+  }
+
+  .post-container p {
+    margin: 1.3em 0;
+  }
+
+  .post-container blockquote,
+  .post-container blockquote p {
+    font-size: 1.04em;
+    line-height: 1.65;
+  }
+
+  .post-preview > a > .post-title {
+    font-size: 23px;
+    line-height: 1.3;
+  }
+
+  .post-preview > a > .post-subtitle {
+    font-size: 1.14em;
+    line-height: 1.45;
+  }
+
+  .post-container th,
+  .post-container td {
+    font-size: 1.04em;
+    padding: 0.8em 0.9em;
+  }
+}
