@@ -46,3 +46,10 @@ Article-page integrations are configured in `config.toml`:
 
 1. `params.utterances`
 2. `params.newsletter`
+
+Sidebar structure is overridden locally in `layouts/partials/sidebar.html` and split into:
+
+1. `layouts/partials/sidebar-profile.html`
+2. `layouts/partials/sidebar-links.html`
+3. `layouts/partials/sidebar-featured-tags.html`
+4. `layouts/partials/sidebar-friends.html`
