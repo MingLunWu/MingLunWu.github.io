@@ -165,7 +165,7 @@ image: "background.jpeg"
 2. 我擅長的事情是什麼？
 3. 我不喜歡什麼樣的事情？
 
-![slide](slide.png![alt text](image.png))
+![slide](slide.png)
 
 「職業」像是一個標籤，「事情」比較接近真實的喜好、能力與感受。
 
