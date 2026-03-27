@@ -31,7 +31,23 @@ body {
 .post-container p,
 .post-container li,
 .post-container blockquote {
+  font-weight: 700;
   line-height: 2;
+}
+
+.post-container strong,
+.post-container b {
+  font-weight: 700;
+  color: #2d2418;
+  padding: 0 0.18em;
+  border-radius: 0.32em;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 8%,
+    rgba(208, 182, 124, 0.42) 8%,
+    rgba(208, 182, 124, 0.42) 92%,
+    rgba(0, 0, 0, 0) 92%
+  );
 }
 
 .post-container blockquote {
