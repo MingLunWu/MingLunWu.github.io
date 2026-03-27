@@ -1,4 +1,14 @@
 <head>
+    {{ $socialImage := .Site.Params.header_image | absURL }}
+    {{ if .Params.thumbnail }}
+        {{ $socialImage = .Params.thumbnail | absURL }}
+    {{ else if .Params.image }}
+        {{ with .Resources.GetMatch .Params.image }}
+            {{ $socialImage = .Permalink }}
+        {{ else }}
+            {{ $socialImage = .Params.image | absURL }}
+        {{ end }}
+    {{ end }}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,16 +17,8 @@
     <meta property="og:site_name" content="{{ .Site.Title }}">
     <meta property="og:type" content="article">
 
-    {{ if .Params.thumbnail }}
-    <meta property="og:image" content="{{ .Site.BaseURL }}{{ .Params.thumbnail }}">
-    <meta property="twitter:image" content="{{ .Site.BaseURL }}{{ .Params.thumbnail }}" />
-    {{ else if .Params.image}}
-    <meta property="og:image" content="{{ .Params.image }}">
-    <meta property="twitter:image" content="{{ .Params.image }}" />
-    {{ else }}
-    <meta property="og:image" content="{{ .Site.BaseURL }}/{{ .Site.Params.header_image }}">
-    <meta property="twitter:image" content="{{ .Site.BaseURL }}/{{ .Site.Params.header_image }}" />
-    {{ end }}
+    <meta property="og:image" content="{{ $socialImage }}">
+    <meta property="twitter:image" content="{{ $socialImage }}" />
 
     {{ if .Params.title }}
     <meta name="title" content="{{ .Params.title }}" />

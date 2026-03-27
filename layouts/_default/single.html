@@ -1,8 +1,16 @@
 {{ define "header" }}
 <!-- Post Header -->
+{{ $headerImage := .Site.Params.header_image | relURL }}
+{{ with .Params.image }}
+    {{ with $.Resources.GetMatch . }}
+        {{ $headerImage = .RelPermalink }}
+    {{ else }}
+        {{ $headerImage = . | relURL }}
+    {{ end }}
+{{ end }}
 <style type="text/css">
     header.intro-header {
-        background-image: url('{{ if .Params.image }}{{ .Params.image | relURL }}{{ else }}{{ .Site.Params.header_image | relURL}}{{ end }}')
+        background-image: url('{{ $headerImage }}')
     }
     /* utterances response chatbox */
     .utterances {
