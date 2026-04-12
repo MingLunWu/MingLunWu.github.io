@@ -17,7 +17,7 @@ image: https://images.unsplash.com/photo-1565817292726-56c96f34355b?ixlib=rb-4.0
 
 這陣子看到很多厲害的分享，教大家如何將 `Obsidian` 和各種 AI 工具串接成高效的工作流程，我也還持續在摸索，在這個潮流中，究竟[該如何與 AI 協作](https://minglunwu.com/notes/2025/ai-knowledge-anxiety/) ？
 
-不過隊伍來說，在討論 `Obsidian` 如何 AI-Friendly 前，先確保 User-Friendly 是很重要的。
+不過對我來說，在討論 `Obsidian` 如何 AI-Friendly 前，先確保 User-Friendly 是很重要的。
 
 畢竟真正負責思考、書寫和累積素材的人，是使用者自己。
 
