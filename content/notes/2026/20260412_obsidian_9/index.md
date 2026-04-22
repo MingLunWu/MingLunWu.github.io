@@ -1,5 +1,5 @@
 ---
-title: "Obsidian 入坑指南 #09 - 把 Obsidian 變成順手的寫作空間"
+title: "Obsidian 入坑指南 #9 - 把 Obsidian 變成順手的寫作空間"
 author: MingLun Allen Wu
 date: 2026-04-12
 tags: 
