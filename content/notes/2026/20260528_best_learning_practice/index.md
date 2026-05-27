@@ -15,7 +15,7 @@ image: "background.jpeg"
 
 我最近發現，自己在學習一件事情時，常有一種迷思： 「**要學，就要從最完整、最齊全的 Best Practice 學起**」。
 
-例如前陣子對[AI 工具感到焦慮](https://minglunwu.com/notes/2025/ai-knowledge-anxiety/) 時，就是這樣。
+例如前陣子對 [AI 工具感到焦慮](https://minglunwu.com/notes/2025/ai-knowledge-anxiety/) 時，就是這樣。
 
 一直有一種「該學、想學，但不知道從何開始」的感覺，於是在網路上尋找各種內容：XX 大神的 AI 工作法、熱門的框架、2026 年必須掌握的 3 種 Skill…我很快就被大量的術語、工具名稱給淹沒了。
 
