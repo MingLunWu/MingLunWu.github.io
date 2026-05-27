@@ -155,6 +155,31 @@ body {
   text-decoration: underline;
 }
 
+.post-related-notes .card {
+  margin-bottom: 0.55em;
+}
+
+.post-related-notes .card-content {
+  padding: 0.2em 0 !important;
+}
+
+.post-related-notes .title.is-5 {
+  font-family: "LXGW WenKai TC", -apple-system, "Helvetica Neue", Arial, "PingFang TC",
+    "Microsoft JhengHei", sans-serif;
+  font-size: 1.18em;
+  font-weight: 700;
+  line-height: 1.75;
+}
+
+.post-related-notes .heading,
+.post-related-notes .heading time {
+  font-family: "LXGW WenKai TC", -apple-system, "Helvetica Neue", Arial, "PingFang TC",
+    "Microsoft JhengHei", sans-serif;
+  font-size: 1.08em;
+  font-weight: 500;
+  line-height: 1.7;
+}
+
 @media (max-width: 767px) {
   body {
     font-size: 1.18em;
@@ -199,5 +224,15 @@ body {
   .post-container td {
     font-size: 1.04em;
     padding: 0.8em 0.9em;
+  }
+
+  .post-related-notes .title.is-5 {
+    font-size: 1.12em;
+    line-height: 1.65;
+  }
+
+  .post-related-notes .heading,
+  .post-related-notes .heading time {
+    font-size: 1em;
   }
 }
