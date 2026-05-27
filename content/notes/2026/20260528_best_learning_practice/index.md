@@ -1,5 +1,5 @@
 ---
-title: "Best Learning Practice 不見得是 Best Practice"
+title: "Best Practice 不見得是 Best Learning Practice"
 author: MingLun Allen Wu
 date: 2026-05-28
 tags: 
