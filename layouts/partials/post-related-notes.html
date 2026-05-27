@@ -1,5 +1,5 @@
 <hr>
-<div class="">
+<div class="post-related-notes">
     <h2>See Also</h2>
     {{ $related := (where (.Site.RegularPages.Related .) "Type" "notes") | first 3 }}
     {{ range $related }}
