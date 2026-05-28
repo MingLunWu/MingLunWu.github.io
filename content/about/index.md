@@ -24,7 +24,7 @@ Hi! 我是明倫，一位對「筆記」充滿熱情的軟體工程師，專精�
 
 | 年份 | 活動 | 分享主題 |
 | :---: | :--: | :--: |
-| 2026 | [DevOpsDays Taipei](https://devopsdays.tw/2026/) | [CI/CD 也需要自己的 Observability：Centralized Pipeline 的觀察與實踐](https://chatgpt.com/c/6a073dd5-3478-83aa-9699-98ef798571d0) |
+| 2026 | [DevOpsDays Taipei](https://devopsdays.tw/2026/) | [CI/CD 也需要自己的 Observability：Centralized Pipeline 的觀察與實踐](https://devopsdays.tw/2026/session/4722) |
 | 2026 | 斗六高中職涯探索活動 | [AI 時代下的自我理解與生涯探索](https://minglunwu.com/notes/2026/self-in-choice/) |
 | 2025 | [DevOps Taiwan Meetup](https://devops.kktix.cc/) | [從混亂到有效治理: Policy as Code 在跨團隊 CI/CD 的實踐與應用](https://devops.kktix.cc/events/meetup-72-policy-as-code) |
 | 2025 | [DevOpsDays Taipei](https://devopsdays.tw/2024/) | [從混亂到有效治理: Policy as Code 在跨團隊 CI/CD 的實踐與應用](https://devopsdays.tw/2025/session-page/3757) |
