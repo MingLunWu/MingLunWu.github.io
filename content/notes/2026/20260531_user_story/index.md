@@ -8,7 +8,7 @@ tags:
 categories: "Reflection"
 summary: "User Story 不只是把工作套進 Template，而是透過足夠的 Context，把問題說成團隊能夠共同理解、判斷與校準的樣子。"
 slug: "user-story-context"
-image: "background.avif"
+image: "background.jpg"
 ---
 
 ## 我曾經以為 User Story 只是一種格式
