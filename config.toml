@@ -14,7 +14,8 @@ hasCJKLanguage = true
 home = ["HTML", "RSS", "Algolia"]
 
 [params]
-  header_image = "img/home-bg-night.webp"
+  # header_image = "img/home-bg-night.webp"
+  header_image = "img/banner.png"
   SEOTitle = "Byte and Ink"
   description = ""
   keyword = "吳明倫, MingLun, minglunwu"
