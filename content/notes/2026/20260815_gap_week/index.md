@@ -5,7 +5,7 @@ date: 2026-08-15
 tags: 
     - Thought
 categories: "Reflection"
-summary: "休息一個禮拜後，重新練習分辨探索自我價值的來源"
+summary: "休息一個禮拜，重新練習分辨探索自我價值的來源"
 slug: "gap-week"
 image: "background.jpeg"
 ---
