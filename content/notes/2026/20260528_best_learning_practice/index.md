@@ -99,7 +99,7 @@ image: "background.jpeg"
 
 基礎是讓你有能力繼續往前學的東西。
 
-這也讓我想到 〈[20 Things I’ve Learned in my 20 Years as a Software Engineer](...)〉 中作者分享的觀點：
+這也讓我想到 〈[20 Things I’ve Learned in my 20 Years as a Software Engineer](https://www.simplethread.com/20-things-ive-learned-in-my-20-years-as-a-software-engineer/)〉 中作者分享的觀點：
 
 > 身為軟體工程師，要學著接受一件事:<br>
 > **世界上不會有完美的 Solution、Test、Code 或 Architecture**。
