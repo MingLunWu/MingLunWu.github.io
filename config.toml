@@ -145,6 +145,11 @@ params = ["categories", "tags"]
     [markup.goldmark.renderer]
       unsafe = true
 
+[minify]
+  [minify.tdewolff]
+    [minify.tdewolff.html]
+      keepQuotes = true
+
 [related]
     threshold = 50
     includeNewer = true
