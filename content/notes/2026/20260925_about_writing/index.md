@@ -100,7 +100,7 @@ image: "background.jpeg"
 
 收到邀約，總是開心的，我很感謝「寫作」讓我有機會認識日常社交圈以外的人。
 
-前陣子安排了[Gap week](https://minglunwu.com/notes/2026/gap-week/)，休假前意外的收到 [Kyo](https://kyomind.tw/) 的邀約。
+前陣子安排了 [Gap week](https://minglunwu.com/notes/2026/gap-week/)，休假前意外的收到 [Kyo](https://kyomind.tw/) 的邀約。
 
 前幾年在讀他的[部落格](https://blog.kyomind.tw/)時，一直很欣賞他的文章，除了深入且扎實的技術主題外，也有許多我感興趣的題材，例如 [Cal Newport](https://blog.kyomind.tw/think-riverside/) 及對[多種筆記軟體的觀察](https://blog.kyomind.tw/categories/%E7%AD%86%E8%A8%98%E8%BB%9F%E9%AB%94/)。
 
