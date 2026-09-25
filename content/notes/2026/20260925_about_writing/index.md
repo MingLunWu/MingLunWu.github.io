@@ -201,7 +201,7 @@ image: "background.jpeg"
 
 ## 帶給我寫作啟發的來源
 
-在寫作之路上，我特別喜歡幾位前輩對於寫作的觀點，謝謝他們在寫作之路上的引領，讓我持續走到今天，以下分享幾篇帶給我重要影響的文章或書籍：
+在寫作之路上，我特別喜歡幾位前輩對於寫作的觀點，謝謝他們的引領，讓我持續走到今天，以下分享幾篇帶給我重要影響的文章或書籍：
 
 + [我為什麼寫部落格，以及部落格帶給我的影響 \| by Huli \| Medium](https://hulitw.medium.com/blog-e7a23a74ae2b)
 + [每一篇心得都有價值——為什麼初學者才更應該要寫心得筆記 \| by Huli \| Medium](https://hulitw.medium.com/why-blogging-ab77fd8c6ffa)
