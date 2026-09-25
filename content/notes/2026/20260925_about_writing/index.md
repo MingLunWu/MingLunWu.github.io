@@ -196,7 +196,6 @@ image: "background.jpeg"
 
 最近剛好在帶一個 Mentee，進行 Code Review 時，發現有些原則需要溝通，此時要把自己內化的原則整理出來會有點花時間，但剛好當初在學習 Code Review 的概念時，有留下一篇紀錄 - [成為更重視 Code Review 的工程師](https://minglunwu.com/notes/2024/code_review.html/)，這時候就派上用場了！直接傳連結給他，搞定！
 
-
 ---
 
 ## 帶給我寫作啟發的來源
