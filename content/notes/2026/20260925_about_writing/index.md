@@ -86,7 +86,7 @@ image: "background.jpeg"
 
 > 原來我不需要做什麼，也不需要刻意扮演什麼角色。只需要把內心思考的事情分享出來，這本身就是一件有價值的行為。
 
-前陣子在 Thread 上看到的 Post 很符合這種感受：
+前陣子在 Threads 上看到的 Post 很符合這種感受：
 
 ![thread post](thread.png)
 
