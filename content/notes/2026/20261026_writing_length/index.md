@@ -12,7 +12,7 @@ slug: "how-much-writing-is-enough"
 image: "background.jpeg"
 ---
 
-自從開始整理[寫作對自己的影響](https://minglunwu.com/notes/2026/about_writing/) 後，一直在思考一個問題：什麼是我心目中「理想的寫作」呢？
+自從開始整理[寫作對自己的影響](https://minglunwu.com/notes/2026/about_writing/)後，一直在思考一個問題：什麼是我心目中「理想的寫作」呢？
 
 前些日子讀了松浦彌太郎的《像隨筆作家一樣生活：松浦彌太郎的寫作與思考方式》，我發現「隨筆」蠻符合我對於寫作的期待。
 
